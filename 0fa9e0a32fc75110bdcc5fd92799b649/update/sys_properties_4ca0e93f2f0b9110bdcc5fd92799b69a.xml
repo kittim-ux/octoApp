@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description/>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_938832_octomobil.child.update</name>
+        <read_roles/>
+        <suffix>child.update</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 17:46:31</sys_created_on>
+        <sys_id>4ca0e93f2f0b9110bdcc5fd92799b69a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_938832_octomobil.child.update</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_properties_4ca0e93f2f0b9110bdcc5fd92799b69a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:51</sys_updated_on>
+        <type>string</type>
+        <value>phone_number,assigned_to,state</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=4ca0e93f2f0b9110bdcc5fd92799b69a"/>
+</record_update>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">a85cffa12f1f1510bdcc5fd92799b655</sp_column>
+        <sp_widget display_value="Knowledge Related Articles">a8874e5bdb18330076e757a0cf961939</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-21 16:36:02</sys_created_on>
+        <sys_id>241b0c712f5f1510bdcc5fd92799b678</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>How cookies give you more personal, convenient website visits</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_241b0c712f5f1510bdcc5fd92799b678</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-22 03:39:12</sys_updated_on>
+        <title>How cookies give you more personal, convenient website visits</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"table": {
+		"value": "kb_knowledge",
+		"displayValue": "kb_knowledge"
+	},
+	"display_field": {
+		"value": "",
+		"displayValue": ""
+	},
+	"secondary_fields": {
+		"value": "",
+		"displayValue": ""
+	},
+	"max_records": {
+		"value": "",
+		"displayValue": ""
+	},
+	"always_show": {
+		"value": "",
+		"displayValue": ""
+	},
+	"show_secondary_fields_label": {
+		"value": "",
+		"displayValue": ""
+	},
+	"knowledge_base": {
+		"value": "dfc19531bf2021003f07e2c1ac0739ab",
+		"displayValue": "Knowledge"
+	},
+	"source_table": {
+		"value": "kb_2_kb",
+		"displayValue": "kb_2_kb"
+	},
+	"source_column": {
+		"value": "kb_knowledge",
+		"displayValue": "kb_knowledge"
+	},
+	"target_column": {
+		"value": "",
+		"displayValue": ""
+	},
+	"source_id": {
+		"value": "",
+		"displayValue": ""
+	},
+	"use_full_width": {
+		"value": "true",
+		"displayValue": "true"
+	}
+}]]></widget_parameters>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=241b0c712f5f1510bdcc5fd92799b678"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>35453a86dbf05850566750b6f49619be</instance_id>
+        <instance_name>dev103886</instance_name>
+        <name>sp_instance_241b0c712f5f1510bdcc5fd92799b678</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance"&gt;&lt;sp_instance action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css/&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;order&gt;1&lt;/order&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="1"&gt;a85cffa12f1f1510bdcc5fd92799b655&lt;/sp_column&gt;&lt;sp_widget display_value="Knowledge Related Articles"&gt;a8874e5bdb18330076e757a0cf961939&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2022-11-21 16:36:02&lt;/sys_created_on&gt;&lt;sys_id&gt;241b0c712f5f1510bdcc5fd92799b678&lt;/sys_id&gt;&lt;sys_mod_count&gt;9&lt;/sys_mod_count&gt;&lt;sys_name&gt;How cookies give you more personal, convenient website visits&lt;/sys_name&gt;&lt;sys_package display_value="octoMobile" source="x_938832_octomobil"&gt;0fa9e0a32fc75110bdcc5fd92799b649&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="octoMobile"&gt;0fa9e0a32fc75110bdcc5fd92799b649&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_241b0c712f5f1510bdcc5fd92799b678&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2022-11-22 03:39:12&lt;/sys_updated_on&gt;&lt;title&gt;How cookies give you more personal, convenient website visits&lt;/title&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"table": {
+		"value": "kb_knowledge",
+		"displayValue": "kb_knowledge"
+	},
+	"display_field": {
+		"value": "",
+		"displayValue": ""
+	},
+	"secondary_fields": {
+		"value": "",
+		"displayValue": ""
+	},
+	"max_records": {
+		"value": "",
+		"displayValue": ""
+	},
+	"always_show": {
+		"value": "",
+		"displayValue": ""
+	},
+	"show_secondary_fields_label": {
+		"value": "",
+		"displayValue": ""
+	},
+	"knowledge_base": {
+		"value": "dfc19531bf2021003f07e2c1ac0739ab",
+		"displayValue": "Knowledge"
+	},
+	"source_table": {
+		"value": "kb_2_kb",
+		"displayValue": "kb_2_kb"
+	},
+	"source_column": {
+		"value": "kb_knowledge",
+		"displayValue": "kb_knowledge"
+	},
+	"target_column": {
+		"value": "",
+		"displayValue": ""
+	},
+	"source_id": {
+		"value": "",
+		"displayValue": ""
+	},
+	"use_full_width": {
+		"value": "true",
+		"displayValue": "true"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=241b0c712f5f1510bdcc5fd92799b678"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-586316112</payload_hash>
+        <record_name>How cookies give you more personal, convenient website visits</record_name>
+        <reverted_from/>
+        <source>f622ee442f1fd110bdcc5fd92799b6c2</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 03:39:12</sys_created_on>
+        <sys_id>47d22a3d2f575510bdcc5fd92799b695</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1849d6b17640000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-22 03:39:12</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>4fd22a3d00575510f4efcec2ce3be494</update_guid>
+        <update_guid_history>4fd22a3d00575510f4efcec2ce3be494:-586316112,0ec2e63dc9575510fb7d028b36e36d6f:-37553457,05c2a63d075755100639ca2b49d03ffe:-586316112,51b2663dd657551070a3931b1504aad7:-37553457,f7a2663d81575510e8143ef7db992871:-586316112,eb92263dcd5755104dd116d667bb9c57:-37553457,8692e23d06575510f4fb365b09fcd4e5:-586316112,8f82e23d7157551053f6e6e743a2b541:-37553457,a50c88b1ea5f15104c4bb43766885d68:-586316112,0d1b0c71b35f15103c0bb1b545182079:596495363</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">3fc36a7d2f575510bdcc5fd92799b606</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 03:43:21</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>0c608e4e28dd4e489d0ccd26e514eb10</sys_id>
+        <sys_metadata>241b0c712f5f1510bdcc5fd92799b678</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>How cookies give you more personal, convenient website visits</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sp_instance_241b0c712f5f1510bdcc5fd92799b678</sys_update_name>
+        <sys_update_version display_value="sp_instance_241b0c712f5f1510bdcc5fd92799b678">47d22a3d2f575510bdcc5fd92799b695</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:32:03</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

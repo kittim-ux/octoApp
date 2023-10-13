@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>2</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">b067a2ed2f971510bdcc5fd92799b634</sp_column>
+        <sp_widget/>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-21 10:43:25</sys_created_on>
+        <sys_id>db5a3ea12f1b1510bdcc5fd92799b647</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_db5a3ea12f1b1510bdcc5fd92799b647</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:44</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=db5a3ea12f1b1510bdcc5fd92799b647"/>
+</record_update>

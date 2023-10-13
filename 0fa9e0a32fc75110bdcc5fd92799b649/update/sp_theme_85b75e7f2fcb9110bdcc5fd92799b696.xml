@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_theme">
+    <sp_theme action="INSERT_OR_UPDATE">
+        <css_variables>/* OctoMobile OFFICIAL COLORS */&#13;
+$cloud-Primary: #2d80c3;&#13;
+$cloud-Secondary: #ebf2f4;&#13;
+$cloud-CloudWhite: #ece5de;&#13;
+$cloud-CloudBlack: #323232;&#13;
+&#13;
+/* ELEMENT SPECIFIC CSS */&#13;
+$sp-tagline-color:		$cloud-CloudWhite !default;&#13;
+$navbar-inverse-bg: 	#000000 !default;&#13;
+$navbar-inverse-link-color: $cloud-CloudWhite !default;&#13;
+$navbar-inverse-link-hover-color: $clo</css_variables>
+        <footer display_value="OctoMobile Footer">213dac442f17d110bdcc5fd92799b6e8</footer>
+        <footer_fixed>false</footer_fixed>
+        <header display_value="Stock Header">bf5ec2f2cb10120000f8d856634c9c0c</header>
+        <name>octoMobile</name>
+        <navbar_fixed>false</navbar_fixed>
+        <sys_class_name>sp_theme</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 21:44:47</sys_created_on>
+        <sys_id>85b75e7f2fcb9110bdcc5fd92799b696</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoMobile</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_theme_85b75e7f2fcb9110bdcc5fd92799b696</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:46</sys_updated_on>
+        <turn_off_scss_compilation>false</turn_off_scss_compilation>
+    </sp_theme>
+</record_update>

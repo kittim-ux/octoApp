@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_applet_launcher_tab">
+    <sys_sg_applet_launcher_tab action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applet_launcher display_value="octoMobile">307ea4e72fc75110bdcc5fd92799b63a</applet_launcher>
+        <icon display_value="Home octoMobile">f87ea4e72fc75110bdcc5fd92799b63a</icon>
+        <label>octoMobile</label>
+        <sys_class_name>sys_sg_applet_launcher_tab</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 19:24:16</sys_created_on>
+        <sys_id>b87ea4e72fc75110bdcc5fd92799b63a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoMobile</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_sg_applet_launcher_tab_b87ea4e72fc75110bdcc5fd92799b63a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:53</sys_updated_on>
+    </sys_sg_applet_launcher_tab>
+</record_update>

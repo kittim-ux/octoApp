@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">ff1ee6b32f4f9110bdcc5fd92799b647</sp_column>
+        <sp_widget display_value="Approvals">f37aa302cb70020000f8d856634c9cfc</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-16 09:32:56</sys_created_on>
+        <sys_id>964a30802f57d110bdcc5fd92799b6e7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_964a30802f57d110bdcc5fd92799b6e7</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-16 09:32:56</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=964a30802f57d110bdcc5fd92799b6e7"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>35453a86dbf05850566750b6f49619be</instance_id>
+        <instance_name>dev103886</instance_name>
+        <name>sp_instance_964a30802f57d110bdcc5fd92799b6e7</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance"><sp_instance action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><order>1</order><roles/><short_description/><size>md</size><sp_column display_value="1">ff1ee6b32f4f9110bdcc5fd92799b647</sp_column><sp_widget display_value="Approvals">f37aa302cb70020000f8d856634c9cfc</sp_widget><sys_class_name>sp_instance</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-11-16 09:32:56</sys_created_on><sys_id>964a30802f57d110bdcc5fd92799b6e7</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package><sys_policy/><sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope><sys_update_name>sp_instance_964a30802f57d110bdcc5fd92799b6e7</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-16 09:32:56</sys_updated_on><title/><url/><widget_parameters/></sp_instance><sys_translated_text action="delete_multiple" query="documentkey=964a30802f57d110bdcc5fd92799b6e7"/></record_update>]]></payload>
+        <payload_hash>673971516</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>56385b2f2f039110bdcc5fd92799b665</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-16 09:32:57</sys_created_on>
+        <sys_id>6a4a30802f57d110bdcc5fd92799b6e9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1847fc8ce390000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-16 09:32:57</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>a24a30801657d110bdb0f3425bc1c8e9</update_guid>
+        <update_guid_history>a24a30801657d110bdb0f3425bc1c8e9:673971516</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">677bbc402f57d110bdcc5fd92799b6a1</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-16 09:38:12</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>1b77714601b245bd8f445cd3ae436c51</sys_id>
+        <sys_metadata>964a30802f57d110bdcc5fd92799b6e7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sp_instance_964a30802f57d110bdcc5fd92799b6e7</sys_update_name>
+        <sys_update_version display_value="sp_instance_964a30802f57d110bdcc5fd92799b6e7">6a4a30802f57d110bdcc5fd92799b6e9</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:32:06</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_package_status" label="PACKAGE STATUS" language="en" table="x_938832_octomobil_whitelist_management_2">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_package_status</element>
+            <help/>
+            <hint/>
+            <label>PACKAGE STATUS</label>
+            <language>en</language>
+            <name>x_938832_octomobil_whitelist_management_2</name>
+            <plural>PACKAGE STATUSs</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2023-10-03 05:10:44</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>PACKAGE STATUS</sys_name>
+            <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+            <sys_update_name>sys_documentation_x_938832_octomobil_whitelist_management_2_u_package_status_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-10-03 05:10:44</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

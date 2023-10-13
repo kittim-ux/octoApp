@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>STN ONUS Data</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    try {
+        // Define the URL of the company's API
+        var apiUrl = 'http://app.sasakonnect.net:13000/api/onus/stn';
+
+        // Set the headers for the API request
+        var headers = {
+            'Authorization': 'Bearer SX10u7hcvNVDUAGkIkV0SoCspfJGk6DXdFqNmwLHS2zsOGA1ruJ4t3fPMgZsT2mCeW5nMSeSK06KGPMH',
+        };
+
+        // Make an HTTP GET request to the company's API using ServiceNow RESTMessageV2
+        var requestMessage = new sn_ws.RESTMessageV2();
+        requestMessage.setHttpMethod('get');
+        requestMessage.setEndpoint(apiUrl);
+        requestMessage.setRequestHeader('Authorization', headers['Authorization']);
+
+        // Execute the request
+        var responseFromCompanyAPI = requestMessage.execute();
+
+        // Check the HTTP response status
+        var statusCode = responseFromCompanyAPI.getStatusCode();
+
+        if (statusCode === 200) {
+            // Get the JSON response body
+            var responseBody = responseFromCompanyAPI.getBody();
+            var parsedData = JSON.parse(responseBody);
+
+            // Group the data by BuildingName
+            var groupedData = {};
+
+            for (var i = 0; i < parsedData.length; i++) {
+                var entry = parsedData[i];
+                var buildingName = entry.BuildingName;
+
+                if (!groupedData[buildingName]) {
+                    groupedData[buildingName] = [];
+                }
+
+                // Only add the relevant fields to the group
+                groupedData[buildingName].push({
+                    //'BuildingName': buildingName,
+                    'Serial_Code': entry.Serial_Code,
+                    //'Region': entry.Region
+                });
+            }
+
+            // Set the successful response
+            response.setStatus(200);
+            response.setBody(groupedData);
+        } else {
+            // Handle error cases here
+            response.setStatus(statusCode);
+            response.setBody('Error fetching data from the company\'s API. Status code: ' + statusCode);
+        }
+    } catch (ex) {
+        // Handle exceptions
+        response.setStatus(500);
+        response.setBody('Exception: ' + ex.toString());
+    }
+})(request, response);
+]]></operation_script>
+        <operation_uri>/api/x_938832_octomobil/komp_buildings_data/stn_all_onus</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/stn_all_onus</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-11 07:40:16</sys_created_on>
+        <sys_id>3563f23547b9751030980d45d36d43cb</sys_id>
+        <sys_mod_count>39</sys_mod_count>
+        <sys_name>STN ONUS Data</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ws_operation_3563f23547b9751030980d45d36d43cb</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-12 15:34:26</sys_updated_on>
+        <web_service_definition display_value="Komp Buildings Data">f9a2b2394779751030980d45d36d43c3</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

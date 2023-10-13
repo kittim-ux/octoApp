@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action">
+    <sys_ui_policy_action action="DELETE">
+        <cleared>false</cleared>
+        <disabled>ignore</disabled>
+        <field>status</field>
+        <mandatory>true</mandatory>
+        <sys_class_name>sys_ui_policy_action</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 22:40:33</sys_created_on>
+        <sys_id>b50b59ef2f4b5110bdcc5fd92799b641</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>status</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ui_policy_action_b50b59ef2f4b5110bdcc5fd92799b641</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-14 22:40:33</sys_updated_on>
+        <table>x_938832_octomobil_octoservices</table>
+        <ui_policy display_value="Make a fied visible">47e919af2f4b5110bdcc5fd92799b6c9</ui_policy>
+        <visible>true</visible>
+    </sys_ui_policy_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>35453a86dbf05850566750b6f49619be</instance_id>
+        <instance_name>dev103886</instance_name>
+        <name>sys_ui_policy_action_b50b59ef2f4b5110bdcc5fd92799b641</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_policy_action"><sys_ui_policy_action action="INSERT_OR_UPDATE"><cleared>false</cleared><disabled>ignore</disabled><field>status</field><mandatory>true</mandatory><sys_class_name>sys_ui_policy_action</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-11-14 22:40:33</sys_created_on><sys_id>b50b59ef2f4b5110bdcc5fd92799b641</sys_id><sys_mod_count>0</sys_mod_count><sys_name>status</sys_name><sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package><sys_policy/><sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope><sys_update_name>sys_ui_policy_action_b50b59ef2f4b5110bdcc5fd92799b641</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-14 22:40:33</sys_updated_on><table>x_938832_octomobil_octoservices</table><ui_policy display_value="Make a fied visible">47e919af2f4b5110bdcc5fd92799b6c9</ui_policy><visible>true</visible></sys_ui_policy_action></record_update>]]></payload>
+        <payload_hash>-1438795691</payload_hash>
+        <record_name>status</record_name>
+        <reverted_from/>
+        <source>87a9e0a32fc75110bdcc5fd92799b64b</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 22:40:33</sys_created_on>
+        <sys_id>486bddaf2f4b5110bdcc5fd92799b6ec</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>184784d28ab0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-14 22:40:33</sys_updated_on>
+        <type>UI Policy Action</type>
+        <update_guid>806bddaf4b4b5110724bf6058c303dec</update_guid>
+        <update_guid_history>806bddaf4b4b5110724bf6058c303dec:-1438795691</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 22:47:58</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_policy_action">sys_ui_policy_action</sys_db_object>
+        <sys_id>1da08af7bb884481be19626cd0539da9</sys_id>
+        <sys_metadata>b50b59ef2f4b5110bdcc5fd92799b641</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>status</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sys_ui_policy_action_b50b59ef2f4b5110bdcc5fd92799b641</sys_update_name>
+        <sys_update_version display_value="sys_ui_policy_action_b50b59ef2f4b5110bdcc5fd92799b641">486bddaf2f4b5110bdcc5fd92799b6ec</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:32:13</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

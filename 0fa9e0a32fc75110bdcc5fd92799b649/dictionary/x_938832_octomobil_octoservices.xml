@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element audit="true" db_object_id="8d5ee0e72fc75110bdcc5fd92799b6ce" label="octoservices" max_length="40" name="x_938832_octomobil_octoservices" type="collection">
+        <element attributes="encode_utf8=false" label="Assigned to" max_length="32" name="assigned_to" reference="sys_user" type="reference"/>
+        <element attributes="encode_utf8=false" choice="3" default="technical support" label="Assignment group" max_length="32" name="assignment_group" reference="sys_user_group" type="reference">
+            <choice>
+                <element inactive="true" inactive_on_update="true" label="Marketing Dpt" sequence="0" value="marketing dpt"/>
+                <element inactive_on_update="false" label="Technical Support" sequence="0" value="technical support"/>
+                <element inactive_on_update="false" label="Maintenance Team" sequence="1" value="maintenance team"/>
+                <element inactive_on_update="false" label="Sales Reps" sequence="2" value="sales reps"/>
+            </choice>
+        </element>
+        <element attributes="edge_encryption_enabled=true" label="Availability" mandatory="true" max_length="40" name="availability" type="glide_date_time"/>
+        <element label="Estimated downtime" max_length="40" name="estimated_downtime" type="glide_duration"/>
+        <element attributes="edge_encryption_enabled=true" label="Full name" mandatory="true" max_length="40" name="full_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" choice="1" label="Group Assigned" max_length="40" name="groupassigned" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Technical Support" sequence="0" value="technical support"/>
+                <element inactive_on_update="false" label="Maintenance Team" sequence="1" value="maintenance team"/>
+                <element inactive_on_update="false" label="Sales Reps" sequence="2" value="sales reps"/>
+            </choice>
+        </element>
+        <element attributes="encode_utf8=false" label="Location" max_length="32" name="location" reference="cmn_location" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" read_only="true" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Other" max_length="40" name="other" type="string"/>
+        <element label="Phone number" mandatory="true" max_length="40" name="phone_number" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" choice="3" default="1_critical" label="Priority" max_length="40" name="priority" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="1 - Critical" value="1_critical"/>
+                <element inactive_on_update="false" label="2 - Medium" value="2_medium"/>
+                <element inactive_on_update="false" label="3 - Low" value="3_low"/>
+            </choice>
+        </element>
+        <element attributes="edge_encryption_enabled=true" label="Registered Email" mandatory="true" max_length="40" name="registeredemail" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Short description" max_length="80" name="short_description" type="string"/>
+        <element attributes="edge_encryption_enabled=true" choice="3" default="new" label="State" max_length="40" name="state" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Approval" value="approval"/>
+                <element inactive_on_update="false" label="Complete" value="complete"/>
+                <element inactive_on_update="false" label="New" value="new"/>
+                <element inactive_on_update="false" label="Work in progress " value="work_in_progress"/>
+            </choice>
+        </element>
+        <element attributes="edge_encryption_enabled=true" choice="3" default="router_blinking" label="State Issue" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Device obtaining IP" value="device_obtaining_ip"/>
+                <element inactive_on_update="false" label="Other" value="other"/>
+                <element inactive_on_update="false" label="Router blinking" value="router_blinking"/>
+                <element inactive_on_update="false" label="Site unreachable" value="site_unreachable"/>
+                <element inactive_on_update="false" label="Slow speeds" value="slow_speeds"/>
+            </choice>
+        </element>
+        <element label="Full Name" mandatory="true" max_length="80" name="u_field_name_1" type="field_name"/>
+        <element label="Full Name" mandatory="true" max_length="80" name="u_field_name_2" type="field_name"/>
+        <element label="Language" mandatory="true" max_length="40" name="u_language_1" type="language"/>
+        <element attributes="edge_encryption_enabled=true" label="Full Name" max_length="40" name="u_string_1" type="string"/>
+        <element label="Your Name" mandatory="true" max_length="80" name="your_name" type="field_name" use_dependent_field="true"/>
+        <index name="index">
+            <element name="assigned_to"/>
+        </index>
+        <index name="index2">
+            <element name="assignment_group"/>
+        </index>
+        <index name="index3">
+            <element name="location"/>
+        </index>
+    </element>
+</database>

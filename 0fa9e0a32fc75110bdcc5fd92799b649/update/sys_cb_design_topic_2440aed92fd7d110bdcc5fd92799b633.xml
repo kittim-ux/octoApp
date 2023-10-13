@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_design_topic">
+    <sys_cb_design_topic action="INSERT_OR_UPDATE">
+        <compiled_topic display_value="octoMobile Support">5040ea992fd7d110bdcc5fd92799b6de</compiled_topic>
+        <design_definition>{"type":"FlowTopic","type":"FlowTopic","triggers":[{"type":"Trigger","name":"6daa0df01fcf4258b8b98de41fdb055c","triggerType":"request","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"id":"6daa0df01fcf4258b8b98de41fdb055c"}],"goals":[{"name":"primary","trigger_id":"6daa0df01fcf4258b8b98de41fdb055c","nodes":[{"type":"StartGoal","type":"StartGoal","goal_id":"primary","greeting_msg":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Thank you {0} for contacting Support Agent, how can we help you?\", vaContext.getRequesterLang(), [vaInputs.user.name])"},"id":"7c3de132719b49fb8d610d7193d33a72","name":"Start"},{"type":"TerminateGoal","type":"TerminateGoal","goal_id":"primary","confirmation_msg":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Thank you for reporting a network issue, {0}. We will review and solution will be found as soon as possible.\", vaContext.getRequesterLang(), [vaInputs.user.name])"},"id":"ac73a77928694159b9e718a4e5818a32","name":"End"},{"type":"InputPrompt","type":"InputPrompt","variable_id":"d734f76e8d984348a8dbaefd367ba827","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Please provide a short description of the issue.\", vaContext.getRequesterLang())"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"id":"3ea12946f6ab4c71804ea37404b8e6ea","name":"Short description","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"formatType":"Text","validationScript":""},{"type":"ChoiceInputPrompt","type":"ChoiceInputPrompt","expression_mode":"simple","metadataScript":"","cardName":"","cardFields":[],"id":"666410bff1464e09843aeec1c97da8ea","name":"State issue","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"variable_id":"c23396a098a247bfb2527712e40d5974","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Select the issue you're currently facing.\", vaContext.getRequesterLang())"},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true}},{"type":"InputPrompt","type":"InputPrompt","variable_id":"dd3e1390030346bf8557006df991e64c","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Let us know who you are, enter your name.\", vaContext.getRequesterLang())"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"id":"25f425b8653e493790bba2bd18f7d3d9","name":"Full Name","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"formatType":"Text","validationScript":""},{"type":"InputPrompt","type":"InputPrompt","variable_id":"2955f28dfee64d60bd8b238b51e28533","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Enter your registered phone number\", vaContext.getRequesterLang())"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"id":"e2d85ff7ce454e7dafc6975e98f5469d","name":"Phone number","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"formatType":"61a9b8c35b5600101f254d3ba881c7fb","validationScript":""},{"type":"InputPrompt","type":"InputPrompt","variable_id":"1fa0a170284a43e0a329244e193ebf6b","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Enter a registered email\", vaContext.getRequesterLang())"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"id":"21892d635bf1452d8514a8168c62e1bb","name":"Registred Email","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"formatType":"33513d135b1200101f254d3ba881c7d5","validationScript":""},{"type":"InputPrompt","type":"InputPrompt","variable_id":"cdd9a751f7684a80a62a2437f7dd56f7","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Let us know when you are available incase of any hysical troubleshooting.\", vaContext.getRequesterLang())"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"id":"93eb86dab33e4b18864683231a9174e1","name":"Availability","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"}},{"type":"ReferenceChoiceInputPrompt","type":"ReferenceChoiceInputPrompt","mode":"glide_record","id":"862f98cd40d045cc9d25aad620742254","name":"Location","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"variable_id":"cadb09c1130a486b8233abc28a7392d3","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Where are you located\", vaContext.getRequesterLang())"},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"expression_mode":"simple","metadataScript":"","cardName":"","cardFields":[],"no_options_found_message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"Sorry, no records found.\", vaContext.getRequesterLang())"},"condition":{"type":"Condition","mode":"glide_query","value":"nameISNOTEMPTY"}},{"type":"CRUDAction","type":"CRUDAction","mode":"create","query":"u_field_name_1={{vaInputs.full_name}}^phone_number={{vaInputs.phone_number}}^registeredemail={{vaInputs.registred_email}}^status={{vaInputs.state_issue}}^availability={{vaInputs.availability}}^short_description={{vaInputs.short_description}}^location={{vaInputs.location}}","variable_id":"c0ffa71db0f2470581adc002aa104b6f","id":"114a1e96f754407a976a056eb3ec594a","name":"Create Incident","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"}},{"type":"RecordOutputPrompt","type":"RecordOutputPrompt","mode":"variable","table":"x_938832_octomobil_octoservices","variable_id":"c0ffa71db0f2470581adc002aa104b6f","fields":["number","registeredemail","short_description"],"id":"494a21b493d9445cb581efb89e077f75","name":"Record created","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"condition":{"type":"Condition","mode":"glide_query","value":""}},{"type":"Decision","type":"Decision","name":"Decision","branches":[{"type":"Branch","type":"Branch","label":"Selected issues","expression":{"type":"Applicability","type":"Applicability","mode":"query","value":"state_issue=Device obtaining IP^ORvaInputs.state_issue=Router blinking^ORvaInputs.state_issue=Site unreachable^ORvaInputs.state_issue=Slow speed"},"id":"67a070b6ae49471f9fe91b3c034b9901","name":"Selected issues"},{"type":"Branch","type":"Branch","label":"Other","expression":{"type":"Applicability","type":"Applicability","mode":"query","value":"state_issue=Other"},"id":"c9dd7e985e364b85a8304eeda3de8dcb","name":"Other"}],"id":"842c03f7adfa42ebac496e969157086d","goal_id":"primary"},{"type":"InputPrompt","type":"InputPrompt","variable_id":"a2e90464d79349bb82136d97680a8c19","message":{"type":"String","type":"String","mode":"string","value":"gs.getMessageLang(\"KIndly specify this issue\", vaContext.getRequesterLang())"},"nlu_entity_binding":{"type":"NLUEntityBinding","allow_text_input":false,"use_confirmation_prompt":true},"skippable":{"type":"Applicability","type":"Applicability","mode":"script","value":"false"},"id":"744efc0ef30640d480bdfe3125a4084c","name":"Other","goal_id":"primary","applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"formatType":"Text","validationScript":""}],"edges":[{"type":"Edge","source_node_id":"7c3de132719b49fb8d610d7193d33a72","target_node_id":"25f425b8653e493790bba2bd18f7d3d9","id":"7c02ed3fc5f846dfaf5fee679a92a15d"},{"type":"Edge","source_node_id":"25f425b8653e493790bba2bd18f7d3d9","target_node_id":"e2d85ff7ce454e7dafc6975e98f5469d","id":"89c97e73711a4fa2acb82bbd6a879171"},{"type":"Edge","source_node_id":"e2d85ff7ce454e7dafc6975e98f5469d","target_node_id":"21892d635bf1452d8514a8168c62e1bb","id":"a6966bb7659e434aa133885f216a3d1a"},{"type":"Edge","source_node_id":"21892d635bf1452d8514a8168c62e1bb","target_node_id":"666410bff1464e09843aeec1c97da8ea","id":"343671ec4c6e4e7991924faea95c6102"},{"type":"Edge","source_node_id":"3ea12946f6ab4c71804ea37404b8e6ea","target_node_id":"93eb86dab33e4b18864683231a9174e1","id":"06f32dd50e5b40c99431fdee72c79bcb"},{"type":"Edge","source_node_id":"93eb86dab33e4b18864683231a9174e1","target_node_id":"862f98cd40d045cc9d25aad620742254","id":"a5b2ad3f8fe34993868c34deda2f79f5"},{"type":"Edge","source_node_id":"862f98cd40d045cc9d25aad620742254","target_node_id":"114a1e96f754407a976a056eb3ec594a","id":"2d1b911dd0c949c88e27bb13e70ace9c"},{"type":"Edge","source_node_id":"114a1e96f754407a976a056eb3ec594a","target_node_id":"494a21b493d9445cb581efb89e077f75","id":"6c757fbdb4984690a0dd4ef9f0411015"},{"type":"Edge","source_node_id":"494a21b493d9445cb581efb89e077f75","target_node_id":"ac73a77928694159b9e718a4e5818a32","id":"343bd6236472410c973d8037a0d78de7"},{"type":"Edge","source_node_id":"666410bff1464e09843aeec1c97da8ea","target_node_id":"842c03f7adfa42ebac496e969157086d","id":"59c51d56d9ca48ddba35914eb34e8954"},{"type":"Edge","source_node_id":"842c03f7adfa42ebac496e969157086d","target_node_id":"3ea12946f6ab4c71804ea37404b8e6ea","branch_id":"67a070b6ae49471f9fe91b3c034b9901","id":"12391fb1928a4608b98650e45e6871ff","name":"67a070b6ae49471f9fe91b3c034b9901"},{"type":"Edge","source_node_id":"842c03f7adfa42ebac496e969157086d","target_node_id":"744efc0ef30640d480bdfe3125a4084c","branch_id":"c9dd7e985e364b85a8304eeda3de8dcb","id":"3cd48102b62d4df38fcfa55140afb2f1","name":"c9dd7e985e364b85a8304eeda3de8dcb"},{"type":"Edge","source_node_id":"744efc0ef30640d480bdfe3125a4084c","target_node_id":"3ea12946f6ab4c71804ea37404b8e6ea","id":"453e943e1ac4429bbfcf7670dbb7645c"}],"id":"primary"}],"script_variables":[],"glide_variables":[{"type":"Reference","type":"Reference","table":"sys_user","id":"current-user","name":"user","formatType":"text","secure":false,"sensitive":false,"list":false},{"type":"VariableDto","type":"String","name":"short_description","list":false,"id":"d734f76e8d984348a8dbaefd367ba827","formatType":"Text","validationScript":"","secure":false,"sensitive":false},{"type":"Choice","type":"Choice","choices":[{"name":"Device obtaining IP","element":"Device obtaining IP"},{"name":"Site unreachable","element":"Router blinking"},{"name":"Router blinking","element":"Site unreachable"},{"name":"Slow speeds","element":"Slow speed"},{"name":"Other","element":"Other"}],"id":"c23396a098a247bfb2527712e40d5974","name":"state_issue","formatType":"text","secure":false,"sensitive":false,"list":false},{"type":"VariableDto","type":"String","name":"full_name","list":false,"id":"dd3e1390030346bf8557006df991e64c","formatType":"Text","validationScript":"","secure":false,"sensitive":false},{"type":"VariableDto","type":"String","name":"phone_number","list":false,"id":"2955f28dfee64d60bd8b238b51e28533","formatType":"61a9b8c35b5600101f254d3ba881c7fb","validationScript":"","secure":false,"sensitive":false},{"type":"VariableDto","type":"String","name":"registred_email","list":false,"id":"1fa0a170284a43e0a329244e193ebf6b","formatType":"33513d135b1200101f254d3ba881c7d5","validationScript":"","secure":false,"sensitive":false},{"type":"Date/Time","type":"Date/Time","mode":"date_time","id":"cdd9a751f7684a80a62a2437f7dd56f7","name":"availability","formatType":"text","secure":false,"sensitive":false,"list":false},{"type":"Reference","type":"Reference","table":"cmn_location","reference_qualifier_condition":"nameISNOTEMPTY","id":"cadb09c1130a486b8233abc28a7392d3","name":"location","formatType":"text","secure":false,"sensitive":false,"list":false},{"type":"Reference","type":"Reference","table":"x_938832_octomobil_octoservices","id":"c0ffa71db0f2470581adc002aa104b6f","name":"create_incident","formatType":"text","secure":false,"sensitive":false,"list":false},{"type":"VariableDto","type":"String","name":"other","list":false,"id":"a2e90464d79349bb82136d97680a8c19","formatType":"Text","validationScript":"","secure":false,"sensitive":false}],"applicability":{"type":"Applicability","type":"Applicability","mode":"script","value":"true"},"roles":[],"scope":"0fa9e0a32fc75110bdcc5fd92799b649","domain":"global","topic_type":"STANDARD","channels":[],"id":"632ec6152f97d110bdcc5fd92799b695","name":"octoMobile Support","key_phrases":["Create issue","Report Network issue","Network Issue"],"nlu_provider":"","nlu_model":"","nlu_model_label":"","nlu_intent":"","nlu_intent_label":"","flexible_conversation_switching":false,"autopilot_topic":false,"design_categories":[],"triggerable_by_notification":false,"library":false,"readOnly":false,"nluMapping":"[]"}</design_definition>
+        <design_topic_id>632ec6152f97d110bdcc5fd92799b695</design_topic_id>
+        <graph>{
+  "graph_api_version": "1.0.41",
+  "goals": {
+    "primary": {
+      "id": "primary",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "7c3de132719b49fb8d610d7193d33a72": {
+          "id": "7c3de132719b49fb8d610d7193d33a72",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Thank you "
+                  },
+                  {
+                    "type": "datapill",
+                    "dataPill": {
+                      "value": "{{vaInputs.user.name}}",
+                      "displayValue": "Input Variables➛User➛Name"
+                    },
+                    "children": [
+                      {
+                        "text": ""
+                      }
+                    ]
+                  },
+                  {
+                    "text": " for contacting Support Agent, how can we help you?"
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          }
+        },
+        "ac73a77928694159b9e718a4e5818a32": {
+          "id": "ac73a77928694159b9e718a4e5818a32",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Thank you for reporting a network issue, "
+                  },
+                  {
+                    "type": "datapill",
+                    "dataPill": {
+                      "value": "{{vaInputs.user.name}}",
+                      "displayValue": "Input Variables➛User➛Name"
+                    },
+                    "children": [
+                      {
+                        "text": ""
+                      }
+                    ]
+                  },
+                  {
+                    "text": ". We will review and solution will be found as soon as possible."
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          }
+        },
+        "3ea12946f6ab4c71804ea37404b8e6ea": {
+          "id": "3ea12946f6ab4c71804ea37404b8e6ea",
+          "stepType": "Prompt",
+          "name": "Short description",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Please provide a short description of the issue. "
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "d734f76e8d984348a8dbaefd367ba827",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          }
+        },
+        "666410bff1464e09843aeec1c97da8ea": {
+          "stepType": "ChoicePrompt",
+          "name": "State issue",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Select the issue you're currently facing."
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "variableId": "c23396a098a247bfb2527712e40d5974",
+          "id": "666410bff1464e09843aeec1c97da8ea",
+          "hasCardHeader": false,
+          "cardMetadata": {
+            "mode": "card",
+            "metadataScript": "",
+            "cardTemplate": "",
+            "cardFields": {},
+            "cardDefinition": {}
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false
+        },
+        "25f425b8653e493790bba2bd18f7d3d9": {
+          "id": "25f425b8653e493790bba2bd18f7d3d9",
+          "stepType": "Prompt",
+          "name": "Full Name",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Let us know who you are, enter your name. "
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "dd3e1390030346bf8557006df991e64c",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          }
+        },
+        "e2d85ff7ce454e7dafc6975e98f5469d": {
+          "id": "e2d85ff7ce454e7dafc6975e98f5469d",
+          "stepType": "Prompt",
+          "name": "Phone number",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Enter your registered phone number"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "2955f28dfee64d60bd8b238b51e28533",
+          "inputType": {
+            "format": "61a9b8c35b5600101f254d3ba881c7fb",
+            "script": ""
+          }
+        },
+        "21892d635bf1452d8514a8168c62e1bb": {
+          "id": "21892d635bf1452d8514a8168c62e1bb",
+          "stepType": "Prompt",
+          "name": "Registred Email",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Enter a registered email"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "1fa0a170284a43e0a329244e193ebf6b",
+          "inputType": {
+            "format": "33513d135b1200101f254d3ba881c7d5",
+            "script": ""
+          }
+        },
+        "93eb86dab33e4b18864683231a9174e1": {
+          "id": "93eb86dab33e4b18864683231a9174e1",
+          "stepType": "Prompt",
+          "name": "Availability",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Let us know when you are available incase of any hysical troubleshooting."
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "cdd9a751f7684a80a62a2437f7dd56f7"
+        },
+        "862f98cd40d045cc9d25aad620742254": {
+          "stepType": "ReferenceChoicePrompt",
+          "name": "Location",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Where are you located"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "variableId": "cadb09c1130a486b8233abc28a7392d3",
+          "id": "862f98cd40d045cc9d25aad620742254",
+          "mode": "glide_record",
+          "script": "",
+          "metadataScript": "",
+          "cardData": {},
+          "noRecordsResponseMsg": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Sorry, no records found. "
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "condition": {
+            "mode": "glide_query",
+            "value": "nameISNOTEMPTY"
+          },
+          "hasCardHeader": false,
+          "cardMetadata": {
+            "mode": "card",
+            "metadataScript": "",
+            "cardTemplate": "",
+            "cardFields": {},
+            "cardDefinition": {}
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false
+        },
+        "114a1e96f754407a976a056eb3ec594a": {
+          "id": "114a1e96f754407a976a056eb3ec594a",
+          "stepType": "CrudAction",
+          "name": "Create Incident",
+          "template": "u_field_name_1={{vaInputs.full_name}}^phone_number={{vaInputs.phone_number}}^registeredemail={{vaInputs.registred_email}}^status={{vaInputs.state_issue}}^availability={{vaInputs.availability}}^short_description={{vaInputs.short_description}}^location={{vaInputs.location}}",
+          "mode": "create",
+          "record": "",
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "variableId": "c0ffa71db0f2470581adc002aa104b6f"
+        },
+        "494a21b493d9445cb581efb89e077f75": {
+          "id": "494a21b493d9445cb581efb89e077f75",
+          "stepType": "RecordOutput",
+          "name": "Record created",
+          "variableId": "c0ffa71db0f2470581adc002aa104b6f",
+          "cardTemplate": "General",
+          "cardFields": {},
+          "mode": "variable",
+          "tableName": "x_938832_octomobil_octoservices",
+          "fields": [
+            "number",
+            "registeredemail",
+            "short_description"
+          ],
+          "cardDefinition": {
+            "name": "Record",
+            "value": "General"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "condition": {
+            "mode": "glide_query",
+            "value": ""
+          }
+        },
+        "842c03f7adfa42ebac496e969157086d": {
+          "id": "842c03f7adfa42ebac496e969157086d",
+          "stepType": "Decision",
+          "name": "Decision"
+        },
+        "744efc0ef30640d480bdfe3125a4084c": {
+          "id": "744efc0ef30640d480bdfe3125a4084c",
+          "stepType": "Prompt",
+          "name": "Other",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "KIndly specify this issue"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "a2e90464d79349bb82136d97680a8c19",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "7c02ed3fc5f846dfaf5fee679a92a15d",
+          "edgeType": "Edge",
+          "source": "7c3de132719b49fb8d610d7193d33a72",
+          "target": "25f425b8653e493790bba2bd18f7d3d9",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "89c97e73711a4fa2acb82bbd6a879171",
+          "edgeType": "Edge",
+          "source": "25f425b8653e493790bba2bd18f7d3d9",
+          "target": "e2d85ff7ce454e7dafc6975e98f5469d",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "a6966bb7659e434aa133885f216a3d1a",
+          "edgeType": "Edge",
+          "source": "e2d85ff7ce454e7dafc6975e98f5469d",
+          "target": "21892d635bf1452d8514a8168c62e1bb",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "343671ec4c6e4e7991924faea95c6102",
+          "edgeType": "Edge",
+          "source": "21892d635bf1452d8514a8168c62e1bb",
+          "target": "666410bff1464e09843aeec1c97da8ea",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "06f32dd50e5b40c99431fdee72c79bcb",
+          "edgeType": "Edge",
+          "source": "3ea12946f6ab4c71804ea37404b8e6ea",
+          "target": "93eb86dab33e4b18864683231a9174e1",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "a5b2ad3f8fe34993868c34deda2f79f5",
+          "edgeType": "Edge",
+          "source": "93eb86dab33e4b18864683231a9174e1",
+          "target": "862f98cd40d045cc9d25aad620742254",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "2d1b911dd0c949c88e27bb13e70ace9c",
+          "edgeType": "Edge",
+          "source": "862f98cd40d045cc9d25aad620742254",
+          "target": "114a1e96f754407a976a056eb3ec594a",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "6c757fbdb4984690a0dd4ef9f0411015",
+          "edgeType": "Edge",
+          "source": "114a1e96f754407a976a056eb3ec594a",
+          "target": "494a21b493d9445cb581efb89e077f75",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "343bd6236472410c973d8037a0d78de7",
+          "edgeType": "Edge",
+          "source": "494a21b493d9445cb581efb89e077f75",
+          "target": "ac73a77928694159b9e718a4e5818a32",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "59c51d56d9ca48ddba35914eb34e8954",
+          "edgeType": "Edge",
+          "source": "666410bff1464e09843aeec1c97da8ea",
+          "target": "842c03f7adfa42ebac496e969157086d",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "12391fb1928a4608b98650e45e6871ff",
+          "edgeType": "Branch",
+          "source": "842c03f7adfa42ebac496e969157086d",
+          "target": "3ea12946f6ab4c71804ea37404b8e6ea",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "vaInputs.state_issue=Device obtaining IP^ORvaInputs.state_issue=Router blinking^ORvaInputs.state_issue=Site unreachable^ORvaInputs.state_issue=Slow speed",
+            "mode": "query"
+          },
+          "label": "Selected issues"
+        },
+        {
+          "id": "3cd48102b62d4df38fcfa55140afb2f1",
+          "edgeType": "Branch",
+          "source": "842c03f7adfa42ebac496e969157086d",
+          "target": "744efc0ef30640d480bdfe3125a4084c",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "vaInputs.state_issue=Other",
+            "mode": "query"
+          },
+          "label": "Other"
+        },
+        {
+          "id": "453e943e1ac4429bbfcf7670dbb7645c",
+          "edgeType": "Edge",
+          "source": "744efc0ef30640d480bdfe3125a4084c",
+          "target": "3ea12946f6ab4c71804ea37404b8e6ea",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {
+    "current-user": {
+      "category": "vaInputs",
+      "id": "current-user",
+      "label": "User",
+      "name": "user",
+      "table": "sys_user",
+      "varType": "reference"
+    },
+    "d734f76e8d984348a8dbaefd367ba827": {
+      "id": "d734f76e8d984348a8dbaefd367ba827",
+      "name": "short_description",
+      "label": "Short Description",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2ODk0OTAxNTExMCBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      }
+    },
+    "c23396a098a247bfb2527712e40d5974": {
+      "id": "c23396a098a247bfb2527712e40d5974",
+      "name": "state_issue",
+      "label": "State Issue",
+      "varType": "choice",
+      "choices": [
+        {
+          "label": "Device obtaining IP",
+          "value": "Device obtaining IP"
+        },
+        {
+          "label": "Site unreachable",
+          "value": "Router blinking"
+        },
+        {
+          "label": "Router blinking",
+          "value": "Site unreachable",
+          "checked": true
+        },
+        {
+          "label": "Slow speeds",
+          "value": "Slow speed",
+          "checked": true
+        },
+        {
+          "label": "Other",
+          "value": "Other",
+          "checked": true
+        }
+      ],
+      "category": "vaInputs"
+    },
+    "dd3e1390030346bf8557006df991e64c": {
+      "id": "dd3e1390030346bf8557006df991e64c",
+      "name": "full_name",
+      "label": "Full Name",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2ODk0OTYxNTAxOCBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      }
+    },
+    "2955f28dfee64d60bd8b238b51e28533": {
+      "id": "2955f28dfee64d60bd8b238b51e28533",
+      "name": "phone_number",
+      "label": "Phone Number",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2ODk0OTc4MDEyNiBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      }
+    },
+    "1fa0a170284a43e0a329244e193ebf6b": {
+      "id": "1fa0a170284a43e0a329244e193ebf6b",
+      "name": "registred_email",
+      "label": "Registred Email",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2ODk0OTkxNTM0NCBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      }
+    },
+    "cdd9a751f7684a80a62a2437f7dd56f7": {
+      "id": "cdd9a751f7684a80a62a2437f7dd56f7",
+      "name": "availability",
+      "label": "Availability",
+      "varType": "date_time",
+      "secure": false,
+      "category": "vaInputs",
+      "mode": "date_time"
+    },
+    "cadb09c1130a486b8233abc28a7392d3": {
+      "id": "cadb09c1130a486b8233abc28a7392d3",
+      "name": "location",
+      "label": "Location",
+      "varType": "reference",
+      "table": "cmn_location",
+      "category": "vaInputs"
+    },
+    "c0ffa71db0f2470581adc002aa104b6f": {
+      "id": "c0ffa71db0f2470581adc002aa104b6f",
+      "name": "create_incident",
+      "label": "Create Incident",
+      "varType": "reference",
+      "table": "x_938832_octomobil_octoservices",
+      "inactive": false,
+      "category": "vaInputs"
+    },
+    "a2e90464d79349bb82136d97680a8c19": {
+      "id": "a2e90464d79349bb82136d97680a8c19",
+      "name": "other",
+      "label": "Other",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2ODk1MzkyMDcyMiBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      }
+    }
+  }
+}</graph>
+        <name>octoMobile Support</name>
+        <sys_class_name>sys_cb_design_topic</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-20 14:10:52</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>2440aed92fd7d110bdcc5fd92799b633</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>FlowTopic</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_cb_design_topic_2440aed92fd7d110bdcc5fd92799b633</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:47</sys_updated_on>
+        <type>FlowTopic</type>
+    </sys_cb_design_topic>
+</record_update>

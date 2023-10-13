@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="af1f945e47f1f51030980d45d36d435e" label="STNKompData" max_length="40" name="x_938832_octomobil_stn_kompdata" type="collection">
+        <element label="Building Name" max_length="40" name="building_name" type="string"/>
+        <element label="Serial Code" max_length="40" name="serial_code" type="string"/>
+    </element>
+</database>

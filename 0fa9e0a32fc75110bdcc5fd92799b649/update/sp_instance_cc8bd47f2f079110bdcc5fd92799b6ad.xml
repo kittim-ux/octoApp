@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>0</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="3">cc8bd47f2f079110bdcc5fd92799b6ab</sp_column>
+        <sp_widget display_value="Login">6506d341cb33020000f8d856634c9cdc</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 12:39:57</sys_created_on>
+        <sys_id>cc8bd47f2f079110bdcc5fd92799b6ad</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Login</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_cc8bd47f2f079110bdcc5fd92799b6ad</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:43</sys_updated_on>
+        <title>Login</title>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=cc8bd47f2f079110bdcc5fd92799b6ad"/>
+</record_update>

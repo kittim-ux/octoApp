@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="DELETE">
+        <category>standard</category>
+        <client_script><![CDATA[function ($scope, $sce) {
+	var c = this;
+	c.html = $sce.trustAsHtml(c.options.html);
+	$scope.$watch('c.options.html',function(){
+		c.html = $sce.trustAsHtml(c.options.html);
+	})
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>* {box-sizing:border-box}&#13;
+&#13;
+/* Slideshow container */&#13;
+.slideshow-container {&#13;
+  max-width: 1000px;&#13;
+  position: relative;&#13;
+  margin: auto;&#13;
+}&#13;
+&#13;
+/* Hide the images by default */&#13;
+.mySlides {&#13;
+  display: none;&#13;
+}&#13;
+&#13;
+/* Next &amp; previous buttons */&#13;
+.prev, .next {&#13;
+  cursor: pointer;&#13;
+  position: absolute;&#13;
+  top: 50%;&#13;
+  width: auto;&#13;
+  margin-top: -22px;&#13;
+  padding: 16px;&#13;
+  color: white;&#13;
+  font-weight: bold;&#13;
+  font-size: 18px;&#13;
+  transition: 0.6s ease;&#13;
+  border-radius: 0 3px 3px 0;&#13;
+  user-select: none;&#13;
+}&#13;
+&#13;
+/* Position the "next button" to the right */&#13;
+.next {&#13;
+  right: 0;&#13;
+  border-radius: 3px 0 0 3px;&#13;
+}&#13;
+&#13;
+/* On hover, add a black background color with a little bit see-through */&#13;
+.prev:hover, .next:hover {&#13;
+  background-color: rgba(0,0,0,0.8);&#13;
+}&#13;
+&#13;
+/* Caption text */&#13;
+.text {&#13;
+  color: #f2f2f2;&#13;
+  font-size: 15px;&#13;
+  padding: 8px 12px;&#13;
+  position: absolute;&#13;
+  bottom: 8px;&#13;
+  width: 100%;&#13;
+  text-align: center;&#13;
+}&#13;
+&#13;
+/* Number text (1/3 etc) */&#13;
+.numbertext {&#13;
+  color: #f2f2f2;&#13;
+  font-size: 12px;&#13;
+  padding: 8px 12px;&#13;
+  position: absolute;&#13;
+  top: 0;&#13;
+}&#13;
+&#13;
+/* The dots/bullets/indicators */&#13;
+.dot {&#13;
+  cursor: pointer;&#13;
+  height: 15px;&#13;
+  width: 15px;&#13;
+  margin: 0 2px;&#13;
+  background-color: #bbb;&#13;
+  border-radius: 50%;&#13;
+  display: inline-block;&#13;
+  transition: background-color 0.6s ease;&#13;
+}&#13;
+&#13;
+.active, .dot:hover {&#13;
+  background-color: #717171;&#13;
+}&#13;
+&#13;
+/* Fading animation */&#13;
+.fade {&#13;
+  animation-name: fade;&#13;
+  animation-duration: 1.5s;&#13;
+}&#13;
+&#13;
+@keyframes fade {&#13;
+  from {opacity: .4}&#13;
+  to {opacity: 1}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data>{"options": &#13;
+	{&#13;
+		"html": "&lt;i&gt;Hi&lt;/i&gt;",&#13;
+		"title": "HTML"&#13;
+	}&#13;
+}</demo_data>
+        <description/>
+        <docs/>
+        <field_list>title</field_list>
+        <has_preview>false</has_preview>
+        <id/>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>octoMobile Products  of HTML</name>
+        <option_schema>[{"name":"html","default_value":" &lt;b&gt;hello&lt;/b&gt;","section":"Data","label":"HTML","type":"translated_html"}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+  slideIndex = 1;
+  showSlides(slideIndex);
+
+  // Next/previous controls
+  function plusSlides(n) {
+      showSlides(slideIndex += n);
+  }
+
+  // Thumbnail image controls
+  function currentSlide(n) {
+      showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+      slides =i;
+      slides = document.getElementsByClassName("mySlides");
+      dots = document.getElementsByClassName("dot");
+      if (n > slides.length) {
+          slideIndex = 1;
+      }
+      if (n < 1) {
+          slideIndex = slides.length
+      }
+      for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+  }
+
+  })();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-23 06:55:51</sys_created_on>
+        <sys_id>1d7998962fdb9510bdcc5fd92799b6f1</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>octoMobile Products  of HTML</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_widget_1d7998962fdb9510bdcc5fd92799b6f1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-23 07:06:58</sys_updated_on>
+        <template><![CDATA[<div>
+  <div ng-if="!c.options.html" class="panel panel-default">
+    <div class="panel-body">
+      <b>${HTML Widget}</b><br>
+      ${Ctrl + Click > Options to set HTML content}
+      <!-- Slideshow container -->
+<div class="slideshow-container">
+
+  <!-- Full-width images with number and caption text -->
+  <div class="mySlides fade">
+    <div class="numbertext">1 / 3</div>
+    <img src="img1.jpg" style="width:100%">
+    <div class="text">Caption Text</div>
+  </div>
+
+  <div class="mySlides fade">
+    <div class="numbertext">2 / 3</div>
+    <img src="img2.jpg" style="width:100%">
+    <div class="text">Caption Two</div>
+  </div>
+
+  <div class="mySlides fade">
+    <div class="numbertext">3 / 3</div>
+    <img src="img3.jpg" style="width:100%">
+    <div class="text">Caption Three</div>
+  </div>
+
+  <!-- Next and previous buttons -->
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<br>
+
+<!-- The dots/circles -->
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+    </div>
+  </div>
+  <div ng-if="c.options.html" ng-bind-html="c.html"></div>
+</div>]]></template>
+    </sp_widget>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>35453a86dbf05850566750b6f49619be</instance_id>
+        <instance_name>dev103886</instance_name>
+        <name>sp_widget_1d7998962fdb9510bdcc5fd92799b6f1</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_widget"&gt;&lt;sp_widget action="INSERT_OR_UPDATE"&gt;&lt;category&gt;standard&lt;/category&gt;&lt;client_script&gt;&lt;![CDATA[function ($scope, $sce) {
+	var c = this;
+	c.html = $sce.trustAsHtml(c.options.html);
+	$scope.$watch('c.options.html',function(){
+		c.html = $sce.trustAsHtml(c.options.html);
+	})
+}]]&gt;&lt;/client_script&gt;&lt;controller_as&gt;c&lt;/controller_as&gt;&lt;css&gt;* {box-sizing:border-box}&amp;#13;
+&amp;#13;
+/* Slideshow container */&amp;#13;
+.slideshow-container {&amp;#13;
+  max-width: 1000px;&amp;#13;
+  position: relative;&amp;#13;
+  margin: auto;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* Hide the images by default */&amp;#13;
+.mySlides {&amp;#13;
+  display: none;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* Next &amp;amp; previous buttons */&amp;#13;
+.prev, .next {&amp;#13;
+  cursor: pointer;&amp;#13;
+  position: absolute;&amp;#13;
+  top: 50%;&amp;#13;
+  width: auto;&amp;#13;
+  margin-top: -22px;&amp;#13;
+  padding: 16px;&amp;#13;
+  color: white;&amp;#13;
+  font-weight: bold;&amp;#13;
+  font-size: 18px;&amp;#13;
+  transition: 0.6s ease;&amp;#13;
+  border-radius: 0 3px 3px 0;&amp;#13;
+  user-select: none;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* Position the "next button" to the right */&amp;#13;
+.next {&amp;#13;
+  right: 0;&amp;#13;
+  border-radius: 3px 0 0 3px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* On hover, add a black background color with a little bit see-through */&amp;#13;
+.prev:hover, .next:hover {&amp;#13;
+  background-color: rgba(0,0,0,0.8);&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* Caption text */&amp;#13;
+.text {&amp;#13;
+  color: #f2f2f2;&amp;#13;
+  font-size: 15px;&amp;#13;
+  padding: 8px 12px;&amp;#13;
+  position: absolute;&amp;#13;
+  bottom: 8px;&amp;#13;
+  width: 100%;&amp;#13;
+  text-align: center;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* Number text (1/3 etc) */&amp;#13;
+.numbertext {&amp;#13;
+  color: #f2f2f2;&amp;#13;
+  font-size: 12px;&amp;#13;
+  padding: 8px 12px;&amp;#13;
+  position: absolute;&amp;#13;
+  top: 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* The dots/bullets/indicators */&amp;#13;
+.dot {&amp;#13;
+  cursor: pointer;&amp;#13;
+  height: 15px;&amp;#13;
+  width: 15px;&amp;#13;
+  margin: 0 2px;&amp;#13;
+  background-color: #bbb;&amp;#13;
+  border-radius: 50%;&amp;#13;
+  display: inline-block;&amp;#13;
+  transition: background-color 0.6s ease;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.active, .dot:hover {&amp;#13;
+  background-color: #717171;&amp;#13;
+}&amp;#13;
+&amp;#13;
+/* Fading animation */&amp;#13;
+.fade {&amp;#13;
+  animation-name: fade;&amp;#13;
+  animation-duration: 1.5s;&amp;#13;
+}&amp;#13;
+&amp;#13;
+@keyframes fade {&amp;#13;
+  from {opacity: .4}&amp;#13;
+  to {opacity: 1}&lt;/css&gt;&lt;data_table&gt;sp_instance&lt;/data_table&gt;&lt;demo_data&gt;{"options": &amp;#13;
+	{&amp;#13;
+		"html": "&amp;lt;i&amp;gt;Hi&amp;lt;/i&amp;gt;",&amp;#13;
+		"title": "HTML"&amp;#13;
+	}&amp;#13;
+}&lt;/demo_data&gt;&lt;description/&gt;&lt;docs/&gt;&lt;field_list&gt;title&lt;/field_list&gt;&lt;has_preview&gt;false&lt;/has_preview&gt;&lt;id/&gt;&lt;internal&gt;false&lt;/internal&gt;&lt;link&gt;&lt;![CDATA[function link(scope, element, attrs, controller) {  }]]&gt;&lt;/link&gt;&lt;name&gt;octoMobile Products  of HTML&lt;/name&gt;&lt;option_schema&gt;[{"name":"html","default_value":" &amp;lt;b&amp;gt;hello&amp;lt;/b&amp;gt;","section":"Data","label":"HTML","type":"translated_html"}]&lt;/option_schema&gt;&lt;public&gt;true&lt;/public&gt;&lt;roles/&gt;&lt;script&gt;&lt;![CDATA[(function() {
+  /* populate the 'data' object */
+  /* e.g., data.table = $sp.getValue('table'); */
+  slideIndex = 1;
+  showSlides(slideIndex);
+
+  // Next/previous controls
+  function plusSlides(n) {
+      showSlides(slideIndex += n);
+  }
+
+  // Thumbnail image controls
+  function currentSlide(n) {
+      showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+      slides =i;
+      slides = document.getElementsByClassName("mySlides");
+      dots = document.getElementsByClassName("dot");
+      if (n &gt; slides.length) {
+          slideIndex = 1;
+      }
+      if (n &lt; 1) {
+          slideIndex = slides.length
+      }
+      for (i = 0; i &lt; slides.length; i++) {
+          slides[i].style.display = "none";
+      }
+      for (i = 0; i &lt; dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+  }
+
+  })();]]&gt;&lt;/script&gt;&lt;servicenow&gt;false&lt;/servicenow&gt;&lt;sys_class_name&gt;sp_widget&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2022-11-23 06:55:51&lt;/sys_created_on&gt;&lt;sys_id&gt;1d7998962fdb9510bdcc5fd92799b6f1&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;octoMobile Products  of HTML&lt;/sys_name&gt;&lt;sys_package display_value="octoMobile" source="x_938832_octomobil"&gt;0fa9e0a32fc75110bdcc5fd92799b649&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="octoMobile"&gt;0fa9e0a32fc75110bdcc5fd92799b649&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_widget_1d7998962fdb9510bdcc5fd92799b6f1&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2022-11-23 07:06:58&lt;/sys_updated_on&gt;&lt;template&gt;&lt;![CDATA[&lt;div&gt;
+  &lt;div ng-if="!c.options.html" class="panel panel-default"&gt;
+    &lt;div class="panel-body"&gt;
+      &lt;b&gt;${HTML Widget}&lt;/b&gt;&lt;br&gt;
+      ${Ctrl + Click &gt; Options to set HTML content}
+      &lt;!-- Slideshow container --&gt;
+&lt;div class="slideshow-container"&gt;
+
+  &lt;!-- Full-width images with number and caption text --&gt;
+  &lt;div class="mySlides fade"&gt;
+    &lt;div class="numbertext"&gt;1 / 3&lt;/div&gt;
+    &lt;img src="img1.jpg" style="width:100%"&gt;
+    &lt;div class="text"&gt;Caption Text&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="mySlides fade"&gt;
+    &lt;div class="numbertext"&gt;2 / 3&lt;/div&gt;
+    &lt;img src="img2.jpg" style="width:100%"&gt;
+    &lt;div class="text"&gt;Caption Two&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="mySlides fade"&gt;
+    &lt;div class="numbertext"&gt;3 / 3&lt;/div&gt;
+    &lt;img src="img3.jpg" style="width:100%"&gt;
+    &lt;div class="text"&gt;Caption Three&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Next and previous buttons --&gt;
+  &lt;a class="prev" onclick="plusSlides(-1)"&gt;&amp;#10094;&lt;/a&gt;
+  &lt;a class="next" onclick="plusSlides(1)"&gt;&amp;#10095;&lt;/a&gt;
+&lt;/div&gt;
+&lt;br&gt;
+
+&lt;!-- The dots/circles --&gt;
+&lt;div style="text-align:center"&gt;
+  &lt;span class="dot" onclick="currentSlide(1)"&gt;&lt;/span&gt;
+  &lt;span class="dot" onclick="currentSlide(2)"&gt;&lt;/span&gt;
+  &lt;span class="dot" onclick="currentSlide(3)"&gt;&lt;/span&gt;
+&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div ng-if="c.options.html" ng-bind-html="c.html"&gt;&lt;/div&gt;
+&lt;/div&gt;]]&gt;&lt;/template&gt;&lt;/sp_widget&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>991203960</payload_hash>
+        <record_name>octoMobile Products  of HTML</record_name>
+        <reverted_from/>
+        <source>f622ee442f1fd110bdcc5fd92799b6c2</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-23 07:06:58</sys_created_on>
+        <sys_id>580c985a2fdb9510bdcc5fd92799b6c7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>184a34fadb70000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-23 07:06:58</sys_updated_on>
+        <type>Widget</type>
+        <update_guid>dc0c9856ebdb951047b3b05febfb555a</update_guid>
+        <update_guid_history>dc0c9856ebdb951047b3b05febfb555a:991203960,157998962fdb9510bc06fb6e901f7ef4:201173012</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">e460209e2fdb9510bdcc5fd92799b6b4</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-23 07:26:06</sys_created_on>
+        <sys_db_object display_value="" name="sp_widget">sp_widget</sys_db_object>
+        <sys_id>23c906dc9e104a8c95cefcf4da4f56e9</sys_id>
+        <sys_metadata>1d7998962fdb9510bdcc5fd92799b6f1</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoMobile Products  of HTML</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sp_widget_1d7998962fdb9510bdcc5fd92799b6f1</sys_update_name>
+        <sys_update_version display_value="sp_widget_1d7998962fdb9510bdcc5fd92799b6f1">580c985a2fdb9510bdcc5fd92799b6c7</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:32:12</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

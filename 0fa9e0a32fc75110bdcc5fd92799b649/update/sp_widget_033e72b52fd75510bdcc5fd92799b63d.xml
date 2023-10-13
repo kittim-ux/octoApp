@@ -1,0 +1,3275 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($timeout, $scope, $location, $rootScope, $interval, $filter, $uibModal,$sce, $http, spUtil,$window,$anchorScroll,$q, spCommunitySEOService, spCommunityHTMLEscapeUtil) {
+
+	var apiBaseUrl = '/api/sn_communities/v1/community';
+	var subscriptionBaseUrl = '/api/now/v1/actsub';
+	var commentTable = "kb_social_qa_comment";
+	var c = this,
+			contentComments = {};
+	c.comments = [];
+	c.queryParams = $location.search();
+	c.showFollow = true;
+	c.contentValid = true;
+	c.userSelection = '';
+	c.userText = '';
+	c.currentPost = '';
+	c.currentType = '';
+	c.user = c.data.loggedInUser || {};
+	c.formValidation = {pass:true};
+	c.comment_count = 0;
+	c.refresh_delay = c.options.view_refresh_time;
+	c.showModerationError = false;
+	c.postNotValid = false;
+	c.newCommentText = "";
+	if($rootScope && $rootScope.portal && $rootScope.portal.url_suffix)
+		c.data.portal = $rootScope.portal.url_suffix;
+	c.formValidationError = c.data.msg.requiredFieldsError;
+	c.state = '';
+	c.reported = false;
+	$scope.reportText = "Report";
+	c.postReportResult = '';
+	c.choices = [];
+	c.userSelection = '';
+	c.current = '';
+	c.moderationSubmitted = false;
+	c.moderationReasonsFetched = false;
+	c.imageInstance = '';
+	c.minImageHeight = parseInt(c.options.min_image_height) || 100;
+	c.minImageWidth = parseInt(c.options.min_image_width) || 185;
+	c.errorForums=[];
+	c.showFeatureContentAlert=false;
+	var imageCheck = 0;
+	var imageArrayList;
+	c.showSchedulePublish = false;
+	c.timeOptions = [];
+	c.tzdata = [];
+	c.scheduledDate = {placeholder:"${Schedule Date}", name : 'schedule-date', label:"${Schedule Date}"};
+	c.schedulingAllowAuthors = c.data.schedulingAllowAuthors;
+	if(c.data.timezone)
+		moment.tz.setDefault(c.data.timezone);
+	c.start_date = moment().millisecond(0).second(0).minute(0).hour(0);
+	
+
+	var query = {
+		content_id : c.queryParams.sys_id,
+		content_type: 'cc3fcaa0dbd26600b1f6f78eaf96192e'
+	};
+	
+
+	$rootScope.$on('imageArray', function(event,imageArray) {
+		imageArrayList = imageArray;
+		imageCheck =1;
+	});
+
+	function clearTinyMceAttachments(){
+		imageCheck = 0;
+		imageArrayList= [];
+	}  
+	
+	if(c.data.isLoggedIn){
+		//Record Watcher for Comments
+		spUtil.recordWatch($scope, commentTable, 'content.root_id.content_id='+c.queryParams.sys_id+"^content.profile!="+c.data.loggedInUserProfileId, function(data) {
+			if(data.data.action == "entry"){
+				sendToComment('NewRecordWatchComment',{'commentId':data.data.sys_id});
+			}		
+		});
+		for(var i =0;i<c.data.tz.length;i++){
+			if (c.data.tz[i].value != 'NULL_OVERRIDE') {
+				c.tzdata.push({
+					value : c.data.tz[i].value,
+					label : "(GMT" + moment.tz(spUtil.getMomentTimeZone(c.data.tz[i].value)).format("Z z") + ") " + c.data.tz[i].value	
+				});
+			}
+		}
+		
+	}
+
+	
+	for(var i =0, j=0;i<48;i++ ) {
+		if(i%2 == 0 && i > 0)
+			j=j+1;
+		var hour = j;
+		var minute = (i%2 == 0) ? 0 : 30;
+		c.timeOptions.push({
+			value: i,
+			label: time_as_ampm(hour, minute)
+		});
+	}
+	function time_as_ampm(hour, minute) {
+		var ampm = 'AM';
+		if ((minute === 0) && (hour % 12 === 0)) {
+			if (hour === 0) {
+				return "12:00 AM";
+			}
+			// return "noon";
+		}
+		if (hour>=12) {
+			hour -= 12;
+			ampm = 'PM';
+		}
+		if (hour===0) {
+			hour = 12;
+		}
+		return with_leading_0(hour) + ":" + with_leading_0(minute) + " " + ampm;
+	}
+	function with_leading_0(minute) {
+		if (minute < 10) {
+			return "0" + minute;
+		}
+		return "" + minute;
+	}
+	
+	var dateFormat = g_user_date_format || spConf.SYS_DATE_FORMAT;
+	var dateTimeFormat = g_user_date_time_format || spConf.SYS_TIME_FORMAT;
+
+	if ($rootScope.user && $rootScope.user.date_format)
+		dateFormat = $rootScope.user.date_format;
+
+	if ($rootScope.user && $rootScope.user.date_time_format)
+		dateTimeFormat = $rootScope.user.date_time_format;
+
+	var format;
+	format = dateTimeFormat.trim();
+	format = format.replace(/y/g, 'Y').replace(/d/g, 'D').replace(/a/g, 'A');
+	c.datetimeformat = format;
+
+	format = dateFormat.trim();
+	format = format.replace(/y/g, 'Y').replace(/d/g, 'D').replace(/a/g, 'A');
+	c.dateformat = format;
+	
+	
+	c.displayTimezones = function() {
+		c.showModal('showtz',c.retainFocus.bind(this, null,"actionMenu"));
+	};
+	c.retainFocus = function(element, id){
+		if(!element) element = $("#"+id);
+		if(element)element.focus();
+	};
+	
+	c.changeTZ = function() {
+		c.timezone_abbr = moment.tz(spUtil.getMomentTimeZone(c.post.time_zone)).format("z");
+	};
+
+	//Events
+	function sendToComment(event, data){
+		$rootScope.$broadcast(event, data);
+	}
+	$scope.$on('CommentLengthIncreased', function(e, data){
+		c.comment_count = data.length;
+	});
+	$scope.$on('CommentReplyBoxOpened', function(e, data){
+		c.hideCommentBox(c.post);
+		c.showModerationError = false;
+	});
+	$scope.$on('refreshContent', function(e, data){
+		refreshData();
+	});
+	$scope.$on('CommentsData', function(e, data){
+		c.comment_count = data.length;
+	});
+	$scope.$on('NotificationAlert',function(e,data){
+		var icon = data.icon || 'fa-check';
+		var neverDisapper = data.neverDisapper || false;
+		showPageAlert(data.message, data.type, icon, neverDisapper);
+	});
+	$scope.$on('CommentEditModeActive',function(e,data){
+		c.post.showEditMode = false;
+		c.post.showCommentBox = false;
+	});
+	$scope.$on('ScrollToTop',function(){
+		$anchorScroll('topOfPage');
+	});
+
+	$scope.$on('showModerationError', function(e,data){
+		c.showModerationError = true;
+		c.moderationError = data;
+		$anchorScroll('topOfPage');
+		$timeout(function(){
+			$('#topOfPage .cm-alert-blog-inform .cm-close-btn').focus();
+		});
+	});
+	
+	$scope.$on('hideModerationError', function(e,data){
+		c.showModerationError = false;
+	});
+
+	$scope.$on('content_details_request',function(){
+		$scope.$evalAsync(function(){
+			sendToComment('ContentDetails', c.post);
+		});
+	});
+	
+	$scope.$on('user_details_request', function(){
+		$scope.$evalAsync(function(){
+			sendToComment('UserDetails',c.user);
+		});
+	});
+	
+	///Fetch Blog Information
+	var response = c.data.blog;
+	if(response.status == 200){
+		c.post = response.data[0];
+		
+		if (c.post && c.post.userAvatarObject && c.post.user_details) {
+			c.showDisableComments = c.post.canDisableComments;
+			c.post.original_disable_comments = c.post.disable_comments;
+			c.post.original_scheduled_time = c.post.scheduled_time;
+			c.post.original_time_zone = c.post.time_zone;
+			c.enableScheduling = c.post.scheduled_time && c.post.state!='published'?true:false;
+			c.post.original_enableScheduling = c.enableScheduling;
+			c.showSchedulePublish = ((c.schedulingAllowAuthors || c.post.isAdminOrMod) && c.post.state!='published');
+			//Context pass to comments widget.
+			c.post.userMentionConfig = c.data.userMentionConfig;
+			c.comment_count = c.post.comment_count;
+			if(!c.post.time_zone)
+				c.post.time_zone = c.data.timezone;
+			$scope.$watch("c.post.time_zone", function() {
+				c.timezone_abbr = moment.tz(spUtil.getMomentTimeZone(c.post.time_zone)).format("z");	
+			})
+			if(c.post.comment_count > 0 ){
+				var resourceUrl = '/contents/'+ c.post.sys_id+ '/comments?content_type='+query.content_type+'&depth=1';
+				$http.get(apiBaseUrl+resourceUrl)
+				.then(function(response){
+					c.post.comments = response.data.result;
+					sendToComment('ContentDetails', c.post);
+					$timeout(function(){
+						$('.cm-comment-text-detail img').addClass('community_image_fullscreen');
+						$scope.$broadcast("sp.community.blog.tinymce.table.fixcss", [".cm-comment-text-detail"]);
+					});
+				}, function(error){
+					console.log(error);
+				});
+			} else
+				sendToComment('DisableCommentsChanged', {
+					"canComment": c.post.canComment,
+					"disableComments": c.post.disable_comments
+				});
+			
+			c.isContentAuthor = c.post.userAvatarObject.userId == c.data.loggedInUserProfileId;
+			c.canEditDraft = c.post.state == 'draft' && c.isContentAuthor;
+			c.isEdited = (c.post.edited_date != '');
+			c.post.isValidContent = true;
+			c.originalTitle = c.post.title;
+			c.originalTopics = c.post.topics;
+			c.state = c.post.state;
+			c.post.feedbackProfiles = [];
+			//hide sn-time-ago for 1 minute
+			if(c.post.publishedHideTimeAgo == true){
+				$timeout(function(){
+					c.post.publishedHideTimeAgo = false;
+				}, c.post.publishedHideTime);
+			}
+			if(c.post.editedHideTimeAgo == true){
+				$timeout(function(){
+					c.post.editedHideTimeAgo = false;
+				}, c.post.editedHideTime);
+			}
+
+			var contentId = c.post.sys_id;
+			c.originalDescription = c.post.description;
+			c.showFollow = c.post.showFollow;
+			c.post.userAvatarObject.profileLink = getProfileLink(c.post.userAvatarObject.userId);
+		} 
+		else {
+			c.contentValid = false;
+			c.postNotValid = true;
+		}
+	}
+	else if(response.status == 500) { //If there is an unexpected error, this message should take precedence over please login to view the content or content unavilable messages
+		c.showPageAlertForError = true;
+		showPageAlert(response.message, 'alert-danger', 'fa-exclamation-circle');
+	}
+	else if(!c.data.isLoggedIn){
+		c.showPageAlertForGuest = true;
+		showPageAlert('', 'alert-danger', 'fa-exclamation-circle');
+		$window.sessionStorage.setItem('navToUri', $location.url());
+	}
+	else {
+		c.showPageAlertForError = true;
+		showPageAlert(response.message, 'alert-danger', 'fa-exclamation-circle');
+	}
+	//--/
+	
+	//Add class to images in the content
+	$timeout(function(){
+		$('.cm-content-body img').addClass('community_image_fullscreen');
+		$('.cm-content-body img').attr('alt', 'image');
+		$('.cm-comment-text-detail img').addClass('community_image_fullscreen');
+		$scope.$broadcast("sp.community.blog.tinymce.table.fixcss", [".cm-content-body"]);
+	});
+	//Clear tinyMCE content on cancel button click
+	c.clearComment = function(content){
+		resetAttachments(content.attachments);
+		content.showCommentBox = false;
+		c.newCommentText = "";
+		content.textInput = "";
+		c.showModerationError = false;
+	};
+	c.cancelComment = function(content,replyBoxNumber){
+		if((c.newCommentText && c.newCommentText!='')|| isAttachmentDirty()){
+			$rootScope.discardCommentModalOpened = true;
+			var modalInstance = $uibModal.open({
+				animation: true,
+				ariaLabelledBy: 'modal-title',
+				ariaDescribedBy: 'modal-body',
+				templateUrl: 'community-cancel-edit-blog.html',
+				controller: function($scope) {
+					$scope.title = c.data.msg.discardChange;
+					$scope.message = c.data.msg.editCancelMsg;
+					$scope.cancel = function() { modalInstance.dismiss('cancel'); };
+					$scope.confirm = function() {  modalInstance.close(); c.clearComment(content,replyBoxNumber); };
+				}
+			});
+			modalInstance.result.then(function(){},c.dismissDialog);
+		}
+		else
+			c.clearComment(content,replyBoxNumber);
+		
+	}
+	c.dismissDialog = function(){
+		$rootScope.discardCommentModalOpened = false;
+	}
+	function isAttachmentDirty(){
+		var isDirty = false;
+		if(c.attachments){
+			for( var idx = 0 ; idx < c.attachments.length; idx++) {
+				var file = c.attachments[idx];
+				if (file.isDeleted || file.isNew){
+					isDirty = true;
+					break;
+				}
+			}
+
+		}
+		return isDirty;
+	}
+	///Form Validation for empty comments or empty content during edit
+	function validateForm(formObj,type){
+		c.formValidationError = '';
+		c.formValidation.pass = true;
+		c.formValidation.edit = true;
+		if(type == 'comment'){
+			if(!formObj.comment){
+				highlightErrors('.cm-content-blog .mce-tinymce.mce-container.mce-panel');
+				$('.cm-content-blog .mce-container.mce-panel iframe').contents().find('#tinymce').attr('aria-invalid', true);
+				c.formValidation.pass = false;
+				c.formValidationError = c.data.msg.commentRequiredFieldError;
+			}
+			else{
+				removeHighlightErrors('.cm-content-blog .mce-tinymce.mce-container.mce-panel');
+				$('.cm-content-blog .mce-container.mce-panel iframe').contents().find('#tinymce').attr('aria-invalid', false);
+				c.formValidation.pass = true;
+			}
+		}
+		else if(type == 'content'){
+			if (!formObj.title){
+				c.formValidation.edit = false;
+				c.formValidation.pass = false;
+				highlightErrors('.cm-edit-mode input[name="title"]', true);
+			}else{
+				removeHighlightErrors('.cm-edit-mode input[name="title"]', true);
+			}
+			if(c.data.topicsEnabled){
+				if(formObj.topics && formObj.topics.length>c.data.maxTopicLimit){
+					c.formValidationError = c.data.msg.topicLimitExceededAlert;
+					c.formValidation.pass = false;
+					highlightErrors('#choose_topics', true);
+				}
+				else{
+					removeHighlightErrors('#choose_topics', true);
+				}
+			}
+			if(c.canEditForum){
+				if(c.writableForumIds.indexOf(formObj.forum)== -1){
+					c.formValidationError = c.data.msg.blogContentTypeNotPresent;
+					c.formValidation.pass = false;
+					highlightErrors('#choose_forum');
+					setAriaInvalid('.cm-select2-forum .cm-select2', true);
+				}
+				else{
+					removeHighlightErrors('#choose_forum');
+					setAriaInvalid('.cm-select2-forum .cm-select2', false);
+				}
+			}
+			if(c.enableScheduling && (!c.scheduledDateTime || c.scheduledDate.isInvalidDateFormat)){
+				c.formValidation.pass = false;
+				c.formValidationError = c.data.msg.scheduledDateInvalid;
+				highlightScheduledError();
+
+			}
+			else
+				removeScheduledError();
+
+			if(c.enableScheduling && c.scheduledDateTime){
+				var now = moment();
+				var scheduled_date_time = moment.tz(c.scheduledDateTime, c.datetimeformat, spUtil.getMomentTimeZone(c.post.time_zone));
+				if(scheduled_date_time <= now) {
+					c.formValidationError = c.data.msg.pastScheduledDate;
+					c.formValidation.pass = false;
+					highlightScheduledError();
+				}
+				else
+					removeScheduledError();
+
+			}
+			if(c.formData && c.formData.action == "save") {
+			if(!c.formValidation.pass) {
+				if(c.formValidationError=='')
+				c.formValidationError = c.data.msg.requiredFieldsError;
+			c.formValidation.showMsg = true;
+			if(c.formValidationError != c.data.msg.commentRequiredFieldError && c.formValidationError !=c.data.msg.pastScheduledDate){
+				$timeout(function(){
+						$anchorScroll('topOfPage');
+			});
+			}
+		}
+		else
+			c.formValidation.showMsg = false;
+			return;
+		}
+			
+			if (!formObj.description){
+				c.formValidation.pass = false;
+				highlightErrors('.cm-edit-mode .mce-tinymce.mce-container.mce-panel');
+				$('.cm-edit-mode .mce-container.mce-panel iframe').contents().find('#tinymce').attr('aria-invalid', true);
+			}else{
+				removeHighlightErrors('.cm-edit-mode .mce-tinymce.mce-container.mce-panel');
+				$('.cm-edit-mode .mce-container.mce-panel iframe').contents().find('#tinymce').attr('aria-invalid', false);
+			}
+			
+		}
+		
+		if(!c.formValidation.pass){
+			if(c.formValidationError=='')
+				c.formValidationError = c.data.msg.requiredFieldsError;
+			c.formValidation.showMsg = true;
+			if(c.formValidationError != c.data.msg.commentRequiredFieldError){
+				$timeout(function(){
+						$anchorScroll('topOfPage');
+			});
+			}
+		}
+		else
+			c.formValidation.showMsg = false;
+	}
+	function  highlightScheduledError(){
+		highlightErrors('#sp_formfield_schedule-date', true);
+		highlightErrors($('#sp_formfield_schedule-date').parent().find('button'), true);
+		highlightErrors('#choose_scheduled_time', true);
+	}
+	
+	function removeScheduledError(){
+		removeHighlightErrors('#sp_formfield_schedule-date', true);
+		removeHighlightErrors($('#sp_formfield_schedule-date').parent().find('button'), true);
+		removeHighlightErrors('#choose_scheduled_time', true);
+	}
+	
+	function highlightErrors(element, addAriaInvalid){
+		// addAriaInvalid true adds aria-invalid attribute true to passed element
+		$(element).addClass('mandate');
+		if(addAriaInvalid) setAriaInvalid(element, true);
+	}
+
+	function removeHighlightErrors(element, removeAriaInvalid){
+		// removeAriaInvalid true makes aria-invalid attribute false to passed element
+		$(element).removeClass('mandate');
+		if(removeAriaInvalid) setAriaInvalid(element, false);
+	}
+	
+	function setAriaInvalid(elem, value){
+		$(elem).attr('aria-invalid', value);
+	}
+
+	var watcher1 = function(){}, interval1 = function(){};
+	function watchFormFields(type){
+		c.watchFormObj =  c.formData;
+		$interval.cancel(interval1);
+		interval1 = $interval(function(){
+			if(type == 'comment'){
+				c.watchFormObj =  {
+					comment: c.newCommentText
+				};
+			}
+			else if(type == 'content'){
+				c.watchFormObj =  {
+					title: c.post.title,
+					description: c.post.description,
+					forum: $('#choose_forum').val(),
+					scheduled_time: c.scheduledDateTime
+				};
+				if(c.data.topicsEnabled){
+					c.watchFormObj.topics = $('#choose_topics').val();
+				}
+			}
+		}, 500);
+
+		watcher1();
+		watcher1 = $scope.$watch('c.watchFormObj', function(){
+			validateForm(c.watchFormObj,type);
+			if(c.formValidation.pass){
+				watcher1();
+				$interval.cancel(interval1);
+			}
+		}, true);
+	}
+	//--/
+
+	///Post Comment
+	c.postComment= function(content){
+		c.showModerationError = false;
+
+		if($('.cm-widget-mce').is(":visible")){
+			c.newCommentText = tinyMCE.activeEditor.getContent();
+			comment = c.newCommentText;
+		}
+		else{
+			comment = content.textInput;
+		}
+
+		c.formData = {};
+		c.formData.comment = comment;
+
+		validateForm(c.formData,'comment');
+		if(!c.formValidation.pass)
+		{
+			watchFormFields('comment');
+			return;
+		}
+		else{
+			content.isDirty = false;
+			var input = {
+				text: c.formData.comment,
+				parent: query,
+				imageCheck:imageCheck,
+				imageArray:imageArrayList
+			};
+			var resourceUrl = '/contents/'+ query.contentId + '/comments';
+			validateAttachments().then(function(resp){
+				if(resp.valid !=true){
+					content.isDirty = true;
+					showAttachmentError(resp.error);
+					return;
+				}
+				$http.post(apiBaseUrl+resourceUrl,input)
+					.then(function(data){
+
+					if(data.status == 202){
+						if (data.data.result && data.data.result.moderateResponse
+								&& data.data.result.moderateResponse.filterResults) {
+							var filterResults = data.data.result.moderateResponse.filterResults;
+							var moderationError = [] ;
+							var moderateHighlight = [];
+							for (var i = 0; i < filterResults.length; i ++ ) {
+								moderationError.push(filterResults[i].comment);
+							}
+							c.showModerationError = true;
+							c.moderationError = moderationError;
+							content.isDirty = true;
+							$timeout(function(){
+								$('#topOfPage .cm-alert-blog-inform .cm-close-btn').focus();
+							});
+						}
+					} else {
+						var newComment = data.data.result.contentInfo;
+						var cb = function(edited_on, scanInProgress, attachmentError){
+							c.clearComment(content);
+							c.showFollow = false;
+							var newCommentData = {
+								comment: newComment,
+								parent: content
+							};
+
+							if(data.data.result.contentInfo && data.data.result.contentInfo.willUnderModeration == true){
+								var msg = c.data.msg.postCommentUnderModeration;
+								if(scanInProgress)
+									msg = c.data.msg.postCommentUnderModeration_scanInProgress;
+								$scope.$emit('$$uiNotification', [{		
+										message: msg,
+										type: 'success'}]);
+							} else {
+								sendToComment('CommentAdded',newCommentData);
+								$timeout(function() {
+									$anchorScroll('comment_'+newComment.sys_id);
+									var msg1 = c.data.msg.postCommentSuccess;
+									if(scanInProgress)
+										msg1 = c.data.msg.postCommentSuccess_scanInProgress;
+									$scope.$emit('$$uiNotification', [{		
+										message: msg1,
+										type: 'success'}]);
+								});
+							}
+							if(attachmentError){
+								$scope.$emit('$$uiNotification', [{		
+									'message': attachmentError,
+									'type': 'error'}]
+								);
+							}
+						}
+						uploadAttachments('comment', newComment, 'post', cb);
+						$timeout(function(){
+						$('.cm-comment-text-detail img').addClass('community_image_fullscreen');
+					});
+					}
+				}, function(error){
+					if(error.status == 503 || error.status == 429 || error.status == 401){
+						showPageAlert(error.data.result.message, 'alert-danger', 'fa-exclamation-circle');
+					}
+					if(error.status != 429 && error.status != 401)
+						c.clearComment(content);
+				});
+			});
+		}
+	};
+	//get comment posted event
+	$scope.$on('subscribeButtonChange',function(event,data){
+		c.showFollow=false;
+	});
+	//--/
+	c.publishContent = function(content){
+		var resourceUrl = '/contents/' + query.content_id + '?content_type='+ query.content_type;
+		var data = {
+			title: c.post.title,
+			description: c.post.description
+		};
+		if(c.post.scheduled_time){
+			data.scheduled_time = c.post.scheduled_time;
+			data.time_zone= c.post.time_zone;
+		}
+		
+		if(c.data.topicsEnabled){
+			var topicsArray = [];
+			angular.forEach(c.post.topics, function(topic){
+				topicsArray.push(topic.id);
+			});
+			data.topics = topicsArray;
+		}
+		$http.put(apiBaseUrl+resourceUrl,data)
+			.then(function(result){
+			showPageAlert(c.data.msg.postBlogSuccess, 'alert-success', 'fa-check');
+			c.canEditDraft = false;
+			c.post.state = result.data && result.data.result && result.data.result.data && result.data.result.data.content_state && (result.data.result.data.content_state=='ready_to_publish'|| result.data.result.data.content_state=='review')? result.data.result.data.content_state :'published';
+			c.state = c.post.state;
+		},function(err){
+			showPageAlert(err.data.result.message, 'alert-danger', 'fa-exclamation-circle');
+			console.log(err);
+		});
+	};
+	///Edit related functions
+	c.editContent = function(content, action){
+		c.showModerationError = false;
+		c.post.description = tinyMCE.activeEditor.getContent();
+		var data = {
+			title: c.post.title,
+			description: c.post.description,
+			enablePublishOption: c.post.title && c.post.title != '' && c.post.description && c.post.description != ''
+		};
+		if(c.data.topicsEnabled)
+			data.topics = $('.cm-content-blog select#choose_topics').val();
+		data.forum = $("#choose_forum").val();
+		data.disableComments = c.post.disable_comments;
+		if(c.scheduledDateTime){
+			if(c.enableScheduling)
+			{
+				data.scheduled_time = c.scheduledDateTime;
+				data.time_zone = c.post.time_zone;
+			}
+			else{
+				data.scheduled_time = "";
+				data.time_zone = "";
+			}
+
+		}
+		c.formData = data;
+		c.formData.action = action;
+		validateForm(c.formData,'content');
+		if(!c.formValidation.pass)
+		{
+			watchFormFields('content');
+			return;
+		}
+		data.imageCheck = imageCheck;
+		data.imageArray = imageArrayList;
+		var resourceUrl = '/contents/' + query.content_id + '?content_type='+ query.content_type;
+		validateAttachments().then(function(resp){
+			if(resp.valid !=true){
+				content.isDirty = true;
+				showAttachmentError(resp.error);
+				$timeout(function(){
+					$anchorScroll('topOfPage');
+				});
+				return;
+			}
+			var metaDesc = spCommunitySEOService.getMetaDescription(tinyMCE.activeEditor.getContent({format : 'text'}), c.data.seo_meta_descrition_length);
+			if(!metaDesc) metaDesc = data.title;
+			data.metaDescription = metaDesc;
+			$http.put(apiBaseUrl+resourceUrl,data)
+				.then(function(result){
+				var contentEdited = function(editedDate, editedHideTimeAgo, editedHideTime){
+					if(result.data &&result.data.result && result.data.result.data && result.data.result.data){
+						if(c.state=='published')
+							c.post.scheduled_time='';
+						else{
+							c.post.scheduled_time_MS = result.data.result.data.scheduled_time_MS;
+							c.post.scheduled_time = result.data.result.data.scheduled_time;
+						}
+						c.state= result.data.result.data.content_state;
+						c.post.state=c.state;
+					}
+					if(!editedDate)return;
+					c.isEdited = true;
+					content.edited_date = editedDate;
+					editedHideTimeAgo = editedHideTimeAgo || true;
+					editedHideTime = editedHideTime || 60;
+					if(editedHideTimeAgo == true){
+						c.post.editedHideTimeAgo = true;
+						$timeout(function(){
+							c.post.editedHideTimeAgo = false;
+						}, editedHideTime);
+					}
+				};
+
+				if(result.status == 202){
+					if (result.data.result && result.data.result.moderateResponse
+							&& result.data.result.moderateResponse.filterResults) {
+						var filterResults = result.data.result.moderateResponse.filterResults;
+						var moderationError = [] ;
+						var moderateHighlight = [];
+						for (var i = 0; i < filterResults.length; i ++ ) {
+							moderationError.push(filterResults[i].comment);
+						}
+						c.showModerationError = true;
+						c.moderationError = moderationError;
+					}
+				} else {
+					var cb = function(_editedOn, scanInProgress, attachmentError){
+						var editedDate = result.data.result.data.edited_date;
+						if(editedDate != ''){
+							contentEdited(editedDate, result.data.result.data.editedHideTimeAgo, result.data.result.data.editedHideTime);
+						}
+						c.post.showEditMode	= !c.post.showEditMode;
+						c.originalTitle = data.title;
+						c.originalDescription = data.description;
+						var prevForumId = c.post.forum.sys_id;
+						var showMailTo;
+						if(c.canEditForum){
+							c.post.forum = {
+								'sys_id': $('#choose_forum').val(),
+								'name': c.adminOrModerationForumsWithForumIdAsKey[$('#choose_forum').val()].name
+							};
+						}
+						if(c.data.topicsEnabled)
+							c.post.topics = makeTopicsArray($('.cm-content-blog select#choose_topics').select2('data'), 'view');
+						sendToComment('ContentEditModeInactive');
+
+						if((c.state == 'draft' || c.state == 'rejected') && (!action || action != 'save')){
+							var msg = c.data.msg.postBlogSuccess;
+							if(scanInProgress) {
+								msg = c.data.msg.postBlogSuccess_scanInProgress;
+							}
+							if(result.data.result.data.content_state != 'published') {
+								msg = c.data.msg.postBlogReviewSuccess;
+								if(scanInProgress) {
+									msg = c.data.msg.postBlogReviewSuccess_scanInProgress;
+								}
+							}
+							c.state = result.data.result.data.content_state;
+							c.post.state = result.data.result.data.content_state;
+							if(c.post.state=='ready_to_publish')
+								msg = c.data.msg.successScheduledMsg;
+							showPageAlert(msg, 'alert-success', 'fa-check');
+							c.canEditDraft = false;
+							
+						}
+
+						else if(result.data.result.data.content_state == 'review') {
+							var alertMessage = '';
+							if (prevForumId != c.post.forum.sys_id) {
+							    if (c.data.canEmail)
+							        showMailTo = true;
+								alertMessage = scanInProgress ? c.formatMessage(c.data.msg.moveBlogReviewSuccess_scanInProgress,[c.post.forum.name]) : c.formatMessage(c.data.msg.moveBlogReviewSuccess,[c.post.forum.name]);
+							}
+							else{
+								alertMessage = scanInProgress ? c.data.msg.editBlogReviewSuccess_scanInProgress : c.data.msg.editBlogReviewSuccess;
+							}
+							showPageAlert(alertMessage, 'alert-success', 'fa-check', showMailTo, showMailTo);
+						}
+						else {
+							var alertMessage = '';
+							if(prevForumId != c.post.forum.sys_id){
+								if(c.data.canEmail)
+									showMailTo=true;
+									alertMessage = scanInProgress ? c.formatMessage(c.data.msg.moveBlogSuccess_scanInProgress,[c.post.forum.name]) : c.formatMessage(c.data.msg.moveBlogSuccess,[c.post.forum.name]);
+							}
+							else{
+								alertMessage = scanInProgress ? c.data.msg.editBlogSuccess_scanInProgress : c.data.msg.editBlogSuccess;
+							}
+							showPageAlert(alertMessage, 'alert-success', 'fa-check', showMailTo, showMailTo);
+						}
+						contentEdited(_editedOn);
+						if(attachmentError){
+							$scope.$emit('$$uiNotification', [{		
+								'message': attachmentError,
+								'type': 'error'}]
+							);
+						}
+					}
+					var uploadAction ='edit_draft';
+					if(!action && (c.state == 'draft'|| c.state == 'rejected'))uploadAction = 'edit_publish';
+					else if(!action)uploadAction = 'edit';
+					uploadAttachments('Blog', content, uploadAction, cb, result.data.result.data.edited_date == content.edited_date);
+					if (content.original_disable_comments != content.disable_comments && c.showDisableComments) {
+						c.post.canComment = !content.disable_comments;
+						sendToComment('DisableCommentsChanged', c.post.canComment);
+						content.original_disable_comments = content.disable_comments;
+					}
+					else if (c.canEditForum) {
+						c.post.canComment = c.showDisableComments && !c.post.disable_comments;
+					}
+					if (!c.showDisableComments)
+						c.post.disable_comments = c.post.original_disable_comments;
+
+					c.post.canDisableComments = c.showDisableComments;
+                     content.original_scheduled_time = content.scheduled_time;
+					content.original_time_zone = content.time_zone;
+					content.original_enableScheduling= content.scheduled_time?true:false;
+				}
+				$timeout(function(){
+					$('.cm-content-body img').addClass('community_image_fullscreen');
+					$('.cm-comment-text-detail img').addClass('community_image_fullscreen');
+					$scope.$broadcast("sp.community.blog.tinymce.table.fixcss", [".cm-content-body"]);
+				});
+			},function(error){
+				if(error.status == 503 || error.status == 429 || error.status == 401)
+						showPageAlert(error.data.result.message, 'alert-danger', 'fa-exclamation-circle');
+			});
+		});
+	}; 
+
+	function isFormEdited(){
+		if(!c.post.showEditMode){
+			return false;
+		}
+		if($('#choose_forum').val() != c.post.forum.sys_id){
+			return true;
+		}
+		if(c.data.topicsEnabled){
+			var choose_topics_val = $('#choose_topics').val();
+			if(choose_topics_val){
+				if(c.post.topics.length != choose_topics_val.length){
+					return true;
+				}
+				for(var i=0;i<c.post.topics.length;i++){
+					var topic = c.post.topics[i].id;
+					if(choose_topics_val.indexOf(topic)==-1){
+						return true;
+					}
+				}
+			}
+			else if(c.post.topics.length != 0){
+				return true;
+			}
+		}
+		var	formEdited = false;
+		for( var idx = 0 ; idx < c.attachments.length; idx++) {
+			var file = c.attachments[idx];
+			if (file.isDeleted || file.isNew){
+				formEdited = true;
+				break;
+			}
+		}
+		if (formEdited) return formEdited;
+		
+		if(c.showSchedulePublish && c.post.original_scheduled_time){
+			var postSpTimezone = spUtil.getMomentTimeZone(c.post.time_zone);
+			if(moment.tz(c.post.original_scheduled_time, c.datetimeformat,spUtil.getMomentTimeZone(c.data.userTimeZone)).tz(postSpTimezone).format(c.datetimeformat)!=moment.tz(c.scheduledDateTime,c.datetimeformat, postSpTimezone).format(c.datetimeformat))
+				formEdited = true;
+		} else if(c.showSchedulePublish && c.scheduledDateTime) formEdited = true;
+		
+		if (c.originalTitle != c.post.title || $sce.valueOf(c.originalDescription) != $sce.valueOf(c.post.description) || (c.post.disable_comments != c.post.original_disable_comments)) {
+			formEdited = true;
+			return formEdited;
+		}
+		else
+			return formEdited;
+	}
+		
+	c.cancelConfirm = function(content,redirect_url,type){
+				
+if ((type!='comment' && (isFormEdited() || isAttachmentDirty())) || (type =='comment' && (isCommentDirty() || isAttachmentDirty()))){
+	$rootScope.discardCommentModalOpened = true;		
+	var modalInstance = $uibModal.open({
+					animation: true,
+					ariaLabelledBy: 'modal-title',
+					ariaDescribedBy: 'modal-body',
+					templateUrl: 'community-cancel-edit-blog.html',
+					controller: function($scope) {
+						$scope.title = c.data.msg.discardChange;
+						$scope.message = c.data.msg.editCancelMsg;
+						$scope.cancel = function() { modalInstance.dismiss('cancel'); };
+						$scope.confirm = function() {  modalInstance.close();c.cancelEdit(content,redirect_url,type); };
+					}
+				});
+	modalInstance.result.then(function(){},c.dismissDialog);
+			}
+			else{
+				if(redirect_url){
+					c.redirect(redirect_url);
+					return;
+				}
+				c.cancelEdit(content);
+			}
+		$timeout(function(){ $scope.$broadcast("sp.community.blog.tinymce.table.fixcss", [".cm-content-body"]); });
+	};
+	function isCommentDirty(){
+		if(tinyMCE.activeEditor){
+			var commentText =tinyMCE.activeEditor.getContent();
+			return commentText!=null && commentText!='';
+		}
+			return false;
+	}
+
+	c.redirect = function(redirect_url){
+		var host =  window.location.protocol + "//"+window.location.host;
+		if(redirect_url.startsWith(host)){
+			var path = redirect_url.replace(host,'');
+			c.redirectionConfirmed = true;
+			$location.url(path);
+		}
+		else{
+			window.location.href = redirect_url;
+		}
+		return;
+	};
+	
+	c.cancelEdit = function(content,redirect_url,type){
+		sendToComment('ContentEditModeInactive');
+		resetAttachments(content.attachments);
+		if(type!='comment'){
+			c.post.title = c.originalTitle;
+			c.post.description = c.originalDescription;
+			content.disable_comments = content.original_disable_comments;
+			c.showDisableComments = c.post.canDisableComments;
+			content.scheduled_time = content.original_scheduled_time;
+			content.enableScheduling = content.original_enableScheduling;
+			c.enableScheduling = content.original_enableScheduling;
+			content.time_zone = content.original_time_zone;
+			c.scheduledDateTime = content.original_scheduled_time;
+			var date = moment(content.original_scheduled_time,c.dateformat).startOf("minute").format(c.dateformat);
+			c.scheduledDate.value = date!='Invalid date'?date:'';
+		}
+		else{
+			c.clearComment(content);
+		}
+		if(redirect_url){
+			c.redirect(redirect_url);
+			return;
+		}
+		c.post.showEditMode = !c.post.showEditMode;
+		c.showWarnings = false;
+		c.formValidation.showMsg = false;
+		c.showModerationError = false;
+
+	};
+
+	c.canShowEditMode = function(){
+		setupAttachments(c.post.attachments);
+		clearTinyMceAttachments();
+		if((c.comment_count>0) || (c.post.helpful_count>0)){
+			c.modalType = "edit";
+			c.modalMessage = c.data.msg.editAlertMsg;
+			c.showModal('edit',c.retainFocus.bind(this, null,"actionMenu"));
+		}
+		else c.showEditMode();
+	};
+
+	c.closeEditModal = function(){
+		instance.dismiss('cancel');
+	};
+	
+	function constructForumIdToForumObjectMap(forumList){
+		c.adminOrModerationForumsWithForumIdAsKey = {};
+		if(forumList){
+			for(var index=0;index< forumList.length; index++){
+				var temp =  forumList[index];
+				c.adminOrModerationForumsWithForumIdAsKey[temp.sys_id] = temp;
+			}
+		}
+	}
+	
+	function populateTopicsAndAutoFillAuthorTopics(topics,originalTopics){
+		if(!originalTopics){
+			originalTopics = [];
+		}
+		$('#choose_topics').select2('val','');
+		$('#choose_topics option').remove();
+		var topicsArray = [];
+		for(var i=0;i<topics.length;i++){
+			topicsArray.push(topics[i].id);
+			var option = '<option value='+topics[i].id+'>'+spCommunityHTMLEscapeUtil.escapeHTML(topics[i].name)+'</option>';
+			$('#choose_topics').append(option);
+		}
+		if(topics && topics.length > 0)
+				$('#choose_topics').prop("disabled", false);
+		else
+				$('#choose_topics').prop("disabled", true);
+		var preservedTopics = [];
+		c.removedTopics = [];
+ 		for(i=0; i<originalTopics.length; i++){
+			var topicId = originalTopics[i].id;
+			if(topicsArray.indexOf(topicId)>-1){
+				preservedTopics.push(originalTopics[i]);
+			}
+			else{
+				c.removedTopics.push({
+					'id': originalTopics[i].id,
+					'name': originalTopics[i].name
+				})
+			}
+		}
+		$("#choose_topics").select2("data", makeTopicsArray(preservedTopics,'edit'));
+		return;
+	}
+	
+	function formatForum(node, container, query) {
+			var result;
+		    c.query_term = query.term;
+			if(query.term==""){
+				var parsedNode=c.adminOrModerationForumsWithForumIdAsKey[node.id];
+				if(parsedNode.level != undefined){
+					result = ('<span style="display: inline-block;padding-left:' + (10 * Math.min(parsedNode.level,3)) + 'px;">' + spCommunityHTMLEscapeUtil.escapeHTML(node.text) + '</span>');
+					$(container).attr("aria-label",node.text+', '+c.data.forumLevelsText[Math.min(parsedNode.level,3)]);
+				}
+				else
+					result = ('<span>' + spCommunityHTMLEscapeUtil.escapeHTML(node.text) + '</span>');
+			}
+			else
+				result = ('<span style="display: inline-block;">' + spCommunityHTMLEscapeUtil.escapeHTML(node.text) + '</span>');
+			return result;
+		}
+	
+	function createWarning(warningMsg){
+		c.showWarnings = true;
+		c.warnings.push({
+			'message':  warningMsg,
+			'hideWarning': false
+		});
+		return;
+	}
+	
+	function initializeReadOnlyForumFilter(sys_id, name){
+		$timeout(function(){
+			var option = '<option value='+sys_id+'>'+spCommunityHTMLEscapeUtil.escapeHTML(name)+'</option>';
+			$('#choose_forum').append(option);
+			$('#choose_forum').select2();
+			$('#choose_forum').select2('data',{ id: sys_id, text: name});
+			c.loading = false;
+		});
+	}
+	c.scheduledDateChanged = function (val) {
+		if(!val)
+			return;
+		
+		if(c.scheduledDate.isInvalidDateFormat){
+			return;
+		}
+		
+		c.scheduledDate.value = moment(val,c.dateformat).startOf("minute").format(c.dateformat);
+		var mmt = moment(val,c.dateformat).startOf("minute").add(c.scheduledTime * 30, "minutes");
+		c.scheduledDateTime = moment(mmt,c.dateformat).startOf("minute").format(c.datetimeformat);
+	};
+
+	function minutesSinceMidnight(mmt) {
+		if (!moment.isMoment(mmt)) {
+			return 0;
+		}
+		var hh = mmt.get('hour');
+		var mm = mmt.get('minute');
+		return hh*60 + mm;
+	}
+	
+	$scope.$watch("c.scheduledDateTime", function(newValue) {
+		var mins = minutesSinceMidnight(moment(newValue, c.datetimeformat));
+		c.scheduledTime = Math.floor(mins/30);
+		//c.post.scheduled_time = c.scheduledDateTime;
+	});	
+	
+	$scope.$watch("c.enableScheduling", function(newValue) {
+		if(newValue==false){
+			c.scheduledDate.value ="";
+			c.scheduledDateTime="";
+			//c.post.scheduled_time="";
+			c.post.time_zone=c.data.timezone;
+		}
+			
+	});
+
+	c.showEditMode = function(){
+		c.loading = true;
+		c.formValidation.showMsg = false;
+		c.showWarnings = false;
+		c.showModerationError = false;
+		c.showSchedulePublish = ((c.schedulingAllowAuthors || c.post.isAdminOrMod) && c.post.state!='published');
+		sendToComment('ContentEditModeActive');
+		if(instance)
+			instance.dismiss('cancel');
+		c.canEditForum = false;
+		
+		if(c.post.state != 'draft'){
+			$http.get(apiBaseUrl + '/forums?getHierarchialAdminOrModerationForums=1').then(function(data){
+				if(data && data.data && data.data.result){
+					c.loading = false;
+					c.forumsWithAdminOrModerationAccess = data.data.result;
+					var len = c.forumsWithAdminOrModerationAccess.length;
+					for( var i=0; i< len; i++){
+						if(c.post.forum.sys_id == c.forumsWithAdminOrModerationAccess[i].sys_id){
+							c.canEditForum = true;
+							break;
+						}
+					}
+					if(c.canEditForum){
+						c.canEditForum = (len != 1);
+					}
+					if(c.canEditForum){
+						constructForumIdToForumObjectMap(c.forumsWithAdminOrModerationAccess);
+
+						for(var i=0;i<len;i++){
+							var option = '<option value='+c.forumsWithAdminOrModerationAccess[i].sys_id+'>'+spCommunityHTMLEscapeUtil.escapeHTML(c.forumsWithAdminOrModerationAccess[i].name)+'</option>';
+							$('#choose_forum').append(option);
+						}
+						$('#choose_forum').select2({
+							minimumResultsForSearch: 10,
+							formatResult: formatForum
+						});
+
+						$('#choose_forum').select2('data',{ id: c.post.forum.sys_id, text: c.post.forum.name});
+						var input = {};
+						input.getWritableForumIdsAndAuthorUserId = true;
+						input.authorCommunityProfileId = c.post.userAvatarObject.userId;
+						c.server.get(input).then(function(r){
+							c.contentWritableForums = r.data.contentWritableForums;
+							c.writableForumIds = [];
+							angular.forEach(c.contentWritableForums,function(val){
+								c.writableForumIds.push(val.id);
+							});
+							c.authorUserId = r.data.authorUserId;
+						});
+						$('#choose_forum').off("change");
+						var previous;
+						$('#choose_forum').on("change", function (e) {	
+							c.showDisableComments = c.post.canDisableComments;
+							c.showWarnings = false;
+							c.warnings = [];
+							if(c.data.topicsEnabled){
+								c.forumTopics = c.adminOrModerationForumsWithForumIdAsKey[e.val].topics;
+								populateTopicsAndAutoFillAuthorTopics(c.forumTopics,c.post.topics);
+							}
+							if(c.writableForumIds.indexOf(e.val) == -1){
+								c.formValidationError = c.data.msg.blogContentTypeNotPresent;
+								c.formValidation.pass = false;
+								c.formValidation.showMsg = true;
+								$scope.$evalAsync(function(){
+									$anchorScroll('topOfPage');
+								});
+							}
+							else{
+								c.loading = true;
+								c.formValidation.pass = true;
+								if(c.data.topicsEnabled){
+									if(c.removedTopics.length > 0){
+										var removedTopicsNames = [];
+										for(var i=0; i < c.removedTopics.length; i++){
+											removedTopicsNames.push(c.removedTopics[i].name)
+										}
+										createWarning(c.formatMessage(c.data.msg.topicsRemovedWarning, [removedTopicsNames.join(", ")]));
+									}
+								}
+								if(e.val != c.post.forum.sys_id){
+									createWarning(c.data.msg.userPermissionsWarning);
+									var input={};
+									input.getAuthorAccessOnTargetForum = true;
+									input.authorCommunityProfileId = c.post.userAvatarObject.userId;
+									input.forum = e.val;
+									input.authorUserId = c.authorUserId;
+									input.checkUserAccessToPostComment = true;
+									c.server.get(input).then(function(r){
+										c.loading = false;
+										c.showDisableComments = r.data.hasAccessToPostComent;	
+										if(!(r.data.forumPerms && r.data.forumPerms.content_access && r.data.forumPerms.content_access[query.content_type] && r.data.forumPerms.content_access[query.content_type].access && (r.data.forumPerms.content_access[query.content_type].access.indexOf("content_read")>-1))){
+											createWarning(c.formatMessage(c.data.msg.authorLosingAccessWarning, [c.post.userAvatarObject.name]));
+										}
+									});
+								}
+								else{
+									c.loading = false;
+									$scope.$digest();
+								}
+								c.formValidation.showMsg = false;
+							}
+						});
+					}
+					else{
+						initializeReadOnlyForumFilter(c.post.forum.sys_id, c.post.forum.name);
+					}
+				}
+				else{
+					initializeReadOnlyForumFilter(c.post.forum.sys_id, c.post.forum.name);
+				}
+			});
+		}
+		else{
+			initializeReadOnlyForumFilter(c.post.forum.sys_id, c.post.forum.name);
+		}
+		
+		if(c.data.topicsEnabled){
+			$http.get(apiBaseUrl + '/forums/'+c.post.forum.sys_id+'/topics')
+				.then(function(data){
+				c.forumTopics = data.data.result.data;
+				populateTopicsAndAutoFillAuthorTopics(c.forumTopics);
+				prepopulateTopics();
+			});
+		}
+		c.post.showEditMode	= !c.post.showEditMode;
+		$timeout(function(){
+			c.post.time_zone = c.post.original_time_zone?c.post.original_time_zone:c.data.timezone;
+			if(c.post.scheduled_time_MS && c.post.scheduled_time_MS >0 && c.post.state!='published'){
+				$('#checkboxSP').prop('checked', c.enableScheduling);
+				var postSpTimezone = spUtil.getMomentTimeZone(c.post.time_zone);
+				c.scheduledDateTime = moment.tz(c.post.scheduled_time_MS, postSpTimezone).format(c.datetimeformat);
+				c.scheduledDate.value = moment.tz(c.post.scheduled_time_MS, postSpTimezone).format(c.dateformat);
+			}
+			else if(!c.post.scheduled_time_MS){
+				c.scheduledDateTime = '';
+			}
+			if(!c.data.isAccessibilityEnabled)
+				$('input[id="title"]').focus();
+			if(c.data.topicsEnabled){
+				$(function () {
+					$.extend($.fn.select2.defaults, {
+						formatSelectionTooBig: function (limit) {
+							return c.data.msg.topicLimitExceededMsg;
+						}
+					});
+				});
+				$('.select2-choices').removeAttr('role');
+				$('.cm-content-blog select#choose_topics')
+					.select2({
+					minimumResultsForSearch: 10,
+					maximumSelectionSize : c.data.maxTopicLimit
+				});
+				prepopulateTopics();
+				$('#choose_topics_div').on('keydown',function(e){
+					if($('#choose_topics').val() && c.data.maxTopicLimit<=$('#choose_topics').val().length){ 
+						if((e.code || e.which) != 9){
+							e.preventDefault();
+						}
+					}
+				});
+			}
+			$scope.$broadcast("sp.community.blog.tinymce.table.fixcss", [".cm-comment-text-detail"]);
+		});
+	};
+	
+	function prepopulateTopics(){
+		$timeout(function(){
+			if(c.post.topics)
+			{
+				$("#choose_topics").select2("data", makeTopicsArray(c.post.topics,'edit'));
+			}
+			
+		});
+	}
+
+	function makeTopicsArray(rawTopics,type){
+		var topics = [];
+		angular.forEach(rawTopics,function(val){
+			var obj = {};
+			obj.id = val.id;
+			/*For prepopulating topics in edit, we need text attribute,
+			  where as in view mode, we need name attribute */
+			if(type == 'view')
+				obj.name = val.text;
+			else if(type == 'edit')
+				obj.text = val.name;
+
+			topics.push(obj);
+		});
+		return topics;
+	}
+
+	//--/
+
+	c.retainFocus = function(element, id){
+		if(!element) element = $("#"+id);
+		if(element)element.focus();
+	};
+
+	///Delete related functions
+	c.canDeleteContent = function(){
+		if((c.comment_count >0) || (c.post.helpful_count>0)){
+			c.modalMessage = c.data.msg.deleteAlertMsg;
+		}
+		else{
+			c.modalMessage = c.data.msg.deleteAlertNoFeedbackMsg;
+		}
+		c.modalType = "delete";
+		c.showModal('delete',c.retainFocus.bind(this,null,"actionMenu"));
+	};
+
+	c.deleteContent = function(){
+		if(instance)
+			instance.dismiss('cancel');
+		resourceUrl = '/contents/' + query.content_id + '?content_type='+ query.content_type;
+		$http({method: 'DELETE', url: apiBaseUrl+resourceUrl});
+		var input={};
+		input.message = c.data.msg.deleteBlogSuccess.replace('{0}', c.post.title);
+		c.server.get(input).then(function(data){
+			$window.location.href = '?id=community_home';
+		});
+	};
+
+	//--/
+	function showPageAlert(msg, alertClass, alertIcon, neverDisapper, showMailTo) {
+		c.pageAlertMessage = msg;
+		c.pageAlertClass = alertClass;
+		c.alertIconClass = alertIcon;
+		c.showPageAlert = true;
+		c.showMailTo = showMailTo;
+		$anchorScroll('topOfPage');
+		$timeout(function(){
+				$('#topOfPage .cm-alert i.fa-times').focus();
+		});
+		if(!neverDisapper)
+			$timeout(function(){
+				c.showPageAlert = false;
+			}, 5000);
+	}
+
+	///Subscribe or Unsubscribe
+	c.subscribe = function(){
+		var objectType = c.queryParams.contentType;
+		var objectId = c.post.sys_id;
+		var resourceUrl;
+		var type =  '5e9d03c467103200ace49a6617415a70';
+
+		if(c.showFollow){
+			var input = {
+				type: type
+			};
+			resourceUrl = '/subscriptions/'+objectId+'/subscribe';
+			$http.post(subscriptionBaseUrl+resourceUrl,input)
+				.then(function(){
+				c.showFollow = false;
+				//showPageAlert(c.data.msg.blogSubscribeSuccess, 'alert-success', 'fa-check');
+			});		
+		}else{
+			resourceUrl = '/subscriptions/'+objectId+'/unsubscribe';
+			$http({method: 'DELETE', url: subscriptionBaseUrl+resourceUrl})
+				.then(function(){
+				c.showFollow = true;
+				//showPageAlert(c.data.msg.blogUnsubscribeSuccess, 'alert-info', 'fa-check');
+			});
+		}
+		c.retainFocus(null,"actionMenu");
+	};
+
+	c.showSubscribed = function(){
+		c.subscribeLabel = c.data.msg.subscribedText;
+	};
+	c.showUnSubscribe = function(){
+		c.subscribeLabel = c.data.msg.unsubscribeText;
+	};
+
+	$scope.$watch('c.showFollow', function(){
+		c.toggleSubscribeText = c.showFollow ? c.data.msg.subscribeText : c.data.msg.unsubscribeText;
+		c.subscribeLabel = c.showFollow ? c.data.msg.subscribeText : c.data.msg.subscribedText;
+	});
+	//--/
+
+	$scope.$on('$locationChangeStart', function(event, next, current) {
+		if(c.redirectionConfirmed)
+			return;
+		var prevent = false;
+		if(c.post && c.post.showEditMode) {
+			prevent = (isFormEdited() || isAttachmentDirty());
+			c.cancelConfirm(c.post ,next, 'content');
+		} else if(c.post && c.post.showCommentBox) {
+			prevent =  (isAttachmentDirty() || isCommentDirty());
+			c.cancelConfirm(c.post ,next, 'comment');
+		}
+		if(prevent)
+			event.preventDefault();
+	});
+	
+	function refreshData(){
+		var resourceUrl = '/contents/' + query.content_id + '?content_type='+ query.content_type;
+		$http.get(apiBaseUrl+resourceUrl)
+			.then(successCallback, errorCallback);
+	}
+
+	///Content Feedback
+	c.postFeedback = function (action,content, isUndoActivity){
+		if(content.postingFeedback && content.postingFeedback[action]){
+			return;
+		}
+		if(!content.postingFeedback){
+			content.postingFeedback = {};
+		}
+		content.postingFeedback[action] = true; 
+		var successCallback = function(){
+			if (action == 'helpful' && !isUndoActivity){
+				if(content.feedbackProfiles.length == content.helpful_count){
+					content.feedbackProfiles.unshift(c.user);
+				}
+				content.helpful_count++;
+				content.activities_allowed.helpful = false;
+				content.activities_allowed.unhelpful = true;
+				c.announceMessage();
+			}
+			else if (action == 'helpful' && isUndoActivity){
+				if(content.feedbackProfiles.length == content.helpful_count){
+					index = findIndex(content.feedbackProfiles,'userId',c.user.userId);
+					content.feedbackProfiles.splice(index,1);
+				}
+				content.helpful_count--;
+				content.activities_allowed.helpful = true;
+				content.activities_allowed.unhelpful = false;
+				c.announceMessage();
+			}
+			else if(action == 'bookmark' && !isUndoActivity){
+				content.activities_allowed.bookmark = false;
+			}
+			else if(action == 'bookmark' && isUndoActivity){
+				content.activities_allowed.bookmark = true;
+			}
+			content.postingFeedback[action] = false;
+		};
+		var errorCallback = function(data){
+			content.postingFeedback[action] = false;
+			if(data.status == 503 || data.status == 429)
+				showPageAlert(data.data.result.message, 'alert-danger', 'fa-exclamation-circle');
+		};
+
+		var resourceUrl = '/activities/' + content.sys_id + '?verb=' + action +'&isUndo='+(isUndoActivity==true);
+		$http.post(apiBaseUrl+resourceUrl).then(successCallback,errorCallback);
+	};
+
+	function findIndex(arr,attr,val){
+		var res = '';
+		angular.forEach(arr,function(ele,key){
+			if(ele[attr] == val)res = key;
+		});
+		return res;
+	}
+	//--/
+	
+	///Report Abuse
+	c.flagContent = function(content,type){
+		if(!c.moderationReasonsFetched){
+			c.server.get({'moderation': true, 'contentId':query.content_id, 'type': 'content'}).then(function(r){
+				var reasonsObj = r.data.moderationReasons;
+				var reasons = reasonsObj ? reasonsObj.user_flag_reason_list+'' : '';
+				if (reasons && reasons.length > 0){
+					c.choices = reasons.split('|');
+					c.userSelection = c.choices[0];
+					c.moderationReasonsFetched = true;
+				} else {
+					console.log('No reason is provided');
+				}
+			});
+		}
+		c.currentPost = content;
+		c.currentType = type;
+		c.showModal(type,c.retainFocus.bind(this, null,"actionMenu"));
+	};
+	
+	c.getFeedbackProfiles = function(content, verb, $event){
+			if(c.feedbackPopupOpened){
+				return;
+			}
+			c.feedbackPopupOpened =  true;
+			var summaryField = verb + '_count';
+			c.feedbackName = '';
+			$http.get(apiBaseUrl + '/contents/' + content.sys_id + '/feedback/profiles?verb=' + verb)
+				.then(function(response) {
+					content.feedbackProfiles = response.data.result;
+					content[summaryField] = content.feedbackProfiles.length;
+					c.feedbackModal(content, verb, $event);
+				},
+				function(error) {
+					console.log(error);
+					c.feedbackPopupOpened = false;
+				}
+			);
+	};
+ 
+	c.feedbackModal = function(content,type,$event){
+		c.feedbackMembers = content.feedbackProfiles;
+		c.feedbackName = c.data.msg.helpful;
+		if(c.feedbackMembers.length >0)
+			c.showModal(type,c.retainFocus.bind(this,$event.target));
+		else
+			c.feedbackPopupOpened = false;
+	};
+
+	var instance;
+	c.showModal = function (type,callback) {
+		var templateUrl,size;
+		if(type == 'content')
+		{
+			templateUrl = 'community-report-modal-blog.html';
+			size = 'md';
+		}
+		else if(type == 'helpful')
+		{
+			templateUrl = 'community-blog-feedback.html';
+			size = 'sm';
+		}
+		else if(type == 'edit' || type == 'delete'){
+			templateUrl = 'community-edit-blog.html';
+			size = 'md';
+		}else if (type == 'contentFeature') {
+            templateUrl = 'community-feature-content-blog.html';
+            size = 'md';
+        }
+		else if (type == 'showtz') {
+			templateUrl = 'community-blog-content-tz.html';
+			size = 'md';	
+		}
+		try{
+			var options = {
+				size: size,
+				scope: $scope,
+				backdrop: 'static',
+				keyboard: true,
+				templateUrl: templateUrl
+			};
+
+			instance = $uibModal.open(options);
+			instance.closed.then(function(){
+				c.feedbackPopupOpened = false;
+			});
+			instance.result.then(callback,callback);
+		}catch(err){
+			console.log(err);
+		}
+	};
+	
+
+	c.cancel = function () {
+		if (c.postReportResult == 'redirect' && $rootScope && $rootScope.portal && $rootScope.portal.url_suffix) {
+		  $window.location.href = '?id=community_home';
+		} else if (c.postReportResult == 'refresh') {
+			instance.dismiss('cancel');
+		} else {
+			c.reported = false;
+			c.userSelection = c.choices[0];
+			c.userText = '';
+			instance.dismiss('cancel');
+		}
+	};
+
+	c.closeFeedbackModal = function(){
+		c.feedbackPopupOpened = false;
+		instance.dismiss('cancel');
+	};
+
+	c.submitContent = function(){
+		c.postModerationTask(c.currentPost,c.currentType);
+	};
+
+	c.postModerationTask = function(currentPost, type){
+		var input = {
+			reason: c.userText,
+			select: c.userSelection,
+			type: type,
+			documentId: String(currentPost.sys_id)
+		};
+
+		var postModTaskUrl = '/moderation/postModerationTask';
+		$http.post(apiBaseUrl+postModTaskUrl,input)
+			.then(function(data){
+
+			c.userSelection = c.choices[0];
+			c.userText = '';
+			c.allowAbuseReporting = false;
+			c.reported = true;
+			currentPost.canModerate = false;
+			if (data.data && data.data.result && data.data.result.data &&
+					!data.data.result.data.hide) {
+				c.postReportResult = 'refresh';
+				c.feedback = " Your abuse report has been received and will be reviewed shortly. Thank you.";
+			} else {
+				if (type == 'content') {
+					c.postReportResult = 'redirect';
+					c.feedback = " Your abuse report has been received and this post will be hidden. You will be redirected to community home page. Thank you.";
+				} else {
+					c.postReportResult = 'refresh';
+					c.feedback = " Your abuse report has been received and this post will be hidden.";
+				}
+			}
+			c.moderationSubmitted = true;
+			$('.modal-header .close').focus();
+
+		}, function(error){
+			console.log(error);
+		});
+	};
+	//--/
+
+	///At a time only one comment box should be opened
+	c.showCommentBox = function(content,state,editorId){
+		c.showModerationError = false;
+		resetAttachments();
+		clearTinyMceAttachments();
+		c.formValidation.showMsg = false;
+		content.isDirty=true;
+		content.showCommentBox = state;
+		if(state)
+			sendToComment('ContentReplyBoxOpened',content);
+		removeHighlightErrors('.cm-content-blog .mce-tinymce.mce-container.mce-panel');
+		$('.cm-content-blog .mce-container.mce-panel iframe').contents().find('#tinymce').attr('aria-invalid', false);
+		if(editorId)focusOnEditor(editorId);
+	};
+	c.hideCommentBox = function(content){
+		content.showCommentBox = false;
+		removeHighlightErrors('.cm-content-blog .mce-tinymce.mce-container.mce-panel');
+		$('.cm-content-blog .mce-container.mce-panel iframe').contents().find('#tinymce').attr('aria-invalid', false);
+	};
+
+	var focusOnEditor = function (id){
+		var counter = 0,
+			duration = 100,
+			focusEditorInterval = $interval(function(){
+				counter = counter + duration;
+				var selector = "#"+id+" .mce-container iframe",
+					editorFrame = $(selector)[0];
+				if(editorFrame){
+					var currentEditorId = editorFrame.getAttribute("id");
+					if(currentEditorId){
+						var currentEditor;
+						for (var i = 0; i < tinyMCE.editors.length; i++) {
+							if(tinyMCE.editors[i].id+"_ifr" == currentEditorId){
+								currentEditor = tinyMCE.editors[i];
+								break;
+							}
+						}
+						if(currentEditor)currentEditor.focus();
+					}
+					$interval.cancel(focusEditorInterval); //kill the interval
+				}
+				else {
+					if(counter > 30000)
+						$interval.cancel(focusEditorInterval); //kill it after 1/2 a minute
+				}
+			},duration);
+	};
+
+	// --/
+
+	function getProfileLink(profileId) {
+		if(profileId)
+			return "?id=community_user_profile&user=" + profileId;
+		else return;
+	}
+
+	/*  *** Attachments *** */
+
+	$scope.$on('sp.community.attachments.notification.alert',function(e,data){
+		if(!isValidBroadcast(data.widget)) return;
+		var icon = 'fa-check';
+		if(data.icon)
+			icon = data.icon;
+		showPageAlert(data.message, data.type, icon);
+	});
+
+	c.attachments =[];
+
+	var isValidBroadcast = function(widgetId){
+		if(!widgetId || widgetId && widgetId == c.widget.sys_id) return true;
+		return false;
+	};
+
+	var resetAttachments = function(attachments){
+		c.attachments =[];
+		c.attachmentsCount = 0;
+		c.attachmentsAdded = false;
+		c.formError = c.data.msg.requiredFieldsError;
+		if(attachments && attachments.length >0)
+			$rootScope.$broadcast("sp.community.attachments.cancel", {'attachments': attachments});
+		getFileStates(c.post);
+	};
+
+	var setupAttachments = function(attachments){
+		resetAttachments();
+		if(attachments && attachments.length > 0){
+			c.attachments = [].concat(attachments);
+			var i=0;
+			angular.forEach(c.attachments, function(file){
+				if(file.isDeleted != true)i++;
+			});
+			c.attachmentsCount = i;
+		}
+	};
+
+
+	$rootScope.$on('sp.community.attachments.added', function(event,data) {
+		if(!isValidBroadcast(data.widget)) return;
+		c.attachments = data.attachments;
+		c.attachmentsCount = data.attachmentsCount;
+		c.attachmentsAdded = true;
+	});
+
+	function uploadAttachments(type,content, uploadAction, cb, createActivity){
+		if(!c.attachments.length || !type || !content || !content.sys_id){
+			if(cb)cb();
+			return;
+		}
+		var table = "kb_social_qa_comment";
+		if(type == "Blog") table = "sn_communities_blog";
+
+		$rootScope.$broadcast("sp.community.attachments.upload", 
+													{'table': table, 'contentSysId': content.sys_id, 'uploadAction': uploadAction, 'createActivity': createActivity, 'attachments' : c.attachments},
+													function(attachments, edited_on, scanInProgress, attachmentError){
+			if(attachments)content.attachments = [].concat(attachments);
+			resetAttachments();
+			if(cb)cb(edited_on, scanInProgress, attachmentError);
+		});
+
+	}
+	function validateAttachments(attachments){
+		var deferred = $q.defer();
+		$timeout(function(){
+			$rootScope.$broadcast("sp.community.attachments.validate", {"attachments": attachments || c.attachments}, function(valid, fileValidationError){
+				deferred.resolve({'valid': valid, 'error': fileValidationError});
+			});
+		});
+		return deferred.promise;
+	}
+
+	function showAttachmentError(err){
+		var msg = c.data.msg.requiredFieldsError;
+		if(err.size > 0) msg = err.msgs.size;
+		else if(err.ext > 0) msg = err.msgs.ext;
+		else if(err.content > 0) msg = err.msgs.content;
+		else if(err.user > 0) msg = err.msgs.user;
+		else if(err.storage > 0) msg = err.msgs.storage;
+		else if(err.error > 0) msg = err.msgs.error;
+		else if(err.infected > 0) msg = err.msgs.infected;
+		c.formValidationError = msg;
+		c.formValidation.showMsg = true;
+	}
+	
+	c.formatMessage = function(messageText, params) {
+		return messageText.replace(/\{(\d+)\}/g, function() {
+			return params[arguments[1]];
+		});
+	};
+
+	function getFileStates(content){
+		if (!content)
+			return;
+		var callback = function(hasInfectedFile, hasPendingFile, errMsg) {
+			content.hasInfectedFile = hasInfectedFile;
+			content.fileErrMsg = errMsg;
+			content.hasPendingFile = hasPendingFile;
+		};
+		$rootScope.$broadcast("sp.community.attachments.getFileStates", content.attachments, callback)
+	}
+
+	getFileStates(c.post);
+	$scope.$on("sp.community.attachments.foundInfectedFile", getFileStates.bind(this,c.post));
+
+	//--/
+	//get menu items for blog
+	c.getMenuItems = function(content, type) {
+		c.showPageAlert = false;
+		if(content.menuItemsFetched) return;
+		content.showDropDown = false;
+		var resourceUrl = '/contents/'+ content.sys_id + "/menuItems";
+		$http.get(apiBaseUrl+resourceUrl)
+			.then(function(response){
+			if(response && response.data && response.data.result && response.data.result.data) {
+				var result = response.data.result.data;
+				content.canEdit = result.canEdit;
+				content.canModerate = result.canModerate;
+				content.canBookmark = result.canBookmark;
+				if(content.canBookmark && result.activities_allowed)
+					content.activities_allowed.bookmark = result.activities_allowed.bookmark;
+					content.noActionAvailable = !(content.canEdit || content.canModerate || content.canBookmark || c.isContentAuthor); 
+				content.showDropDown = true;
+				content.menuItemsFetched = true;
+				if(content.state == 'draft'){
+					content.enablePublishOption = false
+					if(content.title && content.description && content.forum.sys_id)
+						content.enablePublishOption = true
+				}
+			}
+		}, function(error){
+			content.noActionAvailable = true;
+			content.showDropDown = true;
+			console.log(error);
+		});
+	};
+	
+	//for screen reader
+	c.announceMessage = function() {
+		c.aria_message = c.post.helpful_count == 0 ? c.data.msg.helpfulZeroCountText : (c.post.helpful_count == 1 ? c.data.msg.helpfulCountText : (c.formatMessage(c.data.msg.helpfulsCountText, [c.post.helpful_count])))
+		document.getElementById('screen-reader-tag-id').innerHTML = '';
+    document.getElementById('screen-reader-tag-id').innerHTML += '<p class="sr-only">'+ c.aria_message+'</p>'
+	}
+	
+	c.moveFocus = function(curr) {
+		if(curr == 'submit' || curr == 'cancel')
+			c.current = curr;
+		else if(curr == 'end') {
+			var previous = c.current;
+			if(previous == 'submit' || c.moderationSubmitted)
+				$('.modal-header .close').focus();
+			else if(previous == 'cancel')
+				$('.modal-body .submit').focus();
+		}
+	}
+
+	c.imgModalClose = function(){
+		c.imageInstance.close();
+	}
+	c.prePolulateFeaturedContentData = function() {
+		c.show_forums_feature = false;
+		var resourceUrl = apiBaseUrl + '/featuredContent/forums/' + c.post.content_sys_id;
+		$http({
+			method: 'GET',
+			url: resourceUrl
+		}).then(function(r) {
+			var forumData = [];
+			var preData=[];
+			c.show_homePage = false;
+			if(r.data&&r.data.result)
+			 preData= r.data.result.featuredContent;
+			var len=preData.length;
+			for (var i = 0; i < len; i++) {
+				var preDat = preData[i];
+				if (preDat.global == "true") {
+					c.show_homePage = true;
+					c.showHomePageError = true;
+				} else {
+					forumData.push({
+						id: preDat.forum_id,
+						text: c.adminOrModerationForumsWithForumIdAsKey[preDat.forum_id].name
+					});
+					if (preDat.forum_id != c.data.blog.data[0].forum.sys_id)
+						c.isNotCurrentMemberShipForum = true;
+				}
+				c.noOfDays=parseInt(preDat.days);
+			}
+			if (forumData.length > 0)
+				c.show_forums_feature = true;
+			$('#choose_forums').select2('data', forumData);
+			c.featureContentLoading=false;
+		}, function(error) {
+			console.log(error);
+		});
+	}
+	c.featureContent = function(content, type) {
+		c.showFeatureContentAlert=false;
+		c.featureContentLoading=true;
+		if(c.data.isFeaturedContent)
+			c.featureContentAlert=c.data.msg.featureContentEditAlert;
+		else
+			c.featureContentAlert=c.data.msg.featureContentMarkAlert;
+		c.errorForums=[];
+		c.isNotCurrentMemberShipForum=false;
+		c.show_forums_feature=false;
+		c.show_homePage=false;
+		c.showpostFeatureContentError = false;
+		
+		c.showModal(type, c.retainFocus.bind(this, null, "actionMenu"));
+		var forum_id = c.data.blog.data[0].forum.sys_id;
+		var input = {};
+		input.getWritableForumIdsAndAuthorUserId = true;
+		input.authorCommunityProfileId = c.post.userAvatarObject.userId;
+		c.server.get(input).then(function(r) {
+			c.contentWritableForums = r.data.contentWritableForums;
+			c.writableForumIds = [];
+			angular.forEach(c.contentWritableForums, function(val) {
+				c.writableForumIds.push(val.id);
+			});
+			c.authorUserId = r.data.authorUserId;
+		});
+		$timeout(function() {
+			$('#choose_forums').select2();
+			$http.get(apiBaseUrl + '/forums?getHierarchialAdminOrModerationForums=1').then(function(data) {
+				if (data && data.data && data.data.result) {
+					c.loading = false;
+					c.forumsWithAdminOrModerationAccess = data.data.result;
+					constructForumIdToForumObjectMap(c.forumsWithAdminOrModerationAccess);
+					var len = c.forumsWithAdminOrModerationAccess.length;
+					for (var i = 0; i < len; i++) {
+						var option = '<option value=' + c.forumsWithAdminOrModerationAccess[i].sys_id + '>' + spCommunityHTMLEscapeUtil.escapeHTML(c.forumsWithAdminOrModerationAccess[i].name) + '</option>';
+						$('#choose_forums').append(option);
+					}
+					$('#choose_forums').select2({
+						minimumResultsForSearch: 10,
+						formatResult: formatForum,
+						closeOnSelect: false,
+						dropdownCssClass: 'select2-feature-content'
+						
+					});
+					$('#choose_forums').select2('data', [{
+						id: forum_id,
+						text: c.adminOrModerationForumsWithForumIdAsKey[forum_id].name
+					}]);
+					if (c.data.isFeaturedContent)
+						c.prePolulateFeaturedContentData();
+					else
+						c.featureContentLoading=false;
+				}
+			});
+			c.noOfDays=parseInt(c.data.defaultDaysFeatureContent);
+			$('#choose_forums').on('change', function(e) {
+				var fData = e.val;
+				 c.isNotCurrentMemberShipForum = false;
+				 c.showpostFeatureContentError = false;
+				c.errorForums = [];
+				for (i = 0; i < fData.length; i++) {
+					if (fData[i] != forum_id)
+						c.isNotCurrentMemberShipForum = true;
+					if (c.writableForumIds.indexOf(fData[i]) == -1) {
+						c.showpostFeatureContentError = true;
+						c.errorForums.push({id:fData[i],name:c.adminOrModerationForumsWithForumIdAsKey[fData[i]].name});
+					}
+				}	           
+			});
+			$('#choose_forums').on("select2-loaded", function(e, q) {
+				if (c.query_term == '') {
+					$timeout(function() {
+						$('.select2-feature-content .select2-selected').css('cssText', 'display:block !important;pointer-events:none;background-color:#e8eaed;');
+						$('.select2-feature-content .select2-selected .select2-result-label').each(function() {
+							var ariaLabel = $(this).attr('aria-label');
+							$(this).attr('aria-label', ariaLabel + ' : It is selected');
+						});
+					});
+				}
+
+			});
+			$('#checkboxFC').change(function() {
+				c.showHomePageError = true;
+			});
+			$("#choose_days").change(function() {
+				if (this.value > 999)
+					c.noOfDays = 999;
+				if (this.value < 1)
+					c.noOfDays = 1;
+			});
+		});
+	}
+	c.getScheduledDetails = function(){
+		var timezone = c.post.time_zone;
+		var time = c.convertTime(c.post.scheduled_time?c.post.scheduled_time:c.scheduledDateTime, timezone,c.data.userTimeZone);
+		return c.getFormattedText(time, timezone, c.data.msg.blogScheduledText);
+		
+	}
+	c.convertTime = function(time, timezone,userTimeZone){
+		var format = "YYYY-MM-DD HH:mm:ss";
+		var spTimezone = spUtil.getMomentTimeZone(timezone);
+		if(userTimeZone)
+			return moment.tz(time, c.datetimeformat,spUtil.getMomentTimeZone(userTimeZone)).tz(spTimezone).format(format);
+		return moment(time, c.datetimeformat).tz(spTimezone).format(format);
+	};
+	c.getFormattedText = function(time, timezone, text){
+		return text.replace('{0}', c.getFormattedDate(time, 'ddd, MMMM DD, YYYY'))
+		.replace('{1}', c.getFormattedDate(time, 'h:mm a'))
+		.replace('{2}', c.getFormattedTimeZone(timezone, 'z'));
+	};
+	c.getFormattedDate = function(date, format) {
+		if (date) {
+			return new moment(date).format(format);
+		} else {
+			return "--"
+		}
+	};
+	c.getFormattedTimeZone = function(timezone, format) {
+		return new moment.tz(spUtil.getMomentTimeZone(timezone)).format(format);
+	};
+	c.submitFeatureContent = function() {
+		var forumsId = $('#choose_forums').val();
+		if (!c.show_forums_feature)
+			forumsId = null;
+		var featureInput = {
+			'forumsId': forumsId,
+			'contentId': c.post.content_sys_id,
+			'days': c.noOfDays,
+			'global': c.show_homePage
+		}
+		var resourceUrl = apiBaseUrl + '/featuredContent';
+		$http.post(resourceUrl, featureInput)
+			.then(function(data) {
+			c.showFeatureContentAlert=true;
+			if (!forumsId && !c.show_homePage)
+				c.data.isFeaturedContent = false;
+			else
+				c.data.isFeaturedContent = true;
+			c.featureContentClose();
+		}, function(error) {
+			console.log(error);
+		});
+	}
+	c.disabledMarkFeatured = function() {
+	    return ((!c.show_forums_feature || !$('#choose_forums').val()) && !c.show_homePage) || (c.show_forums_feature && c.errorForums.length > 0);
+	}
+	c.showMemberShipForumError = function() {
+	    return (c.data.isMemberShipForum == 'true') && ((c.show_forums_feature && c.isNotCurrentMemberShipForum) || c.show_homePage && c.showHomePageError);
+	};
+	c.featureContentClose = function() {
+	    instance.dismiss('cancel');
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.frameless{
+  border : none;
+}
+
+.note-text{
+    color: $text-muted;
+    font-size: 12px;
+    margin: 10px 0px 10px 0px;
+    font-weight: 100;
+  }
+
+    .cm-top-level-class{
+     .alert{
+        overflow: hidden;
+        min-height: 52px;
+      }
+      .cm-close-btn{
+        background-color: inherit;
+      }
+  line-height: 20px;
+  .overall-level{
+    border: 1px solid $panel-default-border;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 5px;
+  }
+  .overall-level-sm{
+    border: 1px solid $panel-default-border;
+    padding: 5px;
+    width: 209px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+  }
+  .cm-content-blog{
+    .cm-success-color{
+      color: $btn-success-bg;
+    }
+    .image50px .avatar-container {
+      height: 50px !important;
+      width: 50px !important;
+      .sub-avatar{
+        justify-content: center;
+        align-items: center;
+        display: inline-flex;
+        span {
+          font-size:16px;
+        }
+      }
+    }
+    .cm-button-link{
+      text-decoration: none;
+    }
+    .cm-remove-focus{
+      outline: none;
+    }
+    .cm-user-img{
+      display: inline-block;
+      img{
+        height: 50px;
+      }
+    }
+    .cm-user-img-blank {
+      background-color: $csm-border-color;
+      border-radius: 50%;
+      padding: 10px;
+      font-size: 16px;
+      color: $text-muted;
+      margin-top: 3px;
+      margin-right: 5px;
+      display: inline-block;
+    }
+    .cm-content {
+      padding: 20px;
+      .cm-common-light-color{
+        color: $text-muted;
+      }
+      .cm-common-dark-color{
+        color: $text-color;
+      }
+      .cm-common-link-color{
+        color: $link-color;
+      }
+      .cm-acted-color{
+        color: $brand-primary;
+      }
+      .cm-acted-color{
+        color: $csm-navbar-popover-text-color;
+      }
+      .cm-link{
+        font-weight: 500;
+      }    
+      .cm-content-header{
+        .cm-content-type{
+          min-height: 38px;
+          font-size: 18px;
+          width: 100%;
+          .cm-content-type-name{
+            font-size: 14px;
+            //font-weight: 500;
+            line-height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: 3px;
+          } 
+          .cm-content-type-icon {
+            display: inline-block;
+            margin-top: 10px;
+            //width: 90%;
+          }
+          .cm-menu-bar-items {
+            position: relative;
+            float: right;
+            .cm-menu-button{
+              display: inline;
+              margin-right: 10px;
+            }
+            .cm-content-type-menu{
+              display: inline;
+              .cm-view-mode-menu, .cm-edit-mode-menu{
+                display: inherit;
+              }
+              .cm-edit-mode-menu{
+                margin-right: 0px;
+              }
+            }
+             .cm-view-mode-menu.open{
+               .tooltip{
+                 display: none !important;
+               }
+             }
+          }
+          .cm-action-icon {
+            color: $text-muted;
+            cursor: pointer;
+          }
+          .dropdown-menu {
+            margin-top: 20px;
+            position: absolute;
+            top: 24px;
+            right: 0;
+            left: auto;
+            min-width: inherit;
+            background-color: $panel-bg;
+            li:nth-child(n+2) {margin-top: 5px !important;}
+            li a {
+              padding: 3px 20px;
+            }
+            li &gt; div {
+              display: block;
+              padding: 3px 20px;
+              clear: both;
+              font-weight: normal;
+              line-height: 1.42857;
+              color: $text-color;
+              white-space: nowrap;
+          	}
+          }
+        }
+        .cm-content-title {
+          margin-bottom: 13px;
+          word-wrap: break-word;
+        }
+
+        .cm-author-details{
+          .cm-author-image {
+            float: left;
+            margin-right: 5px;
+            img{
+              height: 50px;
+            }
+          }
+          .cm-author-info {
+            display: table;  
+            vertical-align: middle;
+            padding-top: 5px;
+          }  
+        }
+      }
+      .cm-content-body {
+        line-height: initial;
+        .cm-content-detail{
+          word-wrap: break-word;
+          img{
+            max-width: 100% !important;
+          }
+          table{
+          max-width: 100% !important;
+          display: table;
+          overflow-x: auto !important;
+          }
+          code {
+            width: 100% !important;
+            overflow-x: auto !important;
+            display: block;
+            }
+          .container{
+            max-width: 100% !important;
+          }
+        }
+        .cm-topics{
+          .cm-topic-label{
+            padding-right: 10px;
+          }
+          .cm-topic-info{
+            padding-right: 5px;
+            .cm-topic-badge{
+              height: auto;
+              border-radius: 5px;
+              background-color: $gray-lighter;
+              font-size: 12px;
+              font-weight:400;
+              padding: 1px 5px;
+              margin-top: 5px;
+            }
+            .cm-topic-badge{
+              background-color: $csm-tags-bg;
+            }
+          }
+        }
+      }
+      .cm-content-footer {
+        .cm-views{
+          float: right;
+        }
+        .cm-action-icons{
+          font-size:18px;
+        }
+        .cm-action{
+          display:inline-block;
+          white-space: nowrap;
+          padding-right: 10px;
+        }
+        .cm-show-cursor {
+          cursor: pointer;
+        }
+        .cm-comment-box {
+          border-top: 1px solid $panel-default-border;
+          margin-top: 15px;
+          padding-top: 15px;
+          .cm-widget-mce {
+            .field-label{ //Hiding tinyMCE field label
+              display: none;
+            }
+            margin-top: 0px;
+            iframe {
+              width: 99% !important;
+            }
+          }    
+          .cm-form-actions{
+            overflow: hidden;
+            .btn-container{
+              overflow: hidden;
+              .cm-attach-link {
+                display: inline-block;
+              }
+              .cm-cancel-btn {
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+        .cm-comment-box {
+          border-top: 1px solid $csm-border-color;
+        }
+      }
+      .cm-edit-mode{
+        label {
+          font-size: 16px;
+          .sub-label {
+            color: $btn-secondary-border;
+            margin-left: 5px;
+          }
+        }
+        .cm-content-header{
+          overflow: hidden;
+          border-bottom: 1px solid $panel-default-border;
+        }
+        .cm-content-header {
+          border-bottom: 1px solid $csm-border-color;
+        }
+        .cm-form-actions{
+          overflow: hidden;
+          .btn-container {
+            overflow: hidden;
+            .cm-attach-link {
+              display: inline-block;
+            }
+            .action-btn {
+              margin-bottom: 1px;
+            }
+            .cm-cancel-btn, .cm-save-btn {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    .cm-select2-topic .select2-container-multi .select2-choices li.select2-search-choice {
+      margin-top: 5px;
+    }
+  }
+  .cm-sp-video-width{
+    iframe {
+      width:99.99%!important
+    }
+  }
+  .cm-align-center {
+    text-align: center;
+  }
+
+  .self-clear:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .cm-menu-ellipsis{
+    display: inline-block;
+    color: $text-color;
+    // font-size: 18px;
+    // height: 38px;
+    // padding: 10px;
+    // border-radius: 2px;
+    // border: 1px solid $panel-default-border; 
+  }
+  .required .control-label:before { 
+    content:"* ";
+    color: $brand-danger;
+  }
+  .required.filled .control-label:before {
+    color: $text-muted;	
+  }
+	.forum-width {
+  		width: 400px;
+	}
+    @media  (max-width: 510px) {
+      .forum-width {
+        width: 100%;
+      }
+    }
+  .mandate {
+    border: 1px solid $brand-danger;
+  }
+  .mandate {
+    border: 1px solid $csm-danger-light !important;
+  }
+  .cm-alert {
+    .cm-alert-icon {
+      padding-top: 3px;
+      padding-right: 5px;
+    }
+  }
+  .cm-alert.info {
+    border: 1px solid $state-info-border;	
+    background-color: $state-info-bg;
+    color: $state-info-text;
+  }
+  .alert{
+    .alert-icon {
+      margin-right: 10px;
+    }
+  }
+  .cm-alert-blog-inform {
+    margin:15px 5px 5px 5px;
+  }
+  .cm-bottom-padding {
+    margin-bottom: 0px;
+  }
+
+  .cm-message-top-padding {
+    margin-top: 15px;
+  }
+  .cm-guest-alert{
+    a, a:hover {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+  .cm-margin-btm{
+    margin-bottom: 13px;
+  }
+  .cm-draft-info{
+    border: 1px solid $state-info-border;	
+    border-radius: 2px;	
+    background-color: $state-info-bg;
+    color: $state-info-text;
+    padding: 15px;
+    margin-bottom: 20px;
+    i{
+      font-size: 20px;
+    }
+    .cm-alert-icon{
+      padding-top: 0px;
+      padding-right:8px;
+    }
+  }
+
+//responsiveness
+@media screen and (max-width: 768px) {
+  .cm-view-mode-menu{
+    .tooltip{
+      display: none !important;
+    }
+  }
+}
+//ipad
+@media screen and (min-device-width : 768px)
+  and (max-device-width : 1024px)  {
+    .cm-view-mode-menu{
+      .tooltip{
+        display: none !important;
+      }
+    }
+  }
+//ipad pro
+@media screen and (min-device-width: 1024px)
+  and (max-device-width: 1366px){
+    .cm-view-mode-menu{
+      .tooltip{
+        display: none !important;
+      }
+    }
+  }
+}
+.community_image_fullscreen{
+cursor: pointer;
+}
+.modal-body .warn-msg .fa {
+	color: $gray-lighter;
+}
+.community-image-modal .close {
+	color: $panel-bg;
+}
+.community-image-modal .close:focus {
+	color: $panel-bg;
+}
+.community-image-modal .close:hover {
+	color: $btn-default-border;
+}
+.avatar-container .avatar.soloAvatar .sub-avatar{
+  color: $gray-darker;
+  background-color: $gray-lighter;
+}
+.menu-header{
+  display: inline-block;
+  padding: 0px 0px 0px;
+}
+.menu-style {
+  display: inline-flex;
+}
+.cm-loading-div{
+  vertical-align: middle;
+  color: $text-muted;
+  padding-top: 300px;
+  padding-bottom: 300px;
+}
+
+.cm-loading{
+  font-style: italic;
+}
+.modal-load{
+  height:150px;
+  color: $text-muted;
+  text-align: center;
+  .fa-spinner {
+     font-size: 22px;
+  }
+  p{
+    font-style: italic;
+    margin-top: 75px;
+    vertical-align: middle;
+  }
+} 
+.dropdown.open .tooltip {
+	display: none !important;
+}
+
+.disable-comments-checkbox{
+  height: 16px;	
+  width: 16px;	
+  border-radius: 2px;
+  background-color: $brand-primary;
+  padding-left:0px !important;
+} 
+.fa-vc {
+  line-height:inherit !important;
+  margin-top: .4em;
+}
+.form-control + .left-icon{
+  left: 0;
+}
+.has-left-icon{
+  padding-left: 30px !important;
+}
+.cm-schedule{
+  display: flex;
+}
+.cm-change-tz{
+  margin: auto auto 8px 0;
+  padding-top: 15px;
+  a{
+    color: $state-success-text;
+  }
+}
+.cm-schedule-well-parent{
+  padding-left: 30px;
+}
+.cm-well-style{
+  display: flex;
+  padding-left: 0px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+.scheduled-checkbox
+{
+  height: 16px;	
+  width: 16px;	
+  border-radius: 2px;
+  background-color: $brand-primary;
+  margin-top: 0px !important;
+}
+.cm-sched-margin{
+  margin-bottom: 0px!important;
+}
+.padder-bt{
+  padding-bottom: 5px;
+}
+.cm-sched-publish-details{
+  margin-top: 15px;
+}
+@media (max-width : 992px) {
+  .cm-sched-publish-details{
+    margin-top: 5px;
+  } 
+}
+.alert-text .alert-link{
+    text-decoration: underline;
+}
+</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>octomobile_blogs</id>
+        <internal>false</internal>
+        <link><![CDATA[function(scope) {
+	var c = scope.c,
+		$timeout = $injector.get('$timeout'),
+		$uibModal = $injector.get('$uibModal');
+
+	/*****
+	This opens the image in a modal and handles the image sizing.
+	****/
+	var options = {
+		scope: scope,
+		keyboard: true,
+		templateUrl: 'community-image-modal-blog.html'
+	};
+	$(".cm-top-level-class").on("click",".cm-content-body .community_image_fullscreen", function() {		
+		var src= this.src;
+		var tag = $(this).parent().get( 0 ).tagName;
+		if( tag != 'A'){
+			c.imageInstance = $uibModal.open(options);
+			var orignalWidth = $(this).prop('naturalWidth');
+			var orignalHeight = $(this).prop('naturalHeight');
+			$timeout(function(){
+				var modal = document.getElementById('communityImageModal'),
+					modalImg = $('#modalImage')[0];
+				modal.style.display = "block";
+				modalImg.src = src;
+				c.imagesrc = src;
+				modalImg.width = orignalWidth > c.minImageWidth ? orignalWidth : c.minImageWidth;
+				modalImg.style.minHeight = orignalHeight > c.minImageHeight ? orignalHeight : c.minImageHeight +"px";
+				$('.modal-dialog').width(modalImg.width);
+				$('#modal-close').focus();
+			});
+		}
+	})
+		
+	/*****
+	Css specifications of the table which generate by tinymce editor's input, is overridden by bootstrap css specifications. This function fixes conflicting css specifications corresponding to attributes inside table.
+	****/
+	scope.$on('sp.community.blog.tinymce.table.fixcss', function(event, contentSelector){
+		$(contentSelector + ' table').each(function(){
+			$(this).css("border-spacing", $(this).attr("cellspacing") + "px");
+			$(this).find( "td" ).css("padding", $(this).attr("cellpadding") + "px");
+			$(this).css("border-collapse", "separate");
+			$(this).wrap("<div style = 'overflow: auto'></div>" );
+		});
+	});
+}]]></link>
+        <name>OctoMobile Blogs</name>
+        <option_schema>[{"name":"panel_type","default_value":"default","section":"other","label":"Panel Type","type":"string"},{"name":"view_refresh_time","default_value":"10","section":"other","label":"View Refresh Time (seconds)","type":"string"},{"name":"min_image_height","default_value":"100","section":"other","label":"Minimum Image Height (pixels)","type":"string"},{"name":"min_image_width","default_value":"185","section":"other","label":"Minimum Image Width (pixels)","type":"string"},{"name":"user_mention_list_size","section":"other","default_value":"10","label":"User Mentions Suggestion List Size","type":"integer"},{"hint":"","name":"user_mention_min_chars","section":"other","default_value":"3","label":"Number of characters required after the '@' for users mentions","type":"integer"},{"hint":"","name":"user_mention_debounce","section":"other","default_value":"250","label":"Time in milliseconds used to throttle fetch user mentions","type":"string"}]</option_schema>
+        <public>true</public>
+        <roles/>
+        <script><![CDATA[(function($sp){
+    
+    data.enable_gamification = gs.getProperty("sn_communities.enable_gamification"); // Gamification property to check for display
+    data.useSnBind = gs.getProperty("sn_communities.useSnBind"); // To ascertain whether to use ng-Bind or sn-Bind
+	data.defaultDaysFeatureContent=gs.getProperty("sn_communities.default_featured_days");
+	data.userTimeZone = gs.getSession().getTimeZoneName();
+	  
+	  data.levelInfo = gs.getProperty("sn_communities.content.show_gamification_level");
+		data.schedulingAllowAuthors= gs.getProperty('sn_communities.scheduling.allow_authors')==='true';
+	var blogContentTypeId = 'cc3fcaa0dbd26600b1f6f78eaf96192e';
+	if (input && input.checkUserAccessToPostComment) {
+		data.hasAccessToPostComent = new CommunityUser().hasContentAccess(input.forum, CommunityConstants.COMMENT_CONTENT_TYPE_ID, CommunityConstants.CONTENT_WRITE);
+	}
+
+	if(!input || (input && input.type === "cxs_view") ){
+		//Fetch Blog Information
+		var blogId = (input ? input.sys_id : $sp.getParameter('sys_id')); 
+		data.blog = new CommunityContent().getContentInfo(blogId, blogContentTypeId);
+		data.isMemberShipForum=new CommunityContent().isInMemberShipForum(blogId)+'';
+		var readOnlyMode = false;
+		if((input && input.read_only) || $sp.getParameter("sysparm_readonly") === 'true')
+			readOnlyMode = true;
+		
+		data.frameless_class = '';
+
+		if((input && input.frameless) || $sp.getParameter("frameless") === 'true')
+			data.frameless_class = 'frameless';
+		
+		data.readOnlyMode = readOnlyMode;
+		data.isLoggedIn = !readOnlyMode && gs.isLoggedIn();
+		if(gs.isLoggedIn()){
+			var live_profile = new GlideRecord('live_profile');
+			live_profile.addQuery("document", gs.getUserID());
+			live_profile.query();
+			if (live_profile.next()) data.loggedInUserProfileId = live_profile.getUniqueValue();
+			var profileId  = data.loggedInUserProfileId;
+			var profile = new Community_Factory().getWrapperType(CommunityConstants.PROFILE).getUserInfo([profileId],['display_name', 'photo', 'title', 'initials']);
+			if (!gs.nil(profile[profileId])) {
+				data.loggedInUser = profile[profileId];
+				data.loggedInUser.userImage = data.loggedInUser.userImage != "" ? data.loggedInUser.userImage + "?t=small" : "";
+			}
+			data.timezone = gs.getSession().getTimeZoneName();
+			data.tz = [];
+			var gr = new GlideRecord("sys_user");  
+			gr.newRecord();  
+			var choiceList = gr.getElement("time_zone").getChoices();  
+			var foundTZ = false;
+			for (var i=0; i < choiceList.length; i++ ) {  
+				if(choiceList[i] == data.timezone)
+					foundTZ = true;
+				data.tz.push({
+					value : choiceList[i]
+				});
+			}  
+			if(!foundTZ)
+				data.tz.splice(0, 0, {value : data.timezone});
+		}
+		data.topicsEnabled = CommunityConstants.ENABLE_TOPICS;
+		$sp.getWidget("community-view-logger");				
+		//data.video=$sp.getWidget("comm-video-upload", {});
+	}else if(input && input.message){
+		gs.getSession().putClientData('cm.content.delete.notify',new sn_communities.CommunityUtil().escapeHTML(input.message));
+		data.success = true;
+	} else if (input && input.moderation && input.contentId && input.type){
+		data.moderationReasons = new CommunityModeration().getModerationSettings(input.type, input.contentId);
+	} else if(input && input.getAuthorAccessOnTargetForum){
+		data.forumPerms = new CommunityUser(input.authorUserId).getPermissionsForForum(input.forum);
+		return;
+	} else if(input && input.getWritableForumIdsAndAuthorUserId){
+		var author_live_profile = new GlideRecord('live_profile');
+		author_live_profile.addQuery("sys_id", input.authorCommunityProfileId);
+		author_live_profile.query();
+		if(author_live_profile.next()){
+			data.authorUserId =  author_live_profile.getValue("document");
+		}
+		data.contentWritableForums = new CommunityUser().getWritableForumsForContentType(blogContentTypeId);
+		return;
+	}
+	data.maxTopicLimit = parseInt(gs.getProperty('sn_communities.max_topic_limit'));
+	data.seo_meta_descrition_length = parseInt(gs.getProperty('sn_communities.seo.pages.meta_descrition.length'));
+	data.userMentionConfig = {
+		enabled: sn_communities.CommunityConstants.ENABLED_USER_MENTIONS,
+		sourceTable: sn_communities.CommunityConstants.BLOG_TABLE,
+		sourceId: $sp.getParameter("sys_id"),
+		limit: options.user_mention_list_size || 10,
+		minChars: options.user_mention_min_chars || 3,
+		debounce: parseInt(options.user_mention_debounce) || 250,
+		messages: {
+			loading: gs.getMessage('Loading'),
+			noMatches: gs.getMessage('No matches'),
+			init: gs.getMessage('Enter the name of the person you want to mention')
+		}
+	}
+	data.msg = {
+		editBlogSuccess : gs.getMessage('Blog edited.'),
+		editBlogSuccess_scanInProgress : gs.getMessage('Blog edited. Attachment(s) are currently undergoing security scan.'),
+		moveBlogSuccess : gs.getMessage('Blog moved to forum {0}.'),
+		moveBlogSuccess_scanInProgress : gs.getMessage('Blog moved to forum {0}. Attachment(s) are currently undergoing security scan.'),
+		postBlogSuccess : gs.getMessage('Blog posted.'),
+		postBlogSuccess_scanInProgress : gs.getMessage('Blog posted. Attachment(s) are currently undergoing security scan.'),
+		editBlogReviewSuccess : gs.getMessage('Blog edited and is under review.'),
+		editBlogReviewSuccess_scanInProgress : gs.getMessage('Blog edited and is under review. Attachment(s) are currently undergoing security scan.'),
+		moveBlogReviewSuccess : gs.getMessage('Blog moved to forum {0} and is under review.'),
+		moveBlogReviewSuccess_scanInProgress : gs.getMessage('Blog moved to forum {0} and is under review. Attachment(s) are currently undergoing security scan.'),
+		postBlogReviewSuccess : gs.getMessage('Blog is under review.'),
+		postBlogReviewSuccess_scanInProgress : gs.getMessage('Blog is under review. Attachment(s) are currently undergoing security scan.'),
+		deleteBlogSuccess: gs.getMessage("Blog '{0}' deleted."),
+		editCancelMsg: gs.getMessage('Are you sure you want to discard the changes?'),
+		discardChange: gs.getMessage('Discard changes'),
+		blogSubscribeSuccess: gs.getMessage('You have successfully subscribed to the blog.'),
+		blogUnsubscribeSuccess: gs.getMessage('You have unsubscribed from the blog.'),
+		blogUndoBookmarkSuccess: gs.getMessage('You have removed the bookmark from the blog.'),
+		requiredFieldsError : gs.getMessage("Error. Please fill all the required(*) fields."),
+		commentRequiredFieldError : gs.getMessage("Error. Please fill all the required fields."),
+		postCommentSuccess: gs.getMessage('Comment posted.'),
+		postCommentSuccess_scanInProgress: gs.getMessage('Comment posted. Attachment(s) are currently undergoing security scan.'),
+		postCommentUnderModeration: gs.getMessage('Comment posted and is under moderation.'),
+		postCommentUnderModeration_scanInProgress: gs.getMessage('Comment posted and is under moderation. Attachment(s) are currently undergoing security scan.'),
+		subscribeText: gs.getMessage("Subscribe"),
+		unsubscribeText: gs.getMessage("Unsubscribe"),
+		subscribedText: gs.getMessage("Subscribed"),
+		editAlertMsg: gs.getMessage('Please note that this post has already received activity. It is not advisable to edit it now. Are you sure you want to continue?'),
+		helpful: gs.getMessage('Helpful'),
+		helpfulsCountText : gs.getMessage("{0} members marked helpful."),
+		helpfulCountText : gs.getMessage("1 member marked helpful."),
+		helpfulZeroCountText :gs.getMessage("No one marked Helpful"),
+		draftBlogSuccess : gs.getMessage('Your draft has been saved. You can access all your drafts in your profile.'),
+		topicNoteMsg: gs.getMessage("Select a maximum of {0} topic(s)",data.maxTopicLimit+''),
+		topicLimitExceededMsg: gs.getMessage("You have reached the maximum number of topics"),
+		moreOptions : gs.getMessage("More Options"),
+		deleteAlertMsg: gs.getMessage("Please note that this post has already received some feedback/response. It's not advisable to delete this content now. Are you sure you want to delete?"),
+		deleteAlertNoFeedbackMsg: gs.getMessage("Are you sure you want to delete?"),
+		profileLink : gs.getMessage("{0} Profile"),
+		topicLimitExceededAlert: gs.getMessage("More than {0} topic(s) cannot be associated to a content",data.maxTopicLimit+''),
+		points: gs.getMessage("community.gmhovercard.points"),
+		noActionAvailableMsg: gs.getMessage("No actions available"),
+		blogContentTypeNotPresent: gs.getMessage("Blog content type is not associated to selected forum."),
+		topicsRemovedWarning: gs.getMessage("These topics that are not part of the selected forum cannot be associated: {0}"),
+		userPermissionsWarning: gs.getMessage("Only users with access to the content type Blog in the selected forum, will be able to view the content upon saving."),
+		authorLosingAccessWarning: gs.getMessage("{0} does not have access to the content type Blog in the selected forum. Hence, the author will be unable to view the content upon saving."),
+		globalFeatureContentError: gs.getMessage("Some users may not be able to view the content due to lack of permissions."),
+		featureContentEditAlert: gs.getMessage("Successfully saved the changes to featured content."),
+		featureContentMarkAlert: gs.getMessage("Successfully featured this content."),
+		subject: gs.getMessage("Regarding your Blog '{0}' "),
+		blogScheduledText: gs.getMessage(' {0} at {1} {2}'),
+		pastScheduledDate: gs.getMessage("Error. Scheduled Date cannot be in the past."),
+		scheduledDateInvalid: gs.getMessage("Error. Scheduled Date is invalid"),
+		successScheduledMsg: gs.getMessage('Blog is scheduled to be published.'),
+		scheduledDetails:gs.getMessage("Scheduled to be published on {0}")
+	};
+	data.allowInsertVideoOnBlog = false;
+	data.allowInsertVideoOnComment = false;
+	var contentTypesGR = new GlideRecord("sn_communities_content_type");
+	contentTypesGR.addQuery('sys_id', CommunityConstants.BLOG_CONTENT_TYPE_ID).addOrCondition('sys_id', CommunityConstants.COMMENT_CONTENT_TYPE_ID);
+	contentTypesGR.query();
+	while (contentTypesGR.next()) {
+		if(contentTypesGR.embedded_types && contentTypesGR.embedded_types.includes(CommunityConstants.VIDEO_EMBEDDED_TYPE_ID)) {
+			if(contentTypesGR.sys_id+"" == CommunityConstants.BLOG_CONTENT_TYPE_ID)
+				data.allowInsertVideoOnBlog = true;
+			else
+				data.allowInsertVideoOnComment = true;
+		}
+	}
+	var forumId = '';
+	if (data.blog && data.blog.data && data.blog.data[0]) {
+		data.isCommuAdminOrMod = data.blog.data[0].isCommunityAdminOrMod;
+		var dataContent=data.blog.data[0];
+		if(dataContent.state==CommunityConstants.PUBLISHED){
+			var commUser = new sn_communities.CommunityUser();
+			forumId = dataContent.forum.sys_id;		
+			var isForumAdminOrMod=false;
+			if(!data.isCommuAdminOrMod)
+				isForumAdminOrMod=commUser.isAdminOfForum(forumId) || commUser.isForumModerator(forumId);
+			if(data.isCommuAdminOrMod||isForumAdminOrMod){
+				var commFeatureContent=new CommunityFeaturedContent();
+				var featuringContentTypes = commFeatureContent.getPrimaryContentTypes();		
+				data.canFeaturContent = (featuringContentTypes.indexOf(blogContentTypeId) != -1);
+				if(data.canFeaturContent)
+					data.isFeaturedContent= commFeatureContent.isFeaturedContent(dataContent.content_sys_id);
+			}
+		}
+		if (dataContent && dataContent.userAvatarObject) {
+			var userData;
+			var userId = dataContent.userAvatarObject.userId;
+			data.canEmail = data.isCommuAdminOrMod && (userId && data.loggedInUserProfileId != userId);
+			if (data.canEmail)
+				userData = new CommunityProfile().getUserInfoHover([userId], ["email"]);
+			if (userData)
+				data.showMailTo = userData[userId].email;
+		}
+	}
+	data.forumLevelsText = [
+			gs.getMessage("this is a level 1 forum"),
+			gs.getMessage("this is a level 2 forum"),
+			gs.getMessage("this is a level 3 forum"),
+			gs.getMessage("this forum is beyond level 3")
+		];
+
+})($sp);]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 05:38:48</sys_created_on>
+        <sys_id>033e72b52fd75510bdcc5fd92799b63d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>OctoMobile Blogs</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_widget_033e72b52fd75510bdcc5fd92799b63d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:46</sys_updated_on>
+        <template><![CDATA[<div class="cm-top-level-class">
+  <div class="alert alert-success cm-alert clearfix" data-ng-show="c.showFeatureContentAlert" aria-live="polite" role="alert">
+    <div class="alert-text pull-left col-xs-11 flexbox no-padder">
+      <i class="fa fa-check cm-alert-icon" aria-hidden="true"></i>
+      <span>{{c.featureContentAlert}}</span>
+    </div>
+    <div class="alert-close pull-right col-xs-1 no-padder">
+      <i role="button" class="fa fa-times pull-right cm-alert-icon" data-ng-click="c.showFeatureContentAlert = false" 
+         aria-label="${Close}" tabindex="0"></i>
+    </div>
+  </div>
+      <div data-ng-if="c.state == 'draft'" class="cm-draft-info cm-alert cm-message-top-padding clearfix">
+    <div class="alert-text pull-left col-xs-11 flexbox no-padder">
+      <i class="fa fa-info-circle cm-alert-icon" aria-hidden="true"></i>
+      <span>${This is a Draft. Users cannot view the content until it has been published.}</span>
+    </div>
+  </div>
+  <div  ng-if="((c.state == 'ready_to_publish' || ( (c.state == 'review' || c.state == 'draft') && c.post.scheduled_time)) && !c.post.showEditMode)" class="cm-draft-info cm-alert cm-message-top-padding clearfix">
+    <div class="alert-text pull-left col-xs-11 flexbox no-padder">
+      <i class="fa fa-exclamation-circle cm-alert-icon" aria-hidden="true"></i>
+      <span>{{c.data.msg.scheduledDetails.replace('{0}',c.getScheduledDetails())}}</span>
+    </div>
+  </div>
+  <div data-ng-if="::c.postNotValid" class="alert alert-danger cm-alert cm-message-top-padding clearfix" aria-live="polite" role="alert">
+    <div class="alert-text pull-left col-xs-11 flexbox no-padder">
+      <i class="fa fa-exclamation-circle cm-alert-icon" aria-hidden="true"></i>
+      <span>${Sorry, the content you are trying to view is currently unavailable.}</span>
+    </div>
+  </div>
+  <!--Unauthorized message when user don't have required permissions -->
+  <div class="alert {{::c.pageAlertClass}} cm-alert clearfix cm-guest-alert" data-ng-if="::c.showPageAlertForError" aria-live="polite" role="alert">
+    <div class="alert-text pull-left col-xs-12 flexbox no-padder">
+      <i class="fa {{::c.alertIconClass}} cm-alert-icon" aria-hidden="true"></i>
+      <span ng-bind="::c.pageAlertMessage"></span>
+    </div>
+  </div>  
+
+  <!--Unauthorized message when user is not logged in -->
+  <div class="alert {{::c.pageAlertClass}} cm-alert clearfix cm-guest-alert" data-ng-if="c.showPageAlertForGuest">
+    <div class="alert-text pull-left col-xs-11 flexbox no-padder">
+      <i class="fa {{::c.alertIconClass}} cm-alert-icon" aria-hidden="true"></i>
+      <span>${Please} <a href="?id=community_login" role="link">${Login}</a> ${to view the content!}</span>
+    </div>
+    <div class="alert-close pull-right col-xs-1 no-padder">
+      <i role="button" class="fa fa-times pull-right cm-alert-icon" data-ng-click="c.showPageAlertForGuest = false"
+         aria-label="${close}"></i>
+    </div>
+  </div>  
+
+  <div id="topOfPage" data-ng-if="::c.post.isValidContent" class="cm-content-blog" ng-init="gotoAnchor()">
+    <div class="alert {{c.pageAlertClass}} cm-alert clearfix"  data-ng-if="c.showPageAlert" aria-live="polite" role="alert">
+      <div class="alert-text pull-left col-xs-11 flexbox no-padder"  >
+        <i class="fa {{c.alertIconClass}} cm-alert-icon" aria-hidden="true"></i>
+        <span>{{c.pageAlertMessage}}<span ng-if="c.showMailTo">${ The author has been notified. }<a class="alert-link" ng-href="mailto:{{::c.data.showMailTo}}?subject={{::c.formatMessage(c.data.msg.subject,[c.post.title])}}">${Click here to email the author.}</a>
+        </span>
+      </div>
+      <div  class="alert-close pull-right col-xs-1 no-padder">
+        <i role="button" tabindex="0" class="fa fa-times pull-right cm-alert-icon "  data-ng-click="c.showPageAlert = false"
+           aria-label="${close}"></i>
+      </div>
+    </div>
+    <div class="alert alert-warning cm-alert-inform clearfix" data-ng-repeat="warning in c.warnings track by $index"  data-ng-if="c.showWarnings && !warning.hideWarning && c.formValidation.pass && c.post.showEditMode" ng-show="!c.loading">
+       <div class="alert-icon pull-left">
+         <i class="fa fa-exclamation-triangle"></i>
+       </div>
+       <div class="alert-text col-xs-11 no-padder">
+         <span ng-bind="warning.message"></span>
+       </div>
+       <div  class="alert-close pull-right no-padder">
+         <i role="button" tabindex="0" class="fa fa-times pull-right cm-alert-icon"  data-ng-click="warning.hideWarning = true"
+            aria-label="${close}"></i>
+       </div>
+    </div>
+    <div data-ng-if="c.post.canEdit && !c.post.showEditMode && ( c.post.hasInfectedFile || c.post.hasPendingFile)" class="alert alert-danger {{!c.post.hasInfectedFile? 'info': ''}} cm-alert cm-message-top-padding clearfix">
+      <div class="alert-text pull-left col-xs-11 flexbox no-padder">
+        <i class="fa {{ !c.post.hasInfectedFile ? 'fa-info-circle' : 'fa-times-circle' }} cm-alert-icon" aria-hidden="true"></i>
+        <span ng-bind="c.post.fileErrMsg"></span>
+      </div>
+    </div>
+    <div class="panel panel-{{::options.panel_type}} csm-tile cm-content csm-widget {{::c.data.frameless_class}} m-b">
+
+      <div class="panel-body alert alert-danger cm-alert-blog-inform clearfix" data-ng-if="c.showModerationError">
+        <div class="alert-icon pull-left">
+          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        </div>
+        <div class="alert-close pull-right">
+          <button class="btn cm-close-btn pull-right" data-ng-click="c.showModerationError = false"
+             aria-label="${close}"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <div class="alert-text pull-left">
+          <span>
+            <p>${Please fix the following errors before posting: }</p>
+            <ul class="cm-alert-section">
+              <li ng-repeat="error in c.moderationError track by $index">
+                <span ng-bind="::error"></span>
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
+      <div class="cm-view-mode" data-ng-if="!c.post.showEditMode">
+        <div class="cm-content-header">
+          <div ng-class="::(c.data.isLoggedIn ? 'cm-content-type' : 'cm-content-type cm-margin-btm')">
+            <div class="cm-content-type-icon">
+              <span><i class="fa {{::c.post.icon}} cm-common-link-color" aria-hidden="true"></i></span>
+              <span class="cm-content-type-name cm-common-dark-color">${Blog}</span>
+            </div>
+            <div class="cm-menu-bar-items" data-ng-if="::c.data.isLoggedIn">
+              <div class="cm-menu-button" data-ng-if="c.canEditDraft">
+                <button class="btn btn-default" data-ng-click="c.canShowEditMode()">
+                  ${Edit}
+                </button>
+              </div>
+              <div class="cm-menu-button" data-ng-if="::!c.isContentAuthor">
+                <button ng-if="c.showFollow" class="btn btn-primary" data-ng-click="c.subscribe()">
+                  ${Subscribe}
+                </button>
+                <button ng-if="!c.showFollow" class="btn btn-default" data-ng-click="c.subscribe()" 
+                        ng-mouseover="c.showUnSubscribe()"
+                        ng-mouseleave="c.showSubscribed()"
+                        ng-focus="c.showUnSubscribe()"
+                        ng-blur="c.showSubscribed()" 
+                        aria-label="${Blog subscribed. Click to unsubscribe}">
+                  <span ng-bind="c.subscribeLabel"></span>
+                </button>
+              </div>
+              <div data-ng-if="::c.data.isLoggedIn" class="cm-content-type-menu">
+                <div class="cm-view-mode-menu" data-ng-if="!c.canEditDraft">
+                  <ul role="menubar" class="menu-header">
+                    <li class="dropdown header-menu-item menu-style" role="presentation">
+                  <a role="menuitem" href="Javascript:void(0);" id="actionMenu" aria-label="${Actions menu}" class="btn btn-default pull-right cm-action-icon dropdown-toggle"
+                     data-ng-click="c.getMenuItems(c.post)" data-toggle="dropdown" aria-haspopup="true" tooltip-placement="bottom" uib-tooltip='{{::c.data.msg.moreOptions}}'>
+                    <span class="cm-menu-ellipsis"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
+                  </a>
+                  <ul data-ng-if="c.post.showDropDown" class="dropdown-menu" aria-expanded="false" role="menu">
+                    <li data-ng-if="c.post.canEdit" role="presentation"><a role="link"  href="Javascript:void(0);" data-ng-click="c.canShowEditMode()" tabindex="-1">${Edit}</a></li>
+                    <li data-ng-if="c.post.canEdit" role="presentation"><a role="link"  href="Javascript:void(0);" data-ng-click="c.canDeleteContent()" tabindex="-1">${Delete}</a></li>
+                    <li data-ng-if="c.post.canBookmark && c.post.activities_allowed.bookmark" role="presentation"><a role="menuitem" class="cm-menu-item" href="Javascript:void(0)" data-ng-click="c.postFeedback('bookmark',c.post,false)" tabindex="-1">${Bookmark}</a></li>
+                    <li data-ng-if="c.post.canBookmark && !c.post.activities_allowed.bookmark" role="presentation"><a role="menuitem" class="cm-menu-item" href="Javascript:void(0)" data-ng-click="c.postFeedback('bookmark',c.post,true)" tabindex="-1">${Remove Bookmark}</a></li>
+                    <li data-ng-if="::c.isContentAuthor" role="presentation"><a role="link" href="Javascript:void(0);" data-ng-click="c.subscribe()" tabindex="-1"><span ng-bind="c.toggleSubscribeText"></span></a></li>
+                    <li data-ng-if="c.post.canModerate" role="presentation"><a role="link"  href="Javascript:void(0);" data-ng-click="c.flagContent(c.post,'content')" tabindex="-1">${Report Content}</a></li>
+                    <li data-ng-if="c.data.canFeaturContent&& !c.data.isFeaturedContent" role="presentation"><a role="link"  href="Javascript:void(0);" data-ng-click="c.featureContent(c.post,'contentFeature')" tabindex="-1">${Mark as featured}</a></li>
+                    <li data-ng-if="c.data.canFeaturContent && c.data.isFeaturedContent" role="presentation"><a role="link"  href="Javascript:void(0);" data-ng-click="c.featureContent(c.post,'contentFeature')" tabindex="-1">${Edit Featured content}</a></li>
+                    <li data-ng-if="c.post.noActionAvailable" role="presentation"><div role="menuitem" ng-bind="::c.data.msg.noActionAvailableMsg"></div></li>
+                  </ul>
+                  </li>
+                  </ul> 
+                </div>
+                <div class="cm-edit-mode-menu cm-menu-button" data-ng-if="c.canEditDraft">
+                  <ul role="menubar" class="menu-header">
+                    <li class="dropdown header-menu-item menu-style" role="presentation">
+                  <a role="menuitem" href="Javascript:void(0);" id="actionMenu" aria-label="${Actions menu}" class="btn btn-default pull-right cm-action-icon dropdown-toggle"
+                     data-ng-click="c.getMenuItems(c.post)" data-toggle="dropdown" aria-haspopup="true" >
+                    <span class="cm-menu-ellipsis"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
+                  </a>
+                  <ul class="dropdown-menu" aria-expanded="false" role="menu">
+                    <li role="presentation"><a role="link"  href="Javascript:void(0);" data-ng-click="c.canDeleteContent()" tabindex="-1">${Delete}</a></li>
+                    <li data-ng-if="c.formData.enablePublishOption || (!c.formData.enablePublishOption && c.post.enablePublishOption == true)" role="menuitem"><a role="link"  href="Javascript:void(0);" data-ng-click="c.publishContent(c.post)" tabindex="-1">${Publish}</a></li>
+                  </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="cm-content-title m-t">
+            <span ng-bind="c.post.title"></span>
+          </h3>
+          <div class="cm-author-details">
+            <div class="cm-author-image">
+              <span class="image50px">
+                <a ng-href="{{::(c.data.readOnlyMode ? '' : c.post.userAvatarObject.profileLink)}}" title="{{::c.post.userAvatarObject.name}}">
+                  <sn-avatar primary="::c.post.userAvatarObject" show-presence="false"/>
+                </a>
+              </span>
+            </div>
+            <div class="cm-author-info cm-common-light-color">
+              <span>${by }</span>
+              <gm-hover-card readonlymode="::c.data.readOnlyMode" carddata="::c.post.userAvatarObject" enablegamification="::c.data.enable_gamification" pointslabel="::c.data.msg.points" profilelink="::c.data.msg.profileLink" subject="::c.formatMessage(c.data.msg.subject,[c.post.title])") canemail="::c.data.canEmail"></gm-hover-card>
+                <span data-ng-if="::(c.data.enable_gamification == 'true')">
+                  <span ng-if = "::(c.post.user_details.levelName!= '')">
+                    <span ng-if = "::(c.data.levelInfo == 'sn_communities_forum')" data-toggle="tooltip" title = {{c.post.forum.name}} class="overall-level" ng-bind="::c.post.user_details.levelName"></span>
+                    <span ng-if = "::(c.data.levelInfo != 'sn_communities_forum')" class="overall-level" ng-bind="::c.post.user_details.levelName"></span>
+                  </span>       
+                </span>
+              <div>
+                <span>${created}</span>
+                <span data-ng-if="!c.post.publishedHideTimeAgo"><sn-time-ago timestamp="::c.post.published_date"/></span>
+                <span data-ng-if="c.post.publishedHideTimeAgo">${Just Now}</span>
+                <span data-ng-if="c.isEdited">
+                  <span>(${edited} 
+                    <span data-ng-if="!c.post.editedHideTimeAgo"><sn-time-ago timestamp="c.post.edited_date"/></span><span data-ng-hide="c.post.editedHideTimeAgo">)</span>
+                    <span data-ng-if="c.post.editedHideTimeAgo">${Just Now})</span>       
+                  </span>
+                </span>
+                <span>${in}</span> 
+                <a class="cm-link cm-common-dark-color" data-ng-href="{{c.data.readOnlyMode ? '' : '?id=community_forum&sys_id=' + c.post.forum.sys_id}}">
+                  <span ng-bind="c.post.forum.name"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr/>
+        <div class="cm-content-body">
+          <sp-html-content data-ng-if = "::(c.data.useSnBind == 'false')" class="cm-content-detail" model="c.post.description | communityHTMLFilter:c.data.readOnlyMode"></sp-html-content>
+          <p data-ng-if = "::(c.data.useSnBind == 'true')" class="cm-content-detail"sn-bind-html="c.post.description"></p>          
+          <community-attachments attachments="c.post.attachments"
+                                 config="{inlineMode: true,
+                                         showInlineDnD: false,
+                                         showInlineList: true,
+                                         dialogMode: true,
+                                         showDialogList: true,
+                                         canDownloadFile: true,
+                                         attachmentsCount: c.post.attachments.length,
+                                         isOwnerOfContent: c.post.isOwnerOfContent,
+                                         parentWidget: c.widget.sys_id
+                                         }"  ></community-attachments>
+          <div ng-if="c.data.topicsEnabled && c.post.topics.length > 0" class="cm-topics">
+            <span class="cm-topic-label cm-common-light-color">${Topics:} </span>
+            <span ng-repeat="topic in c.post.topics track by topic.id" class="cm-topic-info">
+              <a class="btn btn-default btn-xs cm-topic-badge" ng-href="{{c.data.readOnlyMode ? '' : '?id=community_topic&sys_id=' + topic.id}}"><span ng-bind="::topic.name"></span></a>
+            </span>
+          </div>   
+        </div>
+        <hr/>
+        <div class="cm-content-footer cm-common-light-color">
+          <div class="helpful cm-action">
+            <span data-ng-if="c.post.canMarkHelpful && c.state == 'published' && c.data.isLoggedIn">
+              <a role="button" href="Javascript:void(0);" data-ng-if="c.post.activities_allowed.helpful" class="cm-button-link cm-common-light-color"
+                 aria-label="${Helpful}" data-ng-click="c.postFeedback('helpful',c.post, false)">
+                <i class="fa fa-thumbs-up cm-action-icons" aria-hidden="true"></i> ${Helpful}
+              </a>
+              <a role="button" href="Javascript:void(0);" data-ng-if="!c.post.activities_allowed.helpful" class="cm-button-link cm-acted-color"
+                 aria-label="${Undo helpful}" data-ng-click="c.postFeedback('helpful',c.post, true)">
+                <i class="fa fa-thumbs-up cm-action-icons" aria-hidden="true"></i> ${Helpful}
+              </a>
+              <a data-ng-if="c.post.helpful_count >0" aria-haspopup="true" href="Javascript:void(0);" role="button" data-ng-click="c.getFeedbackProfiles(c.post,'helpful',$event)" class="cm-button-link cm-common-dark-color">(<span ng-bind="c.post.helpful_count"></span>) </a>
+              <span data-ng-if="c.post.helpful_count == 0" role="presentation" class="cm-common-dark-color">(<span ng-bind="c.post.helpful_count"></span>) </span>
+            </span>
+            <span data-ng-if="::(!c.post.canMarkHelpful && c.data.isLoggedIn)" class="cm-common-light-color">
+              <i class="fa fa-thumbs-up cm-action-icons" aria-hidden="true"></i> ${Helpful}
+              <a data-ng-if="c.post.helpful_count >0" aria-haspopup="true" href="Javascript:void(0);" role="button" data-ng-click="c.getFeedbackProfiles(c.post,'helpful',$event)" class="cm-button-link cm-common-dark-color">(<span ng-bind="c.post.helpful_count"></span>) </a>
+              <span data-ng-if="c.post.helpful_count == 0" role="presentation" class="cm-common-dark-color">(<span ng-bind="c.post.helpful_count"></span>) </span>
+            </span>
+            <span data-ng-if="::!c.data.isLoggedIn" class="cm-common-light-color">
+              <i class="fa fa-thumbs-up cm-action-icons" aria-hidden="true"></i> ${Helpful}
+              <span role="presentation" class="cm-common-dark-color">(<span ng-bind="c.post.helpful_count"></span>) </span>
+            </span>
+          </div>
+          <div class="comment cm-action">
+            <a role="button"  href="Javascript:void(0);" aria-label="${Comment}" data-ng-if="c.post.canComment && c.state == 'published' && c.data.isLoggedIn" ng-class="c.post.showCommentBox ? 'cm-acted-color cm-action cm-button-link' : 'cm-common-light-color cm-action cm-button-link'" data-ng-click="c.showCommentBox(c.post,!c.post.showCommentBox, 'ccb_commentEditor')" >
+              <span><i class="fa fa-comment cm-action-icons" aria-hidden="true"></i> ${Comment}
+                <span class="cm-common-dark-color">(<span ng-bind="c.comment_count"></span>)</span>
+              </span>
+            </a>
+            <span aria-label="${Comment}" data-ng-if="::!c.data.isLoggedIn" ng-class="'cm-common-light-color cm-action cm-button-link'">
+              <i class="fa fa-comment cm-action-icons" aria-hidden="true"></i> ${Comments}
+              <span class="cm-common-dark-color">(<span ng-bind="c.comment_count"></span>)</span>
+            </span>
+          </div>
+          <div class="cm-views" data-ng-if="::(c.post.view_count > 1)"><span ng-bind="::c.post.view_count"></span><span>${Views}</span></div>
+          <div class="cm-views" data-ng-if="::(c.post.view_count == 1)"><span ng-bind="::c.post.view_count"></span><span>${View}</span></div>
+          <div class="cm-comment-box self-clear" data-ng-if="c.post.showCommentBox">
+            <div class="alert alert-danger cm-alert-inform clearfix" data-ng-if="c.formValidation.showMsg">
+              <div class="alert-icon pull-left">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+              </div>
+              <div class="alert-text pull-left">
+                <span ng-bind="c.formValidationError"></span>
+              </div>
+            </div>
+            <div class="form-group cm-widget-mce hidden-xs" id="ccb_commentEditor" data-ng-if="c.post.showCommentBox">
+              <sp-tinymce-video data-ng-model="c.newCommentText" ng-model-options="{height: '300', allow: c.data.allowInsertVideoOnComment, updateOn: 'default blur',
+                                       debounce:{
+                                       'default':250}
+                                       }" sn-mentions-config="::c.data.userMentionConfig"></sp-tinymce-video>
+            </div>
+            <div class="form-group cm-comment-textarea visible-xs">
+              <span id="lb1l" class="sr-only">${Post A Comment}</span>
+              <textarea aria-labelledby="lb1l" data-ng-model="c.post.textInput" class="form-control" rows="5"
+                        ng-model-options="{
+                                       updateOn: 'default blur',
+                                       debounce:{
+                                       'default':250}
+                                       }"></textarea>
+            </div>
+            <div class="form-group" >
+              <div class="cm-attach-link">
+                <community-attachments attachments="c.attachments"
+                                       config="{canEdit: true,
+                                               dialogMode: true,
+                                               showDialogDnD: true,
+                                               showDialogList: true,
+                                               canDeleteFile: true,
+                                               attachmentsCount: c.attachmentsCount,
+                                               attachmentsAdded: c.attachmentsAdded,
+                                               parentWidget: c.widget.sys_id
+                                               }"  ></community-attachments>
+              </div>
+            </div>
+            <div class="cm-form-actions">
+              <div class="btn-container">
+                <div class="pull-right">
+                  <button type="cancel" class="btn btn-default cm-cancel-btn action-btn" data-ng-click="c.cancelComment(c.post)">${Cancel}</button>
+                  <button type="submit" class="btn btn-primary cm-comment-btn action-btn" data-ng-disabled="!c.post.isDirty" data-ng-click="c.postComment(c.post)">${Comment}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div data-ng-show="c.loading" class="text-center cm-loading-div">
+        <p class="cm-loading">
+          <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>${Loading...}
+        </p>
+      </div>
+      <div class="cm-edit-mode" data-ng-show="c.post.showEditMode && !c.loading ">
+        <div class="alert alert-danger cm-alert-inform clearfix" data-ng-if="c.formValidation.showMsg">
+          <div class="alert-icon pull-left">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          </div>
+          <div class="alert-text pull-left">
+            <span ng-bind="c.formValidationError"></span>
+          </div>
+        </div>
+        <div class="cm-content-header">
+          <div class="cm-content-type">
+            <div class="cm-content-type-icon">
+              <span><i class="fa {{::c.post.icon}} cm-common-link-color" aria-hidden="true"></i></span>
+              <span class="cm-content-type-name cm-common-dark-color">${Blog}</span>
+            </div>
+          </div>
+        </div>
+        <form class="self-clear" role="form" name="cm_form">
+          <div class="form-group padder-t-md">
+            <div class="cm-input-title required {{c.post.title.length > 0 ? 'filled' : ''}}">
+              <label for="title" class="control-label padder-b-xs">${Blog Title}</label>
+              <input data-ng-model="c.post.title" name="title" type="text" class="form-control" id="title" placeholder="" aria-required="true" 
+                     ng-model-options="{
+                                       updateOn: 'default blur',
+                                       debounce:{
+                                       'default':250}
+                                       }">
+            </div>
+          </div> 
+          <div ng-if="c.post.showEditMode" id="choose_forums_div" class="form-group cm-select2-forum padder-t">
+            <label for="choose_forum" class="control-label label-text padder-b-xs">${Forum}</label>
+            <select id="choose_forum" class="cm-select2 forum-width" title="${Forum}" aria-required="true" ng-readonly="!c.canEditForum">
+              <option value="" ></option>
+            </select>
+          </div>
+          <div id="choose_topics_div" class="form-group cm-select2-topic padder-t" data-ng-if="::c.data.topicsEnabled">
+            <label for="choose_topics" class="control-label padder-b-xs">${Topic(s)}</label>
+            <select id="choose_topics" class="cm-select2" multiple="multiple" ng-readonly="!c.forumTopics || c.forumTopics.length == 0">
+            </select>
+            <div class="note-text" ng-bind="::c.data.msg.topicNoteMsg"></div>
+        </div>
+          <div ng-if="c.post.showEditMode" class="form-group widget-mce padder-t required {{c.post.description ? 'filled' : ''}}">
+            <label for="description" class="control-label padder-b-xs">${Description}</label>
+            <sp-tinymce-video data-ng-model="c.post.description" ng-model-options="{height: '300', allow: c.data.allowInsertVideoOnBlog, updateOn: 'default blur',
+                                       debounce:{
+                                       'default':250}
+                                       }" sn-mentions-config="::c.data.userMentionConfig" class="cm-sp-video-width"></sp-tinymce-video>
+          </div>
+          <div class="form-group" >
+            <div class="cm-attach-link">
+              <community-attachments attachments="c.attachments"
+                                     config="{canEdit: true,
+                                             dialogMode: true,
+                                             showDialogDnD: true,
+                                             showDialogList: true,
+                                             canDeleteFile: true,
+                                             attachmentsCount: c.attachmentsCount,
+                                             attachmentsAdded: c.attachmentsAdded,
+                                             isOwnerOfContent: c.post.isOwnerOfContent,
+                                             parentWidget: c.widget.sys_id
+                                             }"  ></community-attachments>
+            </div>
+          </div>
+          <div data-ng-show="c.showDisableComments">
+            <input data-ng-model="c.post.disable_comments" id="checkboxDC" class="checkbox inline disable-comments-checkbox" type="checkbox" name="checkboxDC" />
+            <label for="checkboxDC" class="control-label label-text padder-bt">${Disable Comments}</label>
+          </div>
+           <div data-ng-show="c.showSchedulePublish">
+          <div  class="form-group">
+            <input data-ng-model="c.enableScheduling" id="checkboxSP" class="checkbox inline scheduled-checkbox" type="checkbox" name="checkboxSP" />
+            <label for="checkboxSP" class="control-label label-text cm-sched-margin">${Schedule Publish}</label>
+          </div>
+             <div ng-show="c.enableScheduling" class="row cm-schedule">
+               <div class="col-xs-12 cm-schedule-well-parent">
+                 <div class="well cm-well-style">
+                   <div class="col-md-3 col-xs-6">
+                     <label for="schedule-date" class="control-label label-text padder-b-xs">Date</label>
+                     <sp-date-picker field="c.scheduledDate" sn-disabled="c.ismobile" sn-include-time="false" sn-change="c.scheduledDateChanged(newValue)" sn-min-date="c.start_date"/>
+                   </div>
+                   <div class="col-md-2 col-xs-6 time-padding">
+                     <label for="choose_scheduled_time" class="control-label label-text padder-b-xs">Time</label>
+                     <select id="choose_scheduled_time" class="form-control cm-select2-forum" data-ng-model="c.scheduledTime" ng-options="timeOption.value as timeOption.label for timeOption in c.timeOptions" title="Choose Scheduled Time" ng-change="c.scheduledDateChanged(c.scheduledDate.value)">
+                     </select>
+                   </div>
+                   <div class="col-md-3 col-xs-6 time-padding cm-change-tz">
+                     <span class="inline">
+                       <a data-ng-click="c.displayTimezones()" href="Javascript:void(0)" class="change-time-zone-ps">${Change time zone }({{c.timezone_abbr}})</a>
+                     </span>
+                   </div>
+                   <div class="col-md-12 col-xs-12 cm-sched-publish-details">${Content will be published approximately around the time you have selected.}</div>
+                 </div>
+               </div>
+             </div>
+      </div>
+          <div class="cm-form-actions">
+            <div class="btn-container">
+              <div class="form-actions">
+          		<div class="col-md-6 pull-left text-left row btn-container padder-b-xs">
+            		<button type="submit" class="btn btn-default" data-ng-if="c.state == 'rejected'" data-ng-click="c.editContent(c.post, 'save')" data-ng-disabled="c.disablePost">${Save as Draft}</button>
+          		</div>
+        	  </div> 
+              
+              <div class="pull-right">
+                <button type="cancel" class="btn btn-default cm-cancel-btn action-btn" data-ng-click="c.cancelConfirm(c.post)">${Cancel}</button>
+                <button type="submit" class="btn btn-default cm-save-btn action-btn" data-ng-if="c.state == 'draft'" data-ng-click="c.editContent(c.post, 'save')" data-ng-disabled="!c.post.title">${Save}</button>
+                <button type="submit" class="btn btn-primary action-btn" data-ng-click="c.editContent(c.post)">{{c.state == 'draft'|| c.state == 'rejected' ? '${Publish}' : '${Save}'}}</button> 
+              </div> 
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="screen-reader-tag-id" class="sr-only" role="alert" aria-live="polite">
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

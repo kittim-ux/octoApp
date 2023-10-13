@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl">
+    <sys_security_acl action="DELETE">
+        <active>true</active>
+        <admin_overrides>true</admin_overrides>
+        <advanced>false</advanced>
+        <condition/>
+        <description>Default access control on x_938832_octomobil_stnkompdata</description>
+        <local_or_existing>Local</local_or_existing>
+        <name>x_938832_octomobil_stnkompdata</name>
+        <operation display_value="read">read</operation>
+        <script/>
+        <security_attribute/>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-12 08:14:50</sys_created_on>
+        <sys_id>7f054c5e4771f51030980d45d36d438c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_938832_octomobil_stnkompdata</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_security_acl_7f054c5e4771f51030980d45d36d438c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-12 08:14:50</sys_updated_on>
+        <type display_value="record">record</type>
+    </sys_security_acl>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>66c767cfdb1d49101b813feb689619fb</instance_id>
+        <instance_name>dev123716</instance_name>
+        <name>sys_security_acl_7f054c5e4771f51030980d45d36d438c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl"><sys_security_acl action="INSERT_OR_UPDATE"><active>true</active><admin_overrides>true</admin_overrides><advanced>false</advanced><condition/><description>Default access control on x_938832_octomobil_stnkompdata</description><local_or_existing>Local</local_or_existing><name>x_938832_octomobil_stnkompdata</name><operation display_value="read">read</operation><script/><security_attribute/><sys_class_name>sys_security_acl</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2023-10-12 08:14:50</sys_created_on><sys_id>7f054c5e4771f51030980d45d36d438c</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_938832_octomobil_stnkompdata</sys_name><sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package><sys_policy/><sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope><sys_update_name>sys_security_acl_7f054c5e4771f51030980d45d36d438c</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2023-10-12 08:14:50</sys_updated_on><type display_value="record">record</type></sys_security_acl></record_update>]]></payload>
+        <payload_hash>-716793583</payload_hash>
+        <record_name>x_938832_octomobil_stnkompdata</record_name>
+        <reverted_from/>
+        <source>610d77224761311030980d45d36d43fb</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-12 08:14:50</sys_created_on>
+        <sys_id>77054c5e4771f51030980d45d36d438f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18b22f3e4150000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-12 08:14:50</sys_updated_on>
+        <type>Access Control</type>
+        <update_guid>bb054c5e7971f5101719c10716bd938e</update_guid>
+        <update_guid_history>bb054c5e7971f5101719c10716bd938e:-716793583</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-12 08:28:59</sys_created_on>
+        <sys_db_object display_value="" name="sys_security_acl">sys_security_acl</sys_db_object>
+        <sys_id>a3e2073870fb458e95a6b2e4194f1604</sys_id>
+        <sys_metadata>7f054c5e4771f51030980d45d36d438c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_938832_octomobil_stnkompdata</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent display_value="">7f054c5e4771f51030980d45d36d43c3</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sys_security_acl_7f054c5e4771f51030980d45d36d438c</sys_update_name>
+        <sys_update_version display_value="sys_security_acl_7f054c5e4771f51030980d45d36d438c">77054c5e4771f51030980d45d36d438f</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-12 08:28:59</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

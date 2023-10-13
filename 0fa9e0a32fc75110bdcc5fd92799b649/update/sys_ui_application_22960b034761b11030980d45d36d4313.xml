@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_application">
+    <sys_ui_application action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <hint/>
+        <name>octoMobile</name>
+        <order/>
+        <roles>x_938832_octomobil.admin,x_938832_octomobil.user,x_938832_octomobil.approver</roles>
+        <sys_class_name>sys_ui_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-02 20:00:11</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>22960b034761b11030980d45d36d4313</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoMobile</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ui_application_22960b034761b11030980d45d36d4313</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-02 20:00:11</sys_updated_on>
+    </sys_ui_application>
+</record_update>

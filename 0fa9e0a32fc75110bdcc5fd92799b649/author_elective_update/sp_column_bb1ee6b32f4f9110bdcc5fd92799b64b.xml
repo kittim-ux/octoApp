@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>3</order>
+        <size>4</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">ff1ee6b32f4f9110bdcc5fd92799b645</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 23:20:33</sys_created_on>
+        <sys_id>bb1ee6b32f4f9110bdcc5fd92799b64b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>3</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_column_bb1ee6b32f4f9110bdcc5fd92799b64b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-15 23:20:33</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>35453a86dbf05850566750b6f49619be</instance_id>
+        <instance_name>dev103886</instance_name>
+        <name>sp_column_bb1ee6b32f4f9110bdcc5fd92799b64b</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>3</order><size>4</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">ff1ee6b32f4f9110bdcc5fd92799b645</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2022-11-15 23:20:33</sys_created_on><sys_id>bb1ee6b32f4f9110bdcc5fd92799b64b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>3</sys_name><sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package><sys_policy/><sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope><sys_update_name>sp_column_bb1ee6b32f4f9110bdcc5fd92799b64b</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2022-11-15 23:20:33</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>-535030356</payload_hash>
+        <record_name>3</record_name>
+        <reverted_from/>
+        <source>56385b2f2f039110bdcc5fd92799b665</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 23:20:33</sys_created_on>
+        <sys_id>7f1e22f32f4f9110bdcc5fd92799b67b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1847d9824350000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-15 23:20:33</sys_updated_on>
+        <type>Column</type>
+        <update_guid>b71e22f3814f9110c933bf8c12dab17b</update_guid>
+        <update_guid_history>b71e22f3814f9110c933bf8c12dab17b:-535030356</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">75e79ac12f179110bdcc5fd92799b6fc</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-19 18:55:53</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>009bb0d7e75e472180ab4314c5ed8b99</sys_id>
+        <sys_metadata>bb1ee6b32f4f9110bdcc5fd92799b64b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>3</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sp_column_bb1ee6b32f4f9110bdcc5fd92799b64b</sys_update_name>
+        <sys_update_version display_value="sp_column_bb1ee6b32f4f9110bdcc5fd92799b64b">7f1e22f32f4f9110bdcc5fd92799b67b</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:32:01</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

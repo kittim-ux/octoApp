@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="84af8b8b4761b11030980d45d36d4329" extends="sys_import_set_row" label="Whitelist Management Pro" max_length="40" name="x_938832_octomobil_whitelist_management_pro" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=BUILDING NAME" label="BUILDING NAME" max_length="40" name="u_building_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=CLIENT NAME" label="CLIENT NAME" max_length="40" name="u_client_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=CONNECTION STATUS" label="CONNECTION STATUS" max_length="40" name="u_connection_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=DATE SUBSCRIBED(MM/DD/YY)" label="DATE SUBSCRIBED(MM/DD/YY)" max_length="40" name="u_date_subscribed_mm_dd_yy_" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=EXPIRY DATE(MM/DD/YY)" label="EXPIRY DATE(MM/DD/YY)" max_length="40" name="u_expiry_date_mm_dd_yy_" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=PACKAGE" label="PACKAGE" max_length="40" name="u_package" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=PACKAGE STATUS" label="PACKAGE STATUS" max_length="40" name="u_package_status" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=PHONE NUMBER." label="PHONE NUMBER." max_length="40" name="u_phone_number_" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=TECH TEAM" label="TECH TEAM" max_length="40" name="u_tech_team" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=TV MAC" label="TV MAC" max_length="40" name="u_tv_mac" type="string"/>
+    </element>
+</database>

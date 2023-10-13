@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>STN Offline Data</name>
+        <operation_script><![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    try {
+        // Fetch data from the company's API
+        var companyAPIUrl = 'https://dev123716.service-now.com/api/x_938832_octomobil/komp_buildings_data/stn_all_onus';
+
+        var companyResponse = new sn_ws.RESTMessageV2();
+        companyResponse.setHttpMethod('get');
+        companyResponse.setEndpoint(companyAPIUrl);
+
+        // You may need to set headers or authentication for the company API if required.
+
+        var companyResult = companyResponse.execute();
+        var companyData = JSON.parse(request.response.body);
+
+        // Fetch data from the Elasticsearch API
+        var elasticAPIUrl = 'https://dev123716.service-now.com/api/x_938832_octomobil/elasticsearch_data/api/stn-elastdata-api';
+
+        var elasticResponse = new sn_ws.RESTMessageV2();
+        elasticResponse.setHttpMethod('get');
+        elasticResponse.setEndpoint(elasticAPIUrl);
+
+        // You may need to set headers or authentication for the Elasticsearch API if required.
+
+        var elasticResult = elasticResponse.execute();
+        var elasticData = JSON.parse(elasticResult.getBody());
+
+        // Process data and determine building status
+        var buildingStatus = {};
+
+        // Loop through data from the company's API
+        for (var building in companyData) {
+            if (companyData.hasOwnProperty(building)) {
+                var onus = companyData[building];
+
+                // Check the corresponding data from the Elasticsearch API for each ONU
+                var isBuildingOnline = true; // Assume the building is online
+
+                for (var i = 0; i < onus.length; i++) {
+                    var onu = onus[i];
+                    var onuSerialCode = onu.Serial_Code;
+
+                    // Find the corresponding data in Elasticsearch
+                    if (elasticData[building]) {
+                        for (var j = 0; j < elasticData[building].length; j++) {
+                            var elasticOnu = elasticData[building][j];
+                            if (elasticOnu.serialNumber === onuSerialCode) {
+                                // Check if the ONU is online (ifOperStatus is 1)
+                                if (elasticOnu.ifOperStatus !== 1) {
+                                    isBuildingOnline = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Store the building status
+                buildingStatus[building] = isBuildingOnline;
+            }
+        }
+
+        // Set the response based on the building status, and stringify the JSON
+        response.setStatus(200);
+        response.setBody(JSON.stringify(buildingStatus));
+    } catch (ex) {
+        response.setStatus(500);
+        response.setBody('Exception: ' + ex.toString());
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_938832_octomobil/offlinebldg_data/stn_offline_data</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/stn_offline_data</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-11 21:37:16</sys_created_on>
+        <sys_id>93d2710a47f5b51030980d45d36d4309</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>STN Offline Data</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ws_operation_93d2710a47f5b51030980d45d36d4309</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-12 00:26:12</sys_updated_on>
+        <web_service_definition display_value="OfflineBldg_Data">0792bd0a47f5b51030980d45d36d4373</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

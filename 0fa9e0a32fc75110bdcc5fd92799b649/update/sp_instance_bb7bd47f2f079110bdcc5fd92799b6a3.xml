@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>2</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">337bd47f2f079110bdcc5fd92799b69d</sp_column>
+        <sp_widget display_value="KB Top Rated">3c817b52cb30020000f8d856634c9cfb</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 12:39:57</sys_created_on>
+        <sys_id>bb7bd47f2f079110bdcc5fd92799b6a3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Top Rated Articles</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_bb7bd47f2f079110bdcc5fd92799b6a3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:42</sys_updated_on>
+        <title>Top Rated Articles</title>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=bb7bd47f2f079110bdcc5fd92799b6a3"/>
+</record_update>

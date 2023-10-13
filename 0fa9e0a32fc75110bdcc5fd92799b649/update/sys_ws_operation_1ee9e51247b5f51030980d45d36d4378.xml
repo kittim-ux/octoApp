@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>Table Record </name>
+        <operation_script><![CDATA[(function() {
+    try {
+        gs.debug("Starting script execution");
+
+        var instanceName = 'dev123716';  // Replace with your ServiceNow instance name
+        var user = 'admin';  // Replace with your ServiceNow username
+        var password = 'KItt48++';  // Replace with your ServiceNow password
+
+        var request = new sn_ws.RESTMessageV2();
+        request.setEndpoint('https://' + instanceName + '.service-now.com/api/x_938832_octomobil/komp_buildings_data/stn_all_onus');
+        request.setHttpMethod('GET');
+
+        // Set basic authentication with your ServiceNow credentials
+        request.setBasicAuth(user, password);
+        request.setRequestHeader("Accept", "application/json");
+
+        var response = request.execute();
+        var jsonResponse = JSON.parse(response.getBody());
+
+        // Loop through the JSON response and insert data into your custom table
+        for (var buildingName in jsonResponse) {
+            if (jsonResponse.hasOwnProperty(buildingName)) {
+                var onus = jsonResponse[buildingName];
+
+                for (var i = 0; i < onus.length; i++) {
+                    var serialCode = onus[i].Serial_Code;
+
+                    // Create a new record in your custom table for each serial code
+                    var gr = new GlideRecord('x_938832_octomobil_stn_kompdata');
+                    gr.initialize();
+                    gr.setValue('building_name', buildingName);
+                    gr.setValue('serial_code', serialCode);
+                    gr.insert();
+                }
+            }
+        }
+
+        gs.debug("Script execution complete");
+    } catch (ex) {
+        gs.debug("Exception: " + ex.toString());
+    }
+})();]]></operation_script>
+        <operation_uri>/api/x_938832_octomobil/komp_buildings_data/table_record</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/table_record</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-12 15:36:09</sys_created_on>
+        <sys_id>1ee9e51247b5f51030980d45d36d4378</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>Table Record </sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ws_operation_1ee9e51247b5f51030980d45d36d4378</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-12 15:55:54</sys_updated_on>
+        <web_service_definition display_value="Komp Buildings Data">f9a2b2394779751030980d45d36d43c3</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

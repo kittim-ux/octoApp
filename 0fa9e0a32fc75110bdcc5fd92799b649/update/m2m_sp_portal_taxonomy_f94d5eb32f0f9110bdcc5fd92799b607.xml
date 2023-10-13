@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_portal_taxonomy">
+    <m2m_sp_portal_taxonomy action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <order>100</order>
+        <sp_portal display_value="octoMobile">e42b52332f0f9110bdcc5fd92799b66d</sp_portal>
+        <sys_class_name>m2m_sp_portal_taxonomy</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 22:06:57</sys_created_on>
+        <sys_id>f94d5eb32f0f9110bdcc5fd92799b607</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoMobile.Employee</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>m2m_sp_portal_taxonomy_f94d5eb32f0f9110bdcc5fd92799b607</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:37</sys_updated_on>
+        <taxonomy display_value="Employee">1f5d5a40c3203010069aec4b7d40dd93</taxonomy>
+    </m2m_sp_portal_taxonomy>
+</record_update>

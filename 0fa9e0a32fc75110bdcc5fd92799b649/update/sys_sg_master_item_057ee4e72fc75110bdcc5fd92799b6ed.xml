@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_master_item">
+    <sys_sg_master_item action="INSERT_OR_UPDATE">
+        <condition_order/>
+        <datasource_table>x_938832_octomobil_octoservices</datasource_table>
+        <datasource_table_condition/>
+        <embedded_screen display_value="octoservices Form Screen">017ee4e72fc75110bdcc5fd92799b6ec</embedded_screen>
+        <item_view/>
+        <name>octoservices master_item</name>
+        <sys_class_name>sys_sg_master_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 19:24:17</sys_created_on>
+        <sys_id>057ee4e72fc75110bdcc5fd92799b6ed</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoservices master_item</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_sg_master_item_057ee4e72fc75110bdcc5fd92799b6ed</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:55</sys_updated_on>
+        <use_view_config>true</use_view_config>
+        <view_config display_value="octoservices List Screen View Config">7c7ea4e72fc75110bdcc5fd92799b63b</view_config>
+    </sys_sg_master_item>
+</record_update>

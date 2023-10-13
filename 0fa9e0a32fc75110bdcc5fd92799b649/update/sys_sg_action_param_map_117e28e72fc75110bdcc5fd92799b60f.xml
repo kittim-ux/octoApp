@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_action_param_map">
+    <sys_sg_action_param_map action="INSERT_OR_UPDATE">
+        <button display_value="New Button (octoservices)">1d7e28e72fc75110bdcc5fd92799b60a</button>
+        <item_parameter display_value="octoservices state">117ee4e72fc75110bdcc5fd92799b6f1</item_parameter>
+        <sys_class_name>sys_sg_action_param_map</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 19:24:17</sys_created_on>
+        <sys_id>117e28e72fc75110bdcc5fd92799b60f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>117ee4e72fc75110bdcc5fd92799b6f1</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_sg_action_param_map_117e28e72fc75110bdcc5fd92799b60f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:52</sys_updated_on>
+        <ui_parameter display_value="State">117e28e72fc75110bdcc5fd92799b60d</ui_parameter>
+    </sys_sg_action_param_map>
+</record_update>

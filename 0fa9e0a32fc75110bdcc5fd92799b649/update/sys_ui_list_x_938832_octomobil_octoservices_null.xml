@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="x_938832_octomobil_octoservices" version="2" view="">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>number</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>055fa02b2fc75110bdcc5fd92799b6d0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>assigned_to</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>895fa02b2fc75110bdcc5fd92799b6d0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>availability</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>0d5fa02b2fc75110bdcc5fd92799b6d0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>estimated_downtime</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>8d5fa02b2fc75110bdcc5fd92799b6d0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>location</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>015fa02b2fc75110bdcc5fd92799b6d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>phone_number</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>815fa02b2fc75110bdcc5fd92799b6d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>priority</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>055fa02b2fc75110bdcc5fd92799b6d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>short_description</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>855fa02b2fc75110bdcc5fd92799b6d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>state</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>095fa02b2fc75110bdcc5fd92799b6d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>status</element>
+            <list_id display_value="x_938832_octomobil_octoservices" element="NULL" name="x_938832_octomobil_octoservices" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">455fa02b2fc75110bdcc5fd92799b6cf</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_id>895fa02b2fc75110bdcc5fd92799b6d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2022-11-14 19:28:06</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_938832_octomobil_octoservices</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2022-11-14 19:28:06</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>455fa02b2fc75110bdcc5fd92799b6cf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_938832_octomobil_octoservices</sys_name>
+            <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+            <sys_update_name>sys_ui_list_x_938832_octomobil_octoservices_null</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2023-10-01 10:31:57</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

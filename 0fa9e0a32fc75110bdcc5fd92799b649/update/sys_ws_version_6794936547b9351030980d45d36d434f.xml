@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_version">
+    <sys_ws_version action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <deprecated>false</deprecated>
+        <is_default>true</is_default>
+        <short_description/>
+        <sys_class_name>sys_ws_version</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-10 15:26:14</sys_created_on>
+        <sys_id>6794936547b9351030980d45d36d434f</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>v1</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ws_version_6794936547b9351030980d45d36d434f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-10 15:26:14</sys_updated_on>
+        <version>1</version>
+        <version_id>v1</version_id>
+        <web_service_definition display_value="ElasticSearch Data">64d0d36547b9351030980d45d36d436c</web_service_definition>
+    </sys_ws_version>
+</record_update>

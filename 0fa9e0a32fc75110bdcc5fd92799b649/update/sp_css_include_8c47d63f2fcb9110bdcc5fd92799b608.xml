@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_css_include">
+    <sp_css_include action="INSERT_OR_UPDATE">
+        <lazy_load>false</lazy_load>
+        <name>octo_links.css</name>
+        <rtl_css_file_url/>
+        <source>local</source>
+        <sp_css display_value="octo_links.css">4f769a3f2fcb9110bdcc5fd92799b6d1</sp_css>
+        <sys_class_name>sp_css_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-15 21:40:38</sys_created_on>
+        <sys_id>8c47d63f2fcb9110bdcc5fd92799b608</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octo_links.css</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_css_include_8c47d63f2fcb9110bdcc5fd92799b608</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:40</sys_updated_on>
+        <url/>
+    </sp_css_include>
+</record_update>

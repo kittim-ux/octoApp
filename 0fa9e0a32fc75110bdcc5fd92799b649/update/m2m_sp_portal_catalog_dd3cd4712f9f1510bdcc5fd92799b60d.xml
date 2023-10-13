@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_portal_catalog">
+    <m2m_sp_portal_catalog action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <order>100</order>
+        <sc_catalog display_value="">8752afd953133300a8ed21fac2dc34ac</sc_catalog>
+        <sp_portal display_value="octoMobile">e42b52332f0f9110bdcc5fd92799b66d</sp_portal>
+        <sys_class_name>m2m_sp_portal_catalog</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-21 17:50:54</sys_created_on>
+        <sys_id>dd3cd4712f9f1510bdcc5fd92799b60d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Resources.octoMobile</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>m2m_sp_portal_catalog_dd3cd4712f9f1510bdcc5fd92799b60d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:37</sys_updated_on>
+    </m2m_sp_portal_catalog>
+</record_update>

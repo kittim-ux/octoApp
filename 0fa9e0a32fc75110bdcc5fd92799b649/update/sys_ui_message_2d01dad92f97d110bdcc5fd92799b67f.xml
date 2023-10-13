@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application>Virtual Agent</application>
+        <code/>
+        <commented_message/>
+        <key>please provide a short description of the issue.</key>
+        <language>en</language>
+        <message>Please provide a short description of the issue.</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-20 13:04:18</sys_created_on>
+        <sys_id>2d01dad92f97d110bdcc5fd92799b67f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>please provide a short description of the issue.</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ui_message_2d01dad92f97d110bdcc5fd92799b67f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:57</sys_updated_on>
+    </sys_ui_message>
+</record_update>

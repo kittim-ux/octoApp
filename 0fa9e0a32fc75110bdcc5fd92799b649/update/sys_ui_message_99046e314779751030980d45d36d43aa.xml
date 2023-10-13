@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_message">
+    <sys_ui_message action="INSERT_OR_UPDATE">
+        <application>Virtual Agent</application>
+        <code/>
+        <commented_message/>
+        <key>va:topic:632ec6152f97d110bdcc5fd92799b695:node:666410bff1464e09843aeec1c97da8ea:field:message</key>
+        <language>en</language>
+        <message>Select the issue you're currently facing.</message>
+        <sys_class_name>sys_ui_message</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-11 06:32:23</sys_created_on>
+        <sys_id>99046e314779751030980d45d36d43aa</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>va:topic:632ec6152f97d110bdcc5fd92799b695:node:666410bff1464e09843aeec1c97da8ea:field:message</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ui_message_99046e314779751030980d45d36d43aa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-11 06:32:23</sys_updated_on>
+    </sys_ui_message>
+</record_update>

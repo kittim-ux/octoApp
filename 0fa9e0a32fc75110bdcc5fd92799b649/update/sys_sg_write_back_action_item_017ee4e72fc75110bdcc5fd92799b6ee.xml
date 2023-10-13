@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_write_back_action_item">
+    <sys_sg_write_back_action_item action="INSERT_OR_UPDATE">
+        <description/>
+        <execution_script/>
+        <name>Delete (octoservices)</name>
+        <parameter_screen/>
+        <query_condition/>
+        <sys_class_name>sys_sg_write_back_action_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 19:24:17</sys_created_on>
+        <sys_id>017ee4e72fc75110bdcc5fd92799b6ee</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Delete (octoservices)</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_sg_write_back_action_item_017ee4e72fc75110bdcc5fd92799b6ee</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:57</sys_updated_on>
+        <table>x_938832_octomobil_octoservices</table>
+        <template/>
+        <type>delete</type>
+        <use_current_record_as_condition>true</use_current_record_as_condition>
+        <use_fields_for_ref_lookup>false</use_fields_for_ref_lookup>
+    </sys_sg_write_back_action_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=017ee4e72fc75110bdcc5fd92799b6ee"/>
+</record_update>

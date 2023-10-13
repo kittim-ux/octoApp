@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_data_item">
+    <sys_sg_data_item action="INSERT_OR_UPDATE">
+        <condition_type>declarative</condition_type>
+        <description/>
+        <group_by/>
+        <instance_relative_url_qc/>
+        <name>octoMobile octoservices</name>
+        <offline_query_condition/>
+        <offline_query_condition_script/>
+        <query_condition/>
+        <query_condition_script/>
+        <sys_class_name>sys_sg_data_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-14 19:24:16</sys_created_on>
+        <sys_id>f07ea4e72fc75110bdcc5fd92799b63b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>octoMobile octoservices</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_sg_data_item_f07ea4e72fc75110bdcc5fd92799b63b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:54</sys_updated_on>
+        <table>x_938832_octomobil_octoservices</table>
+    </sys_sg_data_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=f07ea4e72fc75110bdcc5fd92799b63b"/>
+</record_update>

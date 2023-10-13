@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_menu">
+    <sp_instance_menu action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column/>
+        <sp_widget display_value="Header Menu">5ef595c1cb12020000f8d856634c9c6e</sp_widget>
+        <sys_class_name>sp_instance_menu</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-16 07:14:11</sys_created_on>
+        <sys_id>1d0a50c02fd3d110bdcc5fd92799b657</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Octo Header Menu</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_menu_1d0a50c02fd3d110bdcc5fd92799b657</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:31:44</sys_updated_on>
+        <title>Octo Header Menu</title>
+        <url/>
+        <widget_parameters><![CDATA[{
+   "enable_cart":{
+		"displayValue":"true",
+		"value":true
+	},
+	"exclude_search_on_homepage":{
+		"displayValue":"true",
+		"value":true
+	},
+	"enable_requests":{
+		"displayValue":"true",
+		"value":true
+	},
+    "enable_tasks":{
+		"displayValue":"false",
+		"value":false
+	},
+    "enable_more_items":{
+      	"displayValue":"true",
+      	"value":true,
+        "sysId":"3eeb5c042fd3d110bdcc5fd92799b6ab"
+    }
+}
+
+]]></widget_parameters>
+    </sp_instance_menu>
+    <sys_translated_text action="delete_multiple" query="documentkey=1d0a50c02fd3d110bdcc5fd92799b657"/>
+</record_update>

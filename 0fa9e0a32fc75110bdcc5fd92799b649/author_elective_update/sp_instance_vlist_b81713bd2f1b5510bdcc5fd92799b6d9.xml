@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_vlist">
+    <sp_instance_vlist action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <display_field/>
+        <field_list/>
+        <filter/>
+        <glyph/>
+        <id/>
+        <maximum_entries>2</maximum_entries>
+        <order>1</order>
+        <order_by/>
+        <order_direction>asc</order_direction>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">a85cffa12f1f1510bdcc5fd92799b655</sp_column>
+        <sp_page display_value="kb_article">dea5792147132100ba13a5554ee4902d</sp_page>
+        <sp_widget display_value="octoMobile SimpleList">81d6937d2f1b5510bdcc5fd92799b67c</sp_widget>
+        <sys_class_name>sp_instance_vlist</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 07:27:20</sys_created_on>
+        <sys_id>b81713bd2f1b5510bdcc5fd92799b6d9</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sp_instance_vlist_b81713bd2f1b5510bdcc5fd92799b6d9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-22 07:32:05</sys_updated_on>
+        <table>kb_knowledge</table>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"always_show": {
+		"value": "",
+		"displayValue": ""
+	},
+	"panel_body_height": {
+		"value": "200px",
+		"displayValue": "200px"
+	},
+	"image_field": {
+		"value": "can_read_user_criteria",
+		"displayValue": "can_read_user_criteria"
+	},
+	"secondary_fields": {
+		"value": "",
+		"displayValue": ""
+	},
+	"rounded_images": {
+		"value": "",
+		"displayValue": ""
+	},
+	"list_page": {
+		"value": "",
+		"displayValue": ""
+	},
+	"hide_footer": {
+		"value": "",
+		"displayValue": ""
+	},
+	"view": {
+		"value": "2803566cf94211108c8bd16244dfe7f7",
+		"displayValue": "additional info"
+	},
+	"disable_record_watcher": {
+		"value": "",
+		"displayValue": ""
+	},
+	"filter_acls": {
+		"value": "false",
+		"displayValue": "false"
+	}
+}]]></widget_parameters>
+    </sp_instance_vlist>
+    <sys_translated_text action="DELETE" query="documentkey=b81713bd2f1b5510bdcc5fd92799b6d9"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>35453a86dbf05850566750b6f49619be</instance_id>
+        <instance_name>dev103886</instance_name>
+        <name>sp_instance_vlist_b81713bd2f1b5510bdcc5fd92799b6d9</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance_vlist"&gt;&lt;sp_instance_vlist action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css/&gt;&lt;display_field/&gt;&lt;field_list/&gt;&lt;filter/&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;maximum_entries&gt;2&lt;/maximum_entries&gt;&lt;order&gt;1&lt;/order&gt;&lt;order_by/&gt;&lt;order_direction&gt;asc&lt;/order_direction&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="1"&gt;a85cffa12f1f1510bdcc5fd92799b655&lt;/sp_column&gt;&lt;sp_page display_value="kb_article"&gt;dea5792147132100ba13a5554ee4902d&lt;/sp_page&gt;&lt;sp_widget display_value="octoMobile SimpleList"&gt;81d6937d2f1b5510bdcc5fd92799b67c&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance_vlist&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2022-11-22 07:27:20&lt;/sys_created_on&gt;&lt;sys_id&gt;b81713bd2f1b5510bdcc5fd92799b6d9&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name/&gt;&lt;sys_package display_value="octoMobile" source="x_938832_octomobil"&gt;0fa9e0a32fc75110bdcc5fd92799b649&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="octoMobile"&gt;0fa9e0a32fc75110bdcc5fd92799b649&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_vlist_b81713bd2f1b5510bdcc5fd92799b6d9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2022-11-22 07:32:05&lt;/sys_updated_on&gt;&lt;table&gt;kb_knowledge&lt;/table&gt;&lt;title/&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"always_show": {
+		"value": "",
+		"displayValue": ""
+	},
+	"panel_body_height": {
+		"value": "200px",
+		"displayValue": "200px"
+	},
+	"image_field": {
+		"value": "can_read_user_criteria",
+		"displayValue": "can_read_user_criteria"
+	},
+	"secondary_fields": {
+		"value": "",
+		"displayValue": ""
+	},
+	"rounded_images": {
+		"value": "",
+		"displayValue": ""
+	},
+	"list_page": {
+		"value": "",
+		"displayValue": ""
+	},
+	"hide_footer": {
+		"value": "",
+		"displayValue": ""
+	},
+	"view": {
+		"value": "2803566cf94211108c8bd16244dfe7f7",
+		"displayValue": "additional info"
+	},
+	"disable_record_watcher": {
+		"value": "",
+		"displayValue": ""
+	},
+	"filter_acls": {
+		"value": "false",
+		"displayValue": "false"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance_vlist&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=b81713bd2f1b5510bdcc5fd92799b6d9"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1654373482</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>f622ee442f1fd110bdcc5fd92799b6c2</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 07:32:06</sys_created_on>
+        <sys_id>2a281bbd2f1b5510bdcc5fd92799b64f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1849e4050f80000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2022-11-22 07:32:06</sys_updated_on>
+        <type>Instance of Simple List</type>
+        <update_guid>22281bbd911b5510d3b01ffa1665244f</update_guid>
+        <update_guid_history>22281bbd911b5510d3b01ffa1665244f:1654373482,c6e713fd681b5510b2000f9e62a64215:-1167587858,69c71f7d4a1b5510dbae2bbb80f55e43:-227139996,f81717bdb71b5510090ac6b1d025ed98:1351040849</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">9648d7fd2f1b5510bdcc5fd92799b64c</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2022-11-22 07:32:37</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance_vlist">sp_instance_vlist</sys_db_object>
+        <sys_id>38cc32b97b3a4070960fdc53aff5e640</sys_id>
+        <sys_metadata>b81713bd2f1b5510bdcc5fd92799b6d9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sp_instance_vlist_b81713bd2f1b5510bdcc5fd92799b6d9</sys_update_name>
+        <sys_update_version display_value="sp_instance_vlist_b81713bd2f1b5510bdcc5fd92799b6d9">2a281bbd2f1b5510bdcc5fd92799b64f</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-01 10:32:11</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

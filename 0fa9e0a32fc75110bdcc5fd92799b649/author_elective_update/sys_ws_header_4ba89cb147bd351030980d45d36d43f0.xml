@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_header">
+    <sys_ws_header action="DELETE">
+        <example_value/>
+        <name>Test</name>
+        <required>false</required>
+        <short_description/>
+        <sys_class_name>sys_ws_header</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-10 20:24:03</sys_created_on>
+        <sys_id>4ba89cb147bd351030980d45d36d43f0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_update_name>sys_ws_header_4ba89cb147bd351030980d45d36d43f0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-10 20:24:03</sys_updated_on>
+        <web_service_definition display_value="ElasticSearch Data">64d0d36547b9351030980d45d36d436c</web_service_definition>
+    </sys_ws_header>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</application>
+        <file_path/>
+        <instance_id>66c767cfdb1d49101b813feb689619fb</instance_id>
+        <instance_name>dev123716</instance_name>
+        <name>sys_ws_header_4ba89cb147bd351030980d45d36d43f0</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_header"><sys_ws_header action="INSERT_OR_UPDATE"><example_value/><name>Test</name><required>false</required><short_description/><sys_class_name>sys_ws_header</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2023-10-10 20:24:03</sys_created_on><sys_id>4ba89cb147bd351030980d45d36d43f0</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Test</sys_name><sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package><sys_policy/><sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope><sys_update_name>sys_ws_header_4ba89cb147bd351030980d45d36d43f0</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2023-10-10 20:24:03</sys_updated_on><web_service_definition display_value="ElasticSearch Data">64d0d36547b9351030980d45d36d436c</web_service_definition></sys_ws_header></record_update>]]></payload>
+        <payload_hash>-153017892</payload_hash>
+        <record_name>Test</record_name>
+        <reverted_from/>
+        <source>610d77224761311030980d45d36d43fb</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-10 20:24:03</sys_created_on>
+        <sys_id>0ec814f947bd351030980d45d36d4387</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>18b1b42c9bc0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-10 20:24:03</sys_updated_on>
+        <type>Scripted REST Header</type>
+        <update_guid>42c814f90cbd35102bd1291824b15887</update_guid>
+        <update_guid_history>42c814f90cbd35102bd1291824b15887:-153017892</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-10 20:24:30</sys_created_on>
+        <sys_db_object display_value="" name="sys_ws_header">sys_ws_header</sys_db_object>
+        <sys_id>0360081dbed644c0b3825ca9530d1179</sys_id>
+        <sys_metadata>4ba89cb147bd351030980d45d36d43f0</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test</sys_name>
+        <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
+        <sys_scope_delete display_value="">2d2b2345c4a14750a981d415f1b44840</sys_scope_delete>
+        <sys_update_name>sys_ws_header_4ba89cb147bd351030980d45d36d43f0</sys_update_name>
+        <sys_update_version display_value="sys_ws_header_4ba89cb147bd351030980d45d36d43f0">0ec814f947bd351030980d45d36d4387</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-10 20:24:30</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
