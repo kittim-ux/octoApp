@@ -10,7 +10,7 @@
         <operation_script><![CDATA[(function process( /*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
     try {
         // Define the Elasticsearch URL
-        var elasticsearchUrl = "https://edde-41-209-57-166.ngrok-free.app/stnbucket/_search/?size=100";
+        var elasticsearchUrl = "https://36ce-41-209-57-166.ngrok-free.app/stnbucket/_search/?size=100";
 
         // Make an HTTP GET request to Elasticsearch using the sn_ws module
         var requestMessage = new sn_ws.RESTMessageV2(); // Use RESTMessageV2
@@ -88,14 +88,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-10-10 15:29:16</sys_created_on>
         <sys_id>030553a947b9351030980d45d36d43fe</sys_id>
-        <sys_mod_count>50</sys_mod_count>
+        <sys_mod_count>51</sys_mod_count>
         <sys_name>STN Elastic Data</sys_name>
         <sys_package display_value="octoMobile" source="x_938832_octomobil">0fa9e0a32fc75110bdcc5fd92799b649</sys_package>
         <sys_policy/>
         <sys_scope display_value="octoMobile">0fa9e0a32fc75110bdcc5fd92799b649</sys_scope>
         <sys_update_name>sys_ws_operation_030553a947b9351030980d45d36d43fe</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-10-11 22:59:14</sys_updated_on>
+        <sys_updated_on>2023-10-23 07:21:57</sys_updated_on>
         <web_service_definition display_value="ElasticSearch Data">64d0d36547b9351030980d45d36d436c</web_service_definition>
         <web_service_version display_value="v1">6794936547b9351030980d45d36d434f</web_service_version>
     </sys_ws_operation>
